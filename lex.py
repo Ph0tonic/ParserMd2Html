@@ -12,7 +12,7 @@ tokens = (
 	'IDENTIFIER',
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
-literals = '();={}'
+literals = '();=:{}'
 
 def t_ADD_OP(t):
 	r'[+-]'
@@ -32,7 +32,7 @@ def t_NUMBER(t):
 	return t
 
 def t_IDENTIFIER(t):
-	r'[A-Za-z_]\w*'
+	r'\$\w[A-Za-z-]+'
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
