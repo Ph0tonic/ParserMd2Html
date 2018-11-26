@@ -1,8 +1,14 @@
 import ply.lex as lex
 
 reserved_words = (
-	'while',
-	'print'
+	'@while',
+	'@if',
+	'@else if',
+	'@else',
+	'@mixin',
+	'@import',
+	'@include',
+	'@extend'
 )
 
 tokens = (
@@ -12,7 +18,7 @@ tokens = (
 	'IDENTIFIER',
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
-literals = '();=:{}'
+literals = '();=:{},'
 
 def t_ADD_OP(t):
 	r'[+-]'
@@ -22,7 +28,7 @@ def t_MUL_OP(t):
 	r'[*/]'
 	return t
 
-def t_NUMBER(t):
+def t_NUMBER(t): # 5px*10px
 	r'\d+(\.\d+)?'
 	try:
 		t.value = float(t.value)
@@ -30,6 +36,12 @@ def t_NUMBER(t):
 		print ("Line %d: Problem while parsing %s!" % (t.lineno,t.value))
 		t.value = 0
 	return t
+
+t_UNIT = r'px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax'
+
+t_STR_CSS = r'[\w#]+'
+
+t_FUNC_CSSV(t) = ''
 
 def t_IDENTIFIER(t):
 	r'\$\w[A-Za-z-]+'
