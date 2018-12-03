@@ -35,7 +35,6 @@ def t_NUMBER(t): # 5px*10px
 	r'\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
 	return t
 
-t_SELECTOR = r'\w[\w#.\-\[\]]*'
 
 # t_FUNC_CSSV = ''
 
@@ -52,6 +51,8 @@ def t_STRING_VALUE(t):
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
+	
+t_SELECTOR = r'\w[\w#.\-\[\]]*'
 
 def t_newline(t):
 	r'\n+'
