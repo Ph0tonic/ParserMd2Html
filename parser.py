@@ -10,7 +10,7 @@ def p_programme_statement(p):
     p[0] = AST.ProgramNode(p[1])
 
 def p_programme_recursive(p):
-    ''' programme : statement ';' programme '''
+    ''' programme : statement programme '''
     p[0] = AST.ProgramNode([p[1]]+p[3].children)
 
 def p_statement(p):
@@ -33,19 +33,20 @@ def p_expression_op(p):
 
 def p_expression_num_or_var(p):
     '''expression : NUMBER
-        | IDENTIFIER '''
+        | VARIABLE '''
     p[0] = AST.TokenNode(p[1])
 
-def p_expression_paren(p):
-    '''expression : '(' expression ')' '''
-    p[0] = p[2]
+def p_identifier(p):
+    '''
+    STRING_VALUE SEPARATOR_IDENTIFIER
+    '''
 
-def p_minus(p):
-    ''' expression : ADD_OP expression %prec UMINUS'''
-    p[0] = AST.OpNode(p[1], [p[2]])
+# def p_minus(p):
+#     ''' expression : ADD_OP expression %prec UMINUS'''
+#     p[0] = AST.OpNode(p[1], [p[2]])
 
 def p_assign(p):
-    ''' assignation : IDENTIFIER '=' expression '''
+    ''' assignation : VARIABLE ':' expression ';' '''
     p[0] = AST.AssignNode([AST.TokenNode(p[1]),p[3]])
 
 def p_error(p):

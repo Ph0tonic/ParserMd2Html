@@ -29,7 +29,7 @@ def t_MUL_OP(t):
 	return t
 
 def t_NUMBER(t): # 5px*10px
-	r'\d+(\.\d+)?'
+	r'\d+(\.\d+)?[px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax]?'
 	try:
 		t.value = float(t.value)
 	except ValueError:
@@ -37,14 +37,20 @@ def t_NUMBER(t): # 5px*10px
 		t.value = 0
 	return t
 
-t_UNIT = r'px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax'
+t_SELECTOR = r'\w[\w#.\-\[\]]*'
 
-t_STR_CSS = r'[\w#]+'
+t_FUNC_CSSV = ''
 
-t_FUNC_CSSV(t) = ''
-
-def t_IDENTIFIER(t):
+def t_VARIABLE(t):
 	r'\$\w[A-Za-z-]+'
+	if t.value in reserved_words:
+		t.type = t.value.upper()
+	return t
+
+t_SEPARATOR_IDENTIFIER = r'\W'
+
+def t_STRING_VALUE(t):
+	r'[\w-]+'
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
