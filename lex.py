@@ -1,21 +1,24 @@
 import ply.lex as lex
 
 reserved_words = (
-	'@while',
-	'@if',
-	'@else if',
-	'@else',
-	'@mixin',
-	'@import',
-	'@include',
-	'@extend'
+	'while',
+	'if',
+	'elif',
+	'else',
+	'mixin',
+	'import',
+	'include',
+	'extend'
 )
 
 tokens = (
-	'NUMBER',
 	'ADD_OP',
 	'MUL_OP',
-	'IDENTIFIER',
+	'NUMBER',
+	'VARIABLE',
+	'SELECTOR',
+	'SEPARATOR',
+	'STRING_VALUE'
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
 literals = '();=:{},'
@@ -29,17 +32,11 @@ def t_MUL_OP(t):
 	return t
 
 def t_NUMBER(t): # 5px*10px
-	r'\d+(\.\d+)?[px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax]?'
-	try:
-		t.value = float(t.value)
-	except ValueError:
-		print ("Line %d: Problem while parsing %s!" % (t.lineno,t.value))
-		t.value = 0
+	r'\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
 	return t
 
-t_SELECTOR = r'\w[\w#.\-\[\]]*'
 
-t_FUNC_CSSV = ''
+# t_FUNC_CSSV = ''
 
 def t_VARIABLE(t):
 	r'\$\w[A-Za-z-]+'
@@ -47,13 +44,15 @@ def t_VARIABLE(t):
 		t.type = t.value.upper()
 	return t
 
-t_SEPARATOR_IDENTIFIER = r'\W'
+t_SEPARATOR = r'[>,]'
 
 def t_STRING_VALUE(t):
 	r'[\w-]+'
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
+	
+t_SELECTOR = r'\w[\w#.\-\[\]]*'
 
 def t_newline(t):
 	r'\n+'
