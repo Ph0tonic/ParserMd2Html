@@ -1,7 +1,26 @@
-'''md
-TODO Entête avec noms
-TODO Numérotation des titres
-'''
+---
+title: Puck
+subtitle: Rapport
+lang: fr
+author:
+- Fleury Malik <malik.fleury@he-arc.ch>
+- Bulloni Lucas <lucas.bulloni@he-arc.ch>
+date: \today
+pagesize: A4
+numbersections: true
+geometry: margin=2.5cm
+header-includes: |
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[R]{Lucas Bulloni \& Bastien Wermeille}
+---
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
 
 # Project Sass compiler
 
@@ -42,16 +61,16 @@ TODO
 - https://sass-lang.com/guide
 
 # Fonctionnalities to implement
-- [ ] @import
-- [ ] @if / @elseif
-- [ ] @while
-- [ ] @mixin / @include
-- [ ] @extend
+- [ ] \@import
+- [ ] \@if / \@elseif
+- [ ] \@while
+- [ ] \@mixin / \@include
+- [ ] \@extend
 - [ ] Operators
 - [ ] Nested
 - [ ] Variables
 
 ## Eventually
-- [ ] @each
+- [ ] \@each
 
-# Exemples 
+# Exemples
