@@ -1,10 +1,10 @@
 ---
-title: Puck
+title: SCSS Compiler
 subtitle: Rapport
 lang: fr
 author:
-- Fleury Malik <malik.fleury@he-arc.ch>
 - Bulloni Lucas <lucas.bulloni@he-arc.ch>
+- Wermeille Bastien <bastien.wermeille@he-arc.ch>
 date: \today
 pagesize: A4
 numbersections: true
