@@ -3,13 +3,13 @@
 Here is a simple basic Sass compiler.
 
 # Author
+
 - [Lucas Bulloni](https://github.com/bull0n)
 - [Wermeille Bastien](https://github.com/Ph0tonic/)
 
 # Sass Documentation
 
 - https://sass-lang.com/guide
-
 
 # LEXEMES
 
@@ -30,6 +30,7 @@ p // SELECTOR
 } // STATEMENT
 
 # INPUT / OUPUT
+
 ```scss
 nav {
   ul {
@@ -62,3 +63,16 @@ nav a {
   text-decoration: none;
 }
 ```
+
+# Fonctionnalities to implement
+- [ ] @import
+- [ ] @if / @elseif
+- [ ] @while
+- [ ] @mixin / @include
+- [ ] @extend
+- [ ] Operators
+- [ ] Nested
+- [ ] Variables
+
+## Eventually
+- [ ] @each
