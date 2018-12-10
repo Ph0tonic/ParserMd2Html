@@ -7,43 +7,71 @@ vars = {}
 
 def p_programme_statement(p):
     ''' programme : statement '''
-    # p[0] = AST.ProgramNode(p[1])
-    pass
+    p[0] = AST.ProgramNode(p[1])
 
 def p_programme_recursive(p):
     ''' programme : statement programme '''
-    # p[0] = AST.ProgramNode([p[1]]+p[3].children)
-    pass
+    p[0] = AST.ProgramNode([p[1]]+p[3].children)
 
 def p_statement(p):
     '''
     statement : selectors '{' rules '}'
-            |   STRING_VALUE '{' rules '}'
-            |   string_values '{' rules '}'
     '''
-    pass
+    p[0] = AST.StatementNode(p[1], p[3])
+
+def p_statement_string_value(p):
+    '''
+    statement : STRING_VALUE '{' rules '}'
+    '''
+    p[0] = AST.StatementNode(AST.SelectorsNode([AST.SelectorNode(p[1])]), p[3])
+
+def p_statement_string_values(p):
+    '''
+    statement : string_values '{' rules '}'
+    '''
+    listSelectors = []
+
+    for strValue in p[1]:
+        listSelectors.append(AST.SelectorNode(strValue))
+
+    p[0] = AST.StatementNode(listSelectors, p[3])
+
+def p_selector(p):
+    '''
+    selectors : SELECTOR
+    '''
+    p[0] = AST.SelectorsNode([AST.SelectorNode(p[1])])
 
 def p_selectors_without_sep(p):
     '''
-    selectors : SELECTOR
-            |   SELECTOR selectors
-            |   STRING_VALUE selectors
-            |   selectors STRING_VALUE
-            |   string_values selectors
+    selectors : selectors STRING_VALUE
             |   selectors string_values
     '''
-    pass
+    p[0] = AST.SelectorsNode(p[1])
+
+def p_selectors_without_sep_selectors_right(p):
+    '''
+    selectors : SELECTOR selectors
+            |   string_values selectors
+            |   STRING_VALUE selectors
+    '''
+    p[0] = AST.SelectorsNode(p[1])
 
 def p_selectors_with_sep(p):
     '''
-    selectors : SELECTOR SEPARATOR selectors
-            |   STRING_VALUE SEPARATOR selectors
-            |   STRING_VALUE SEPARATOR STRING_VALUE
+    selectors : STRING_VALUE SEPARATOR STRING_VALUE
             |   selectors SEPARATOR STRING_VALUE
-            |   string_values SEPARATOR selectors
             |   selectors SEPARATOR string_values
     '''
-    pass
+    p[0] = AST.SelectorsNode(p[1])
+
+def p_selectors_with_sep_selectors_right(p):
+    '''
+    selectors : SELECTOR SEPARATOR selectors
+            |   STRING_VALUE SEPARATOR selectors
+            |   string_values SEPARATOR selectors
+    '''
+    p[0] = AST.SelectorsNode(p[1])
 
 def p_rules(p):
     '''
@@ -65,17 +93,47 @@ def p_string_values(p):
     string_values : STRING_VALUE string_values
                 |   STRING_VALUE STRING_VALUE
     '''
+    if isinstance(p[2], AST.ValuesNode):
+        p[2].values.insert(0, AST.ValueNode(p[1]))
+        p[0] = p[2]
+    else:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
 
 def p_values(p):
     '''
-    values : NUMBER values
-             | NUMBER
-             | STRING_VALUE values
-             | string_values values
-             | values STRING_VALUE
+    values : string_values values
              | values string_values
     '''
-    pass
+    p[0] = AST.ValuesNode(p[1].values + p[2].values)
+
+
+def p_values_string_value_first(p):
+    '''
+    values : STRING_VALUE values
+    '''
+    p[2].values.insert(0, AST.ValueNode(p[1]))
+    p[0] = p[2]
+
+
+def p_values_string_value_last(p):
+    '''
+    values : values STRING_VALUE
+    '''
+    p[1].values.insert(0, AST.ValueNode(p[2]))
+    p[0] = p[1]
+
+
+def p_values_numbers(p):
+    '''
+    values : NUMBER values
+            | NUMBER
+    '''
+    if len(p) == 2:
+        p[0] = AST.ValuesNode([AST.NumberNode(p[1])])
+    else:
+        p[2].values.insert(0, AST.NumberNode(p[1]))
+        p[0] = p[2]
+
 
 # def p_structure(p):
 #     ''' structure : WHILE expression '{' programme '}' '''
