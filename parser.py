@@ -78,7 +78,11 @@ def p_rules(p):
     rules : rule rules
             | rule
     '''
-    pass
+    if len(p) > 2:
+        p[2].children.insert(0, p[1])
+        p[0] = AST.RulesNode(p[2].children)
+    else:
+        p[0] = AST.RulesNode([p[1]])
 
 def p_rule(p):
     '''
@@ -86,7 +90,10 @@ def p_rule(p):
         |   STRING_VALUE ':' STRING_VALUE ';'
         |   STRING_VALUE ':' string_values ';'
     '''
-    pass
+    if not isinstance(p[3], AST.ValuesNode):
+        p[2] = AST.ValueNode(p[2])
+
+    p[0] = AST.RuleNode(AST.ValueNode(p[1]), p[3])
 
 def p_string_values(p):
     '''

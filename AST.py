@@ -137,6 +137,17 @@ class ValuesNode(Node):
         Node.__init__(self)
         self.values = values
 
+class RulesNode(Node):
+    type = 'rules'
+
+class RuleNode(Node):
+    type = 'rule'
+
+    def __init__(self, property, values):
+        Node.__init__(self)
+
+        self.property = property
+        self.values = values
 
 class TokenNode(Node):
     type = 'token'
@@ -164,9 +175,6 @@ class AssignNode(Node):
 
 class PrintNode(Node):
     type = 'print'
-
-class WhileNode(Node):
-    type = ty
 
 class EntryNode(Node):
     type = 'ENTRY'
