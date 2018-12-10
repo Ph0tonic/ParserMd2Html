@@ -11,7 +11,7 @@ def p_programme_statement(p):
 
 def p_programme_recursive(p):
     ''' programme : statement programme '''
-    p[0] = AST.ProgramNode([p[1]]+p[3].children)
+    p[0] = AST.ProgramNode([p[1]]+p[2].children)
 
 def p_statement(p):
     '''
@@ -31,7 +31,7 @@ def p_statement_string_values(p):
     '''
     listSelectors = []
 
-    for strValue in p[1]:
+    for strValue in p[1].children:
         listSelectors.append(AST.SelectorNode(strValue))
 
     p[0] = AST.StatementNode(listSelectors, p[3])
@@ -42,6 +42,7 @@ def p_selector(p):
     '''
     p[0] = AST.SelectorsNode([AST.SelectorNode(p[1])])
 
+# TODO
 def p_selectors_without_sep(p):
     '''
     selectors : selectors STRING_VALUE
@@ -49,6 +50,7 @@ def p_selectors_without_sep(p):
     '''
     p[0] = AST.SelectorsNode(p[1])
 
+# TODO
 def p_selectors_without_sep_selectors_right(p):
     '''
     selectors : SELECTOR selectors
@@ -57,6 +59,7 @@ def p_selectors_without_sep_selectors_right(p):
     '''
     p[0] = AST.SelectorsNode(p[1])
 
+# TODO
 def p_selectors_with_sep(p):
     '''
     selectors : STRING_VALUE SEPARATOR STRING_VALUE
@@ -65,6 +68,7 @@ def p_selectors_with_sep(p):
     '''
     p[0] = AST.SelectorsNode(p[1])
 
+# TODO
 def p_selectors_with_sep_selectors_right(p):
     '''
     selectors : SELECTOR SEPARATOR selectors
@@ -101,7 +105,7 @@ def p_string_values(p):
                 |   STRING_VALUE STRING_VALUE
     '''
     if isinstance(p[2], AST.ValuesNode):
-        p[2].values.insert(0, AST.ValueNode(p[1]))
+        p[2].children.insert(0, AST.ValueNode(p[1]))
         p[0] = p[2]
     else:
         p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
@@ -111,14 +115,14 @@ def p_values(p):
     values : string_values values
              | values string_values
     '''
-    p[0] = AST.ValuesNode(p[1].values + p[2].values)
+    p[0] = AST.ValuesNode(p[1].children + p[2].children)
 
 
 def p_values_string_value_first(p):
     '''
     values : STRING_VALUE values
     '''
-    p[2].values.insert(0, AST.ValueNode(p[1]))
+    p[2].children.insert(0, AST.ValueNode(p[1]))
     p[0] = p[2]
 
 
@@ -126,7 +130,7 @@ def p_values_string_value_last(p):
     '''
     values : values STRING_VALUE
     '''
-    p[1].values.insert(0, AST.ValueNode(p[2]))
+    p[1].children.insert(0, AST.ValueNode(p[2]))
     p[0] = p[1]
 
 
@@ -138,7 +142,7 @@ def p_values_numbers(p):
     if len(p) == 2:
         p[0] = AST.ValuesNode([AST.NumberNode(p[1])])
     else:
-        p[2].values.insert(0, AST.NumberNode(p[1]))
+        p[2].children.insert(0, AST.NumberNode(p[1]))
         p[0] = p[2]
 
 
@@ -189,13 +193,11 @@ if __name__ == "__main__":
 
     prog = open(sys.argv[1]).read()
     result = yacc.parse(prog, debug = True)
-    # if result:
-    #     print (result)
-    #
-    #     import os
-    #     graph = result.makegraphicaltree()
-    #     name = os.path.splitext(sys.argv[1])[0]+'-ast.pdf'
-    #     graph.write_pdf(name)
-    #     print ("wrote ast to", name)
-    # else:
-    #     print ("Parsing returned no result!")
+    if result:
+        import os
+        graph = result.makegraphicaltree()
+        name = os.path.splitext(sys.argv[1])[0]+'-ast.pdf'
+        graph.write_pdf(name)
+        print ("wrote ast to", name)
+    else:
+        print ("Parsing returned no result!")
