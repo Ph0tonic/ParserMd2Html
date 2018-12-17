@@ -12,6 +12,11 @@ operations = {
 vars = {}
 lineSeperator = '\n'
 
+def compileListToString(list, separator):
+    compiledString = separator.join([element.compile() for element in list])
+
+    return compiledString
+
 @addToClass(AST.ValueNode)
 def compile(self):
     return str(self.value)
@@ -26,16 +31,29 @@ def compile(self):
 
 @addToClass(AST.ValuesNode)
 def compile(self):
-    compiledString = " ".join([child.compile() for child in self.children])
-
-    return compiledString
+    return compileListToString(self.children, ' ')
 
 @addToClass(AST.RuleNode)
 def compile(self):
     children = self.children
 
-    return f'{children[0]} : {children[1].compile()}'
+    return f'{children[0].compile()} : {children[1].compile()};'
 
+@addToClass(AST.RulesNode)
+def compile(self):
+    return compileListToString(self.children, '\n');
+
+@addToClass(AST.SelectorsNode)
+def compile(self):
+    return compileListToString(self.children, ' ')
+
+@addToClass(AST.StatementNode)
+def compile(self):
+    return f'{self.children[0].compile()} {{\n{self.children[1].compile()} \n}}'
+
+@addToClass(AST.ProgramNode)
+def compile(self):
+    return compileListToString(self.children, '\n')
 
 if __name__ == "__main__" :
 	from parser import parse

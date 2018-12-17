@@ -1,3 +1,5 @@
+# coding: latin-1
+
 ''' Petit module utilitaire pour la construction, la manipulation et la
 representation d'arbres syntaxiques abstraits.
 
@@ -93,9 +95,11 @@ class Node:
 class ProgramNode(Node):
     type = 'Program'
 
+#done
 class StatementNode(Node):
     type = 'Statement'
 
+#done
 class SelectorsNode(Node):
     type = 'selectors'
 
@@ -135,9 +139,10 @@ class ValueNode(Node):
 class ValuesNode(Node):
     type = 'values'
 
+#done
 class RulesNode(Node):
     type = 'rules'
-
+#done
 class RuleNode(Node):
     type = 'rule'
 
