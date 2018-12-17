@@ -17,24 +17,19 @@ def p_statement(p):
     '''
     statement : selectors '{' rules '}'
     '''
-    p[0] = AST.StatementNode(p[1], p[3])
+    p[0] = AST.StatementNode([p[1], p[3]])
 
 def p_statement_string_value(p):
     '''
     statement : STRING_VALUE '{' rules '}'
     '''
-    p[0] = AST.StatementNode(AST.SelectorsNode([AST.SelectorNode(p[1])]), p[3])
+    p[0] = AST.StatementNode([AST.SelectorsNode([AST.SelectorNode(p[1])]), p[3]])
 
 def p_statement_string_values(p):
     '''
     statement : string_values '{' rules '}'
     '''
-    listSelectors = []
-
-    for strValue in p[1].children:
-        listSelectors.append(AST.SelectorNode(strValue))
-
-    p[0] = AST.StatementNode(listSelectors, p[3])
+    p[0] = AST.StatementNode([AST.SelectorsNode(p[1].children), p[3]])
 
 def p_selector(p):
     '''
@@ -42,40 +37,65 @@ def p_selector(p):
     '''
     p[0] = AST.SelectorsNode([AST.SelectorNode(p[1])])
 
-# TODO
 def p_selectors_without_sep(p):
     '''
     selectors : selectors STRING_VALUE
             |   selectors string_values
     '''
-    p[0] = AST.SelectorsNode(p[1])
+    if isinstance(p[2], AST.ValuesNode):
+        p[1].children += p[2].children
+    else:
+        p[1].children.append(AST.SelectorNode(p[2]))
 
-# TODO
+    p[0] = p[1]
+
 def p_selectors_without_sep_selectors_right(p):
     '''
     selectors : SELECTOR selectors
             |   string_values selectors
             |   STRING_VALUE selectors
     '''
-    p[0] = AST.SelectorsNode(p[1])
+    if isinstance(p[1], AST.ValuesNode):
+        p[2].children = p[1].children + p[2].children
+    else:
+        p[2].children.insert(0, AST.SelectorNode(p[1]))
+    
+    p[0] = p[2]
 
-# TODO
-def p_selectors_with_sep(p):
+
+def p_selector_sep_str(p):
     '''
     selectors : STRING_VALUE SEPARATOR STRING_VALUE
-            |   selectors SEPARATOR STRING_VALUE
+    '''
+    p[0] = AST.SelectorsNode([AST.SelectorNode(p[1]),AST.SelectorNode(p[2]),AST.SelectorNode(p[3])])
+
+def p_selectors_with_sep(p):
+    '''
+    selectors : selectors SEPARATOR STRING_VALUE
             |   selectors SEPARATOR string_values
     '''
-    p[0] = AST.SelectorsNode(p[1])
+    p[1].children.append(AST.SelectorNode(p[2]))
+    if isinstance(p[3], AST.ValuesNode):
+        p[1].children += p[3].children
+    else:
+        p[1].children.append(AST.SelectorNode(p[3]))
 
-# TODO
+    p[0] = p[1]
+
 def p_selectors_with_sep_selectors_right(p):
     '''
     selectors : SELECTOR SEPARATOR selectors
             |   STRING_VALUE SEPARATOR selectors
             |   string_values SEPARATOR selectors
     '''
-    p[0] = AST.SelectorsNode(p[1])
+    p[3].children.insert(AST.SelectorNode(p[2]))
+
+    if isinstance(p[1], AST.ValuesNode):
+        p[3].children = p[1].children + p[3].children
+    else:
+        p[3].children.insert(0, AST.SelectorNode(p[3]))
+
+    p[0] = p[3]
 
 def p_rules(p):
     '''
@@ -95,9 +115,9 @@ def p_rule(p):
         |   STRING_VALUE ':' string_values ';'
     '''
     if not isinstance(p[3], AST.ValuesNode):
-        p[2] = AST.ValueNode(p[2])
+        p[3] = AST.ValueNode(p[3])
 
-    p[0] = AST.RuleNode(AST.ValueNode(p[1]), p[3])
+    p[0] = AST.RuleNode([AST.ValueNode(p[1]), p[3]])
 
 def p_string_values(p):
     '''

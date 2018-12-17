@@ -96,21 +96,10 @@ class ProgramNode(Node):
     type = 'Program'
 
 class StatementNode(Node):
-    def __init__(self, selector, rules):
-        Node.__init__(self, rules)
-        self.selector = selector
-
-    def __repr__(self):
-        return f'{repr(self.selector)} : {repr(self.type)}'
+    type = 'Statement'
 
 class SelectorsNode(Node):
     type = 'selectors'
-    def __init__(self, listStrSelectors):
-        Node.__init__(self)
-        self.listStrSelectors = listStrSelectors
-
-    def __repr__(self):
-        return repr([repr(selector) for selector in self.listStrSelectors])
 
 class SelectorNode(Node):
     type = 'selector'
@@ -144,19 +133,11 @@ class ValueNode(Node):
 class ValuesNode(Node):
     type = 'values'
 
-    def __init__(self, values):
-        Node.__init__(self, values)
-
 class RulesNode(Node):
     type = 'rules'
 
 class RuleNode(Node):
     type = 'rule'
-
-    def __init__(self, property, values):
-        Node.__init__(self, values)
-
-        self.property = property
 
 class TokenNode(Node):
     type = 'token'
