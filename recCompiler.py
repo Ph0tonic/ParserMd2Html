@@ -49,12 +49,12 @@ def compile(self):
 
 @addToClass(AST.StatementNode)
 def compile(self):
-    compiledString = ''
-    compiledStatements = []
     selector = self.children[0]
+    compiledString = f'{selector.compile()} {{ \n'
+    compiledStatements = []
 
     for child in self.children[1:]:
-        if isinstance(child, AST.Statement):
+        if isinstance(child, AST.StatementNode):
             childrenStatement = child.children[0].children
             childrenStatement = selector + childrenStatement
 
@@ -62,10 +62,12 @@ def compile(self):
         else:
             compiledString += child.compile()
 
+    compiledString += '}'
+
     for compiledStatement in compiledStatements:
         compiledString += compiledStatement
 
-    return return compiledString
+    return compiledString
 
 @addToClass(AST.ProgramNode)
 def compile(self):
