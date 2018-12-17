@@ -1,3 +1,5 @@
+# coding: latin-1
+
 ''' Petit module utilitaire pour la construction, la manipulation et la
 representation d'arbres syntaxiques abstraits.
 
@@ -93,12 +95,15 @@ class Node:
 class ProgramNode(Node):
     type = 'Program'
 
+#done
 class StatementNode(Node):
     type = 'Statement'
 
+#done
 class SelectorsNode(Node):
     type = 'selectors'
 
+# done
 class SelectorNode(Node):
     type = 'selector'
     def __init__(self, selectorStr):
@@ -108,6 +113,7 @@ class SelectorNode(Node):
     def __repr__(self):
         return repr(self.selectorStr)
 
+#done
 class NumberNode(Node):
     type = 'number'
 
@@ -118,6 +124,7 @@ class NumberNode(Node):
     def __repr__(self):
         return repr(self.value)
 
+#done
 class ValueNode(Node):
     type = 'number'
 
@@ -138,12 +145,14 @@ class VariableNode(Node):
     def __repr__(self):
         return repr(self.value)
 
+#done
 class ValuesNode(Node):
     type = 'values'
 
+#done
 class RulesNode(Node):
     type = 'rules'
-
+#done
 class RuleNode(Node):
     type = 'rule'
 
