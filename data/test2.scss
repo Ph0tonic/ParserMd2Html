@@ -1,8 +1,8 @@
-nav {
-  
-  padding: 12px;
+$dim:  6px 12px;
+$display: block;
 
-  ul{
+nav {
+  ul {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -11,12 +11,10 @@ nav {
   li { display: inline-block; }
 
   a {
-    display: block;
-    padding: 6px 12px;
+    display: $dim;
+    padding: $display;
     text-decoration: none;
   }
-
-  display: flex;
 }
 
 nav {
