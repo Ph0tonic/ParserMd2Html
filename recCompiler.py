@@ -49,7 +49,23 @@ def compile(self):
 
 @addToClass(AST.StatementNode)
 def compile(self):
-    return f'{self.children[0].compile()} {{\n{self.children[1].compile()} \n}}'
+    compiledString = ''
+    compiledStatements = []
+    selector = self.children[0]
+
+    for child in self.children[1:]:
+        if isinstance(child, AST.Statement):
+            childrenStatement = child.children[0].children
+            childrenStatement = selector + childrenStatement
+
+            compiledStatements.append(child.compile())
+        else:
+            compiledString += child.compile()
+
+    for compiledStatement in compiledStatements:
+        compiledString += compiledStatement
+
+    return return compiledString
 
 @addToClass(AST.ProgramNode)
 def compile(self):
