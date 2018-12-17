@@ -101,6 +101,7 @@ class StatementNode(Node):
 class SelectorsNode(Node):
     type = 'selectors'
 
+# done
 class SelectorNode(Node):
     type = 'selector'
     def __init__(self, selectorStr):
@@ -110,6 +111,7 @@ class SelectorNode(Node):
     def __repr__(self):
         return repr(self.selectorStr)
 
+#done
 class NumberNode(Node):
     type = 'number'
 
@@ -120,6 +122,7 @@ class NumberNode(Node):
     def __repr__(self):
         return repr(self.value)
 
+#done
 class ValueNode(Node):
     type = 'number'
 
@@ -130,6 +133,7 @@ class ValueNode(Node):
     def __repr__(self):
         return repr(self.value)
 
+#done
 class ValuesNode(Node):
     type = 'values'
 

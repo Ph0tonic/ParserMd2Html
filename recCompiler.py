@@ -12,6 +12,31 @@ operations = {
 vars = {}
 lineSeperator = '\n'
 
+@addToClass(AST.ValueNode)
+def compile(self):
+    return str(self.value)
+
+@addToClass(AST.NumberNode)
+def compile(self):
+    return str(self.value)
+
+@addToClass(AST.SelectorNode)
+def compile(self):
+    return str(self.selectorStr)
+
+@addToClass(AST.ValuesNode)
+def compile(self):
+    compiledString = " ".join([child.compile() for child in self.children])
+
+    return compiledString
+
+@addToClass(AST.RuleNode)
+def compile(self):
+    children = self.children
+
+    return f'{children[0]} : {children[1].compile()}'
+
+
 if __name__ == "__main__" :
 	from parser import parse
 	import sys
