@@ -128,6 +128,16 @@ class ValueNode(Node):
     def __repr__(self):
         return repr(self.value)
 
+class VariableNode(Node):
+    type = 'variable'
+
+    def __init__(self, value):
+        Node.__init__(self)
+        self.value = value
+
+    def __repr__(self):
+        return repr(self.value)
+
 class ValuesNode(Node):
     type = 'values'
 
