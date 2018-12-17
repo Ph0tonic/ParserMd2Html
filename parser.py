@@ -16,18 +16,21 @@ def p_programme_recursive(p):
 def p_statement(p):
     '''
     statement : selectors '{' rules '}'
+            |   selectors '{' programme '}'
     '''
     p[0] = AST.StatementNode([p[1], p[3]])
 
 def p_statement_string_value(p):
     '''
     statement : STRING_VALUE '{' rules '}'
+            |   STRING_VALUE '{' programme '}'
     '''
     p[0] = AST.StatementNode([AST.SelectorsNode([AST.SelectorNode(p[1])]), p[3]])
 
 def p_statement_string_values(p):
     '''
     statement : string_values '{' rules '}'
+            |   string_values '{' programme '}'
     '''
     p[0] = AST.StatementNode([AST.SelectorsNode(p[1].children), p[3]])
 
