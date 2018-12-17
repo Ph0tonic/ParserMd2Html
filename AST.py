@@ -137,15 +137,6 @@ class RulesNode(Node):
 class RuleNode(Node):
     type = 'rule'
 
-class TokenNode(Node):
-    type = 'token'
-    def __init__(self, tok):
-        Node.__init__(self)
-        self.tok = tok
-
-    def __repr__(self):
-        return repr(self.tok)
-
 class OpNode(Node):
     def __init__(self, op, children):
         Node.__init__(self,children)
@@ -160,9 +151,6 @@ class OpNode(Node):
 
 class AssignNode(Node):
     type = '='
-
-class PrintNode(Node):
-    type = 'print'
 
 class EntryNode(Node):
     type = 'ENTRY'
