@@ -1,5 +1,3 @@
-# coding: latin-1
-
 ''' Petit module utilitaire pour la construction, la manipulation et la
 representation d'arbres syntaxiques abstraits.
 
