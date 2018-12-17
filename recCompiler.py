@@ -3,7 +3,7 @@ from AST import addToClass
 from functools import reduce
 
 operations = {
-	'+': lambda x,y : f"{x}{y}ADD\n",
+    '+': lambda x,y : f"{x}{y}ADD\n",
     '-': lambda x,y : f"{x}{y}SUB\n",
     '*': lambda x,y : f"{x}{y}MUL\n",
     '/': lambda x,y : f"{x}{y}DIV\n",
@@ -73,11 +73,15 @@ def compile(self):
 def compile(self):
     return compileListToString(self.children, '\n')
 
+def getFileName(path):
+    return path.split('/')[-1].split('.')[0]
+
 if __name__ == "__main__" :
-	from parser import parse
-	import sys
-	prog = open(sys.argv[1]).read()
-	ast = parse(prog)
-	compiledString = ast.compile()
-	with open('compiled.css', 'w') as f :
-		f.write(compiledString)
+    from parser import parse
+    import sys
+    prog = open(sys.argv[1]).read()
+    ast = parse(prog)
+    compiledString = ast.compile()
+    pathCompiled = f'compiled/{getFileName(sys.argv[1])}.css'
+    with open(pathCompiled, 'w') as f :
+        f.write(compiledString)
