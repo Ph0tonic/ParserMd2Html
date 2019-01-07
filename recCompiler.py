@@ -21,17 +21,13 @@ def compileListToString(list, separator):
 def compile(self):
     return str(self.value)
 
-@addToClass(AST.NumberNode)
-def execute(self):
-    return (self.value, self.unit)
+# @addToClass(AST.NumberNode)
+# def execute(self):
+#     return (self.value, self.unit)
 
 @addToClass(AST.NumberNode)
 def compile(self):
     return f'{self.value}{self.unit}'
-
-@addToClass(AST.SelectorNode)
-def compile(self):
-    return str(self.selectorStr)
 
 @addToClass(AST.ValuesNode)
 def compile(self):
@@ -45,7 +41,7 @@ def compile(self):
 
 @addToClass(AST.RulesNode)
 def compile(self):
-    return compileListToString(self.children, '\n');
+    return compileListToString(self.children, lineSeperator)
 
 @addToClass(AST.SelectorsNode)
 def compile(self):
@@ -105,7 +101,6 @@ def compile(self):
 
 @addToClass(AST.NestedStatementNode)
 def compile(self):
-    
     return compileListToString(self.children, '\n')
 
 @addToClass(AST.VariableNode)
@@ -115,6 +110,7 @@ def compile(self):
 @addToClass(AST.AssignNode)
 def compile(self):
     vars[self.children[0]] = self.children[1]
+    return ""
 
 def getFileName(path):
     return path.split('/')[-1].split('.')[0]

@@ -118,16 +118,6 @@ class SelectorsNode(Node):
         Node.__init__(self, children)
         self.identifier = identifier
 
-# done
-class SelectorNode(Node):
-    type = 'selector'
-    def __init__(self, selectorStr):
-        Node.__init__(self)
-        self.selectorStr = selectorStr
-
-    def __repr__(self):
-        return repr(self.selectorStr)
-
 #done
 class NumberNode(Node):
     type = 'number'

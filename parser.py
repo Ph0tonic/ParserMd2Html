@@ -62,7 +62,6 @@ def p_rule(p):
         |   STRING_VALUE ':' STRING_VALUE ';'
     '''
     if not isinstance(p[3], AST.ValuesNode) and not isinstance(p[3], AST.VariableNode):
-        # TODO improve
         p[3] = AST.ValueNode(p[3])
     p[0] = AST.RuleNode([AST.ValueNode(p[1]),p[3]])
 
@@ -80,7 +79,7 @@ def p_statement_string_value(p):
             |   STRING_VALUE '{' programme '}'
             |   STRING_VALUE '{' nested_statement '}'
     '''
-    p[0] = AST.StatementNode([AST.SelectorNode(p[1])]+p[3].children)
+    p[0] = AST.StatementNode([AST.ValueNode(p[1])]+p[3].children)
 
 def p_statement_string_values(p):
     '''
@@ -106,7 +105,7 @@ def p_selector(p):
     '''
     selectors : SELECTOR
     '''
-    p[0] = AST.SelectorsNode([AST.SelectorNode(p[1])])
+    p[0] = AST.SelectorsNode([AST.ValueNode(p[1])])
 
 def p_selectors_without_sep(p):
     '''
@@ -116,7 +115,7 @@ def p_selectors_without_sep(p):
     if isinstance(p[2], AST.ValuesNode):
         p[1].children += p[2].children
     else:
-        p[1].children.append(AST.SelectorNode(p[2]))
+        p[1].children.append(AST.ValueNode(p[2]))
 
     p[0] = p[1]
 
@@ -129,7 +128,7 @@ def p_selectors_without_sep_selectors_right(p):
     if isinstance(p[1], AST.ValuesNode):
         p[2].children = p[1].children + p[2].children
     else:
-        p[2].children.insert(0, AST.SelectorNode(p[1]))
+        p[2].children.insert(0, AST.ValueNode(p[1]))
 
     p[0] = p[2]
 
@@ -138,18 +137,18 @@ def p_selector_sep_str(p):
     '''
     selectors : STRING_VALUE SEPARATOR STRING_VALUE
     '''
-    p[0] = AST.SelectorsNode([AST.SelectorNode(p[1]),AST.SelectorNode(p[2]),AST.SelectorNode(p[3])])
+    p[0] = AST.SelectorsNode([AST.ValueNode(p[1]),AST.ValueNode(p[2]),AST.ValueNode(p[3])])
 
 def p_selectors_with_sep(p):
     '''
     selectors : selectors SEPARATOR string_values
             |   selectors SEPARATOR STRING_VALUE
     '''
-    p[1].children.append(AST.SelectorNode(p[2]))
+    p[1].children.append(AST.ValueNode(p[2]))
     if isinstance(p[3], AST.ValuesNode):
         p[1].children += p[3].children
     else:
-        p[1].children.append(AST.SelectorNode(p[3]))
+        p[1].children.append(AST.ValueNode(p[3]))
 
     p[0] = p[1]
 
@@ -159,12 +158,12 @@ def p_selectors_with_sep_selectors_right(p):
             |   string_values SEPARATOR selectors
             |   STRING_VALUE SEPARATOR selectors
     '''
-    p[3].children.insert(0, AST.SelectorNode(p[2]))
+    p[3].children.insert(0, AST.ValueNode(p[2]))
 
     if isinstance(p[1], AST.ValuesNode):
         p[3].children = p[1].children + p[3].children
     else:
-        p[3].children.insert(0, AST.SelectorNode(p[1]))
+        p[3].children.insert(0, AST.ValueNode(p[1]))
 
     p[0] = p[3]
 
@@ -287,7 +286,7 @@ if __name__ == "__main__":
     import sys
 
     prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog, debug = True)
+    result = yacc.parse(prog, debug = False)
     if result:
         import os
         graph = result.makegraphicaltree()
