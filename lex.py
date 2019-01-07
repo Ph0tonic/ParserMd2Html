@@ -18,7 +18,7 @@ tokens = (
 	'VARIABLE',
 	'SELECTOR',
 	'SEPARATOR',
-	'STRING_VALUE'
+	'STRING_VALUE',
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
 literals = '();=:{},'
