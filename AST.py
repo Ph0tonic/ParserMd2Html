@@ -128,19 +128,20 @@ class NumberNode(Node):
     def __repr__(self):
         return f'N : {self.value}{self.unit}'
 
-#done
-class ValueNode(Node):
-    type = 'number'
+
+class VariableNode(Node):
+    type = 'variable'
 
     def __init__(self, value):
         Node.__init__(self)
         self.value = value
 
     def __repr__(self):
-        return repr(self.value)
+        return "V : " + repr(self.value)
 
-class VariableNode(Node):
-    type = 'variable'
+#done
+class ValueNode(Node):
+    type = 'number'
 
     def __init__(self, value):
         Node.__init__(self)
