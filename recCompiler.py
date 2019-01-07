@@ -103,6 +103,14 @@ def compile(self):
 def compile(self):
     return compileListToString(self.children, '\n')
 
+@addToClass(AST.VariableNode)
+def compile(self):
+    return vars[self.value]
+
+@addToClass(AST.AssignNode)
+def compile(self):
+    vars[self.children[0]] = self.children[1]
+
 def getFileName(path):
     return path.split('/')[-1].split('.')[0]
 

@@ -141,7 +141,7 @@ class NumberNode(Node):
     def __repr__(self):
         return f'N : {self.value}{self.unit}'
 
-
+#done
 class VariableNode(Node):
     type = 'variable'
 
@@ -174,6 +174,7 @@ class RulesNode(Node):
 class RuleNode(Node):
     type = 'rule'
 
+#done
 class OpNode(Node):
     def __init__(self, op, children):
         Node.__init__(self,children)
@@ -186,6 +187,7 @@ class OpNode(Node):
     def __repr__(self):
         return "%s (%s)" % (self.op, self.children)
 
+#done
 class AssignNode(Node):
     type = '='
 

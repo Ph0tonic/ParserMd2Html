@@ -1,15 +1,7 @@
 nav {
-  $test: 12px;
-
+  
   padding: 12px;
   
-  display: $test;
+  display: flex;
 }
 
-nav {
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-}
