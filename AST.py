@@ -92,6 +92,7 @@ class Node:
                 graph.add_edge(edge)
             return graph
 
+#done
 class ProgramNode(Node):
     type = 'Program'
 
@@ -99,9 +100,7 @@ class ProgramNode(Node):
 class StatementNode(Node):
     type = 'Statement'
 
-class StatementNode(Node):
-    type = 'ExtendStatement'
-
+#done
 class NestedStatementNode(Node):
     type = 'NestedStatement'
 

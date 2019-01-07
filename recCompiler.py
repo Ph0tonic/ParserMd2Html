@@ -103,6 +103,11 @@ def compile(self):
 def compile(self):
     return compileListToString(self.children, '\n')
 
+@addToClass(AST.NestedStatementNode)
+def compile(self):
+    
+    return compileListToString(self.children, '\n')
+
 @addToClass(AST.VariableNode)
 def compile(self):
     return vars[self.value]

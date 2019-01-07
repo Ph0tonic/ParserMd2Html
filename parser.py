@@ -7,77 +7,100 @@ import re
 
 extend_statement = {}
 
+def p_programme_recursive(p):
+    '''
+    programme : programme programme
+    '''
+    p[0] = AST.ProgramNode(p[1].children+p[2].children)
+
 def p_programme_statement(p):
     '''
     programme : statement
     '''
-    p[0] = AST.ProgramNode(p[1])
-
-def p_programme_recursive(p):
-    '''
-    programme : statement programme
-    '''
-    p[0] = AST.ProgramNode([p[1]]+p[2].children)
-
-def p_statement(p):
-    '''
-    statement : selectors '{' rules '}'
-            |   selectors '{' statement '}'
-            |   selectors '{' nested_statement '}'
-            |   extend_statement
-    '''
-    if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
-        p[0] = AST.StatementNode(p[3].children)
-    else:
-        p[0] = AST.StatementNode([p[3]])
-
-    p[0].children.insert(0, p[1])
-
-def p_statement_string_value(p):
-    '''
-    statement : STRING_VALUE '{' rules '}'
-            |   STRING_VALUE '{' statement '}'
-            |   STRING_VALUE '{' nested_statement '}'
-    '''
-    if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
-        p[0] = AST.StatementNode(p[3].children)
-    else:
-        p[0] = AST.StatementNode([p[3]])
-    p[0].children.insert(0, AST.SelectorNode(p[1]))
-
-def p_statement_string_values(p):
-    '''
-    statement : string_values '{' rules '}'
-            |   string_values '{' statement '}'
-            |   string_values '{' nested_statement '}'
-    '''
-    if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
-        p[0] = AST.StatementNode(p[3].children)
-    else:
-        p[0] = AST.StatementNode([p[3]])
-    p[0].children.insert(0, AST.SelectorsNode(p[1].children))
+    p[0] = AST.ProgramNode([p[1]])
 
 def p_extend_statement(p):
     '''
-    extend_statement : SELECTOR_EXTEND '{' rules '}'
+    statement : SELECTOR_EXTEND '{' rules '}'
             | SELECTOR_EXTEND '{' nested_statement '}'
+            | SELECTOR_EXTEND '{' programme '}'
     '''
     p[0] = AST.ExtendStatementNode(p[1], p[3].children)
 
 def p_nested_statement_rules(p):
     '''
-    nested_statement : statement rules
-                    | rules statement
+    nested_statement : programme rules
+                    | rules programme
     '''
-    p[0] = AST.NestedStatementNode([p[1], p[2]])
+    p[0] = AST.NestedStatementNode(p[1].children + p[2].children)
 
 def p_nested_statement_rules_combined(p):
     '''
-    nested_statement : nested_statement rules
-                    |   nested_statement statement
+    nested_statement : rules nested_statement
+                    |   programme nested_statement
     '''
-    p[1].children.append(p[2])
-    p[0] = p[1]
+    p[2].children = p[1].children + p[2].children
+    p[0] = p[2]
+
+def p_rules(p):
+    '''
+    rules : rules rules
+    '''
+    p[0] = AST.RulesNode(p[1].children+p[2].children)
+
+def p_rules_simple(p):
+    '''
+    rules : rule
+    '''
+    p[0] = AST.RulesNode([p[1]])
+
+def p_rule(p):
+    '''
+    rule : STRING_VALUE ':' values ';'
+        |   STRING_VALUE ':' variable ';'
+        |   STRING_VALUE ':' string_values ';'
+        |   STRING_VALUE ':' STRING_VALUE ';'
+    '''
+    if not isinstance(p[3], AST.ValuesNode) and not isinstance(p[3], AST.VariableNode):
+        # TODO improve
+        p[3] = AST.ValueNode(p[3])
+    p[0] = AST.RuleNode([AST.ValueNode(p[1]),p[3]])
+
+def p_statement(p):
+    '''
+    statement : selectors '{' rules '}'
+            |   selectors '{' programme '}'
+            |   selectors '{' nested_statement '}'
+    '''
+    p[0] = AST.StatementNode([AST.SelectorsNode(p[1].children)]+p[3].children)
+
+def p_statement_string_value(p):
+    '''
+    statement : STRING_VALUE '{' rules '}'
+            |   STRING_VALUE '{' programme '}'
+            |   STRING_VALUE '{' nested_statement '}'
+    '''
+    p[0] = AST.StatementNode([AST.SelectorNode(p[1])]+p[3].children)
+
+def p_statement_string_values(p):
+    '''
+    statement : string_values '{' rules '}'
+            |   string_values '{' nested_statement '}'
+            |   string_values '{' programme '}'
+    '''
+    p[0] = AST.StatementNode([AST.SelectorsNode(p[1].children)]+p[3].children)
+
+def p_assign(p):
+    '''
+    statement : variable ':' string_values ';'
+            |   variable ':' values ';'
+            |   variable ':' STRING_VALUE ';'
+    '''
+    p[0] = AST.AssignNode([p[1]])
+    if isinstance(p[3], AST.ValuesNode):
+        p[0].children.append(p[3].value)
+    else:
+        p[0].children.append(AST.ValueNode(p[3]))
 
 def p_selector(p):
     '''
@@ -87,8 +110,8 @@ def p_selector(p):
 
 def p_selectors_without_sep(p):
     '''
-    selectors : selectors STRING_VALUE
-            |   selectors string_values
+    selectors : selectors string_values
+            |   selectors STRING_VALUE
     '''
     if isinstance(p[2], AST.ValuesNode):
         p[1].children += p[2].children
@@ -99,8 +122,8 @@ def p_selectors_without_sep(p):
 
 def p_selectors_without_sep_selectors_right(p):
     '''
-    selectors : SELECTOR selectors
-            |   string_values selectors
+    selectors : string_values selectors
+            |   SELECTOR selectors
             |   STRING_VALUE selectors
     '''
     if isinstance(p[1], AST.ValuesNode):
@@ -119,8 +142,8 @@ def p_selector_sep_str(p):
 
 def p_selectors_with_sep(p):
     '''
-    selectors : selectors SEPARATOR STRING_VALUE
-            |   selectors SEPARATOR string_values
+    selectors : selectors SEPARATOR string_values
+            |   selectors SEPARATOR STRING_VALUE
     '''
     p[1].children.append(AST.SelectorNode(p[2]))
     if isinstance(p[3], AST.ValuesNode):
@@ -133,41 +156,17 @@ def p_selectors_with_sep(p):
 def p_selectors_with_sep_selectors_right(p):
     '''
     selectors : SELECTOR SEPARATOR selectors
-            |   STRING_VALUE SEPARATOR selectors
             |   string_values SEPARATOR selectors
+            |   STRING_VALUE SEPARATOR selectors
     '''
-    p[3].children.insert(AST.SelectorNode(p[2]))
+    p[3].children.insert(0, AST.SelectorNode(p[2]))
 
     if isinstance(p[1], AST.ValuesNode):
         p[3].children = p[1].children + p[3].children
     else:
-        p[3].children.insert(0, AST.SelectorNode(p[3]))
+        p[3].children.insert(0, AST.SelectorNode(p[1]))
 
     p[0] = p[3]
-
-def p_rule(p):
-    '''
-    rule : STRING_VALUE ':' values ';'
-        |   STRING_VALUE ':' STRING_VALUE ';'
-        |   STRING_VALUE ':' string_values ';'
-        |   STRING_VALUE ':' variable ';'
-    '''
-    if not isinstance(p[3], AST.ValuesNode) and not isinstance(p[3], AST.VariableNode):
-        p[3] = AST.ValueNode(p[3])
-
-    p[0] = AST.RuleNode([AST.ValueNode(p[1]), p[3]])
-
-def p_assign(p):
-    '''
-    statement : variable ':' string_values ';'
-            |   variable ':' values ';'
-            |   variable ':' STRING_VALUE ';'
-    '''
-    p[0] = AST.AssignNode([p[1]])
-    if isinstance(p[3], AST.ValuesNode):
-        p[0].children.append(p[3])
-    else:
-        p[0].children.append(AST.ValueNode(p[3]))
 
 def p_string_values(p):
     '''
@@ -187,14 +186,14 @@ def p_values(p):
     '''
     p[0] = AST.ValuesNode(p[1].children + p[2].children)
 
-def p_values_string_value_first(p):
+def p_values_STRING_VALUE_first(p):
     '''
     values : STRING_VALUE values
     '''
     p[2].children.insert(0, AST.ValueNode(p[1]))
     p[0] = p[2]
 
-def p_values_string_value_last(p):
+def p_values_STRING_VALUE_last(p):
     '''
     values : values STRING_VALUE
     '''
@@ -211,17 +210,6 @@ def p_values_numbers(p):
     else:
         p[2].children.insert(0, p[1])
         p[0] = p[2]
-
-def p_rules(p):
-    '''
-    rules : rule rules
-            | rule
-    '''
-    if len(p) > 2:
-        p[2].children.insert(0, p[1])
-        p[0] = AST.RulesNode(p[2].children)
-    else:
-        p[0] = AST.RulesNode([p[1]])
 
 def p_number(p):
     '''
@@ -263,12 +251,6 @@ def p_variable(p):
 #             | expression MUL_OP expression'''
 #     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
-
-# def p_identifier(p):
-#     '''
-#     STRING_VALUE SEPARATOR_IDENTIFIER
-#     '''
-
 # def p_minus(p):
 #     ''' expression : ADD_OP expression %prec UMINUS'''
 #     p[0] = AST.OpNode(p[1], [p[2]])
@@ -285,14 +267,14 @@ def t_error(t):
     t.lexer.skip(1)
 
 precedence = (
-    ('left', 'STRING_VALUE'),
+    ('nonassoc', 'SEPARATOR'),
+    ('nonassoc', 'SELECTOR'),
+    ('nonassoc', 'NUMBER'),
+    ('nonassoc', 'STRING_VALUE'),
+    ('nonassoc', 'VARIABLE'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
     # ('right', 'UMINUS'),
-    ('left', 'SEPARATOR'),
-    ('left', 'SELECTOR'),
-    ('left', 'NUMBER'),
-    ('left', 'VARIABLE')
 )
 
 def parse(program):
