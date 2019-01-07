@@ -44,9 +44,9 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 - Etape 3 Mise en place des variables pour les propriétés
 - Etape 4 Ajout de la gestion des branchements conditionnels tel que @if et @while
 - Etape 5 Ajout de la compilation des valeurs comportant des calculs
-- Etpoa 6 Mise en place de extend
+- Etape 6 Mise en place de extend
 - Etape 7 Ajout des mixins et des include
-- etape 8 Possibilité d'inclure des fichiers externes avec @import
+- Etape 8 Possibilité d'inclure des fichiers externes avec @import
 
 # Fonctionnalités implémentées
 Ce chapitre liste les fonctionnalités présentes dans notre coimpilateur, dans leur ordre d'implémentation.

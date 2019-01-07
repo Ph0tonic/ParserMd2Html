@@ -117,12 +117,13 @@ class SelectorNode(Node):
 class NumberNode(Node):
     type = 'number'
 
-    def __init__(self, value):
+    def __init__(self, value, unit = ''):
         Node.__init__(self)
         self.value = value
+        self.unit = unit
 
     def __repr__(self):
-        return repr(self.value)
+        return f'N : {self.value}{self.unit}'
 
 #done
 class ValueNode(Node):
@@ -166,7 +167,7 @@ class OpNode(Node):
             self.nbargs = 1
 
     def __repr__(self):
-        return "%s (%s)" % (self.op, self.nbargs)
+        return "%s (%s)" % (self.op, self.children)
 
 class AssignNode(Node):
     type = '='

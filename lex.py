@@ -51,8 +51,10 @@ def t_STRING_VALUE(t):
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
-	
+
 t_SELECTOR = r'\w[\w#.\-\[\]]*'
+
+t_SELECTOR_EXTEND = r'\%\w[\w#.\-\[\]]*'
 
 def t_newline(t):
 	r'\n+'
