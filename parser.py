@@ -98,7 +98,7 @@ def p_assign(p):
     '''
     p[0] = AST.AssignNode([p[1]])
     if isinstance(p[3], AST.ValuesNode):
-        p[0].children.append(p[3].value)
+        p[0].children.append(p[3])
     else:
         p[0].children.append(AST.ValueNode(p[3]))
 

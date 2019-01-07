@@ -1,7 +1,9 @@
 nav {
   
+  $margin : 12px 43px;
+
   ul {
-    margin: 0;
+    margin: $margin;
     padding: 0;
     list-style: 12;
   }
@@ -14,8 +16,10 @@ nav {
     padding: 0;
     list-style: 12;
   }
-  
-  display: flex;
+
+  $test : flex;
+
+  display: $test;
 }
 
 nav {
