@@ -3,10 +3,10 @@ from AST import addToClass
 from functools import reduce
 
 operations = {
-    '+': lambda x,y : f"{x}{y}ADD\n",
-    '-': lambda x,y : f"{x}{y}SUB\n",
-    '*': lambda x,y : f"{x}{y}MUL\n",
-    '/': lambda x,y : f"{x}{y}DIV\n",
+	'+' : lambda x,y: x+y,
+	'-' : lambda x,y: x-y,
+	'*' : lambda x,y: x*y,
+	'/' : lambda x,y: x/y,
 }
 
 vars = {}
@@ -22,8 +22,12 @@ def compile(self):
     return str(self.value)
 
 @addToClass(AST.NumberNode)
+def execute(self):
+    return (self.value, self.unit)
+
+@addToClass(AST.NumberNode)
 def compile(self):
-    return str(self.value)
+    return f'{self.value}{self.unit}'
 
 @addToClass(AST.SelectorNode)
 def compile(self):
@@ -46,6 +50,32 @@ def compile(self):
 @addToClass(AST.SelectorsNode)
 def compile(self):
     return compileListToString(self.children, ' ')
+
+@addToClass(AST.OpNode)
+def execute(self):
+    args = [c.execute() for c in self.children]
+
+    if args[0][1] != args[1][1] and args[1][1] != '' and args[0][1] != '':
+        raise Exception('unit is different')
+
+    if len(args) == 1:
+        args.insert(0,0)
+
+    unit = ''
+
+    if args[0][1] != '':
+        unit = args[0][1]
+    elif args[1][1] != '' :
+        unit = args[1][1]
+
+    value = reduce(operations[self.op], map(lambda t: t[0], args))
+
+    return AST.NumberNode(value, unit).execute()
+
+@addToClass(AST.OpNode)
+def compile(self):
+    result = self.execute()
+    return f'{result[0]}{result[1]}'
 
 @addToClass(AST.StatementNode)
 def compile(self):

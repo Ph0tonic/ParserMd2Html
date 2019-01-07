@@ -3,6 +3,8 @@ import ply.yacc as yacc
 from lex import tokens
 import AST
 
+import re
+
 vars = {}
 
 def p_programme_statement(p):
@@ -93,7 +95,7 @@ def p_selectors_without_sep_selectors_right(p):
         p[2].children = p[1].children + p[2].children
     else:
         p[2].children.insert(0, AST.SelectorNode(p[1]))
-    
+
     p[0] = p[2]
 
 
@@ -189,13 +191,13 @@ def p_values_string_value_last(p):
 
 def p_values_numbers(p):
     '''
-    values : NUMBER values
-            | NUMBER
+    values : number values
+            | number
     '''
     if len(p) == 2:
-        p[0] = AST.ValuesNode([AST.NumberNode(p[1])])
+        p[0] = AST.ValuesNode([p[1]])
     else:
-        p[2].children.insert(0, AST.NumberNode(p[1]))
+        p[2].children.insert(0, p[1])
         p[0] = p[2]
 
 def p_rules(p):
@@ -208,6 +210,32 @@ def p_rules(p):
         p[0] = AST.RulesNode(p[2].children)
     else:
         p[0] = AST.RulesNode([p[1]])
+
+def p_number(p):
+    '''
+    number : NUMBER
+    '''
+    prog = re.compile(r'(\d*)(\D*)')
+    result = prog.match(p[1])
+    groups = result.groups()
+
+    typeNumber = int
+
+    if groups[0].find('.') > -1:
+        typeNumber = float
+
+    if groups[1] == '':
+        p[0] = AST.NumberNode(typeNumber(groups[0]))
+    else:
+        p[0] = AST.NumberNode(typeNumber(groups[0]), groups[1])
+
+def p_number_operation(p):
+    '''
+    number : number ADD_OP number
+            | number MUL_OP number
+    '''
+    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+
 
 # def p_structure(p):
 #     ''' structure : WHILE expression '{' programme '}' '''
