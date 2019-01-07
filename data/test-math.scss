@@ -1,0 +1,13 @@
+nav {
+  margin : 0 + 5px;
+  padding : 2px / 4px + 5px;
+  list-style : none;
+}
+nav li > i {
+  display : inline-block;
+}
+nav a {
+  display : block;
+  padding : 6px 12px;
+  text-decoration : none;
+}
