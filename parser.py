@@ -23,7 +23,7 @@ def p_statement(p):
             |   selectors '{' nested_statement '}'
     '''
     if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
-        p[0] = AST.StatementNode(p[3])
+        p[0] = AST.StatementNode(p[3].children)
     else:
         p[0] = AST.StatementNode([p[3]])
 
@@ -36,7 +36,7 @@ def p_statement_string_value(p):
             |   STRING_VALUE '{' nested_statement '}'
     '''
     if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
-        p[0] = AST.StatementNode(p[3])
+        p[0] = AST.StatementNode(p[3].children)
     else:
         p[0] = AST.StatementNode([p[3]])
     p[0].children.insert(0, AST.SelectorNode(p[1]))
@@ -48,7 +48,7 @@ def p_statement_string_values(p):
             |   string_values '{' nested_statement '}'
     '''
     if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
-        p[0] = AST.StatementNode(p[3])
+        p[0] = AST.StatementNode(p[3].children)
     else:
         p[0] = AST.StatementNode([p[3]])
     p[0].children.insert(0, AST.SelectorsNode(p[1].children))
@@ -58,14 +58,14 @@ def p_nested_statement_rules(p):
     nested_statement : statement rules
                     | rules statement
     '''
-    p[0] = [p[1], p[2]]
+    p[0] = AST.NestedStatementNode([p[1], p[2]])
 
 def p_nested_statement_rules_combined(p):
     '''
     nested_statement : nested_statement rules
                     |   nested_statement statement
     '''
-    p[1].append(p[2])
+    p[1].children.append(p[2])
     p[0] = p[1]
 
 def p_selector(p):
@@ -134,17 +134,6 @@ def p_selectors_with_sep_selectors_right(p):
 
     p[0] = p[3]
 
-def p_rules(p):
-    '''
-    rules : rule rules
-            | rule
-    '''
-    if len(p) > 2:
-        p[2].children.insert(0, p[1])
-        p[0] = AST.RulesNode(p[2].children)
-    else:
-        p[0] = AST.RulesNode([p[1]])
-
 def p_rule(p):
     '''
     rule : STRING_VALUE ':' values ';'
@@ -156,14 +145,12 @@ def p_rule(p):
 
     p[0] = AST.RuleNode([AST.ValueNode(p[1]), p[3]])
 
-
 def p_assign(p):
     '''
-    assignation : VARIABLE ':' string_values ';'
+    statement : VARIABLE ':' string_values ';'
             |   VARIABLE ':' values ';'
             |   VARIABLE ':' STRING_VALUE ';'
     '''
-
     p[0] = AST.AssignNode([AST.VariableNode(p[1])])
     if isinstance(p[3], AST.ValuesNode):
         p[0].children.append(p[3])
@@ -187,7 +174,6 @@ def p_values(p):
              | values string_values
     '''
     p[0] = AST.ValuesNode(p[1].children + p[2].children)
-
 
 def p_values_string_value_first(p):
     '''
@@ -215,6 +201,17 @@ def p_values_numbers(p):
         p[2].children.insert(0, p[1])
         p[0] = p[2]
 
+def p_rules(p):
+    '''
+    rules : rule rules
+            | rule
+    '''
+    if len(p) > 2:
+        p[2].children.insert(0, p[1])
+        p[0] = AST.RulesNode(p[2].children)
+    else:
+        p[0] = AST.RulesNode([p[1]])
+
 def p_number(p):
     '''
     number : NUMBER
@@ -236,7 +233,7 @@ def p_number(p):
 def p_number_operation(p):
     '''
     number : number ADD_OP number
-                | number MUL_OP number
+            | number MUL_OP number
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
@@ -260,19 +257,26 @@ def p_number_operation(p):
 #     ''' expression : ADD_OP expression %prec UMINUS'''
 #     p[0] = AST.OpNode(p[1], [p[2]])
 
+# def p_error(p):
+#     if p:
+#         print ("Syntax error in line %d" % p.lineno)
+#         yacc.errok()
+#     else:
+#         print ("Sytax error: unexpected end of file!")
 
-def p_error(p):
-    if p:
-        print ("Syntax error in line %d" % p.lineno)
-        yacc.errok()
-    else:
-        print ("Sytax error: unexpected end of file!")
-
+def t_error(t):
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
 
 precedence = (
+    ('left', 'STRING_VALUE'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
     # ('right', 'UMINUS'),
+    ('left', 'SEPARATOR'),
+    ('left', 'SELECTOR'),
+    ('left', 'NUMBER'),
+    ('left', 'VARIABLE')
 )
 
 def parse(program):

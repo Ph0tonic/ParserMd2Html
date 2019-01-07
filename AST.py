@@ -99,6 +99,9 @@ class ProgramNode(Node):
 class StatementNode(Node):
     type = 'Statement'
 
+class NestedStatementNode(Node):
+    type = 'NestedStatement'
+
 #done
 class SelectorsNode(Node):
     type = 'selectors'
