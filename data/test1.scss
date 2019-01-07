@@ -1,11 +1,9 @@
 nav {
   $test: 12px;
 
-  $test: 12px;
-
   padding: 12px;
   
-  display: flex;
+  display: $test;
 }
 
 nav {

@@ -150,19 +150,20 @@ def p_rule(p):
     rule : STRING_VALUE ':' values ';'
         |   STRING_VALUE ':' STRING_VALUE ';'
         |   STRING_VALUE ':' string_values ';'
+        |   STRING_VALUE ':' variable ';'
     '''
-    if not isinstance(p[3], AST.ValuesNode):
+    if not isinstance(p[3], AST.ValuesNode) and not isinstance(p[3], AST.VariableNode):
         p[3] = AST.ValueNode(p[3])
 
     p[0] = AST.RuleNode([AST.ValueNode(p[1]), p[3]])
 
 def p_assign(p):
     '''
-    statement : VARIABLE ':' string_values ';'
-            |   VARIABLE ':' values ';'
-            |   VARIABLE ':' STRING_VALUE ';'
+    statement : variable ':' string_values ';'
+            |   variable ':' values ';'
+            |   variable ':' STRING_VALUE ';'
     '''
-    p[0] = AST.AssignNode([AST.VariableNode(p[1])])
+    p[0] = AST.AssignNode([p[1]])
     if isinstance(p[3], AST.ValuesNode):
         p[0].children.append(p[3])
     else:
@@ -192,7 +193,6 @@ def p_values_string_value_first(p):
     '''
     p[2].children.insert(0, AST.ValueNode(p[1]))
     p[0] = p[2]
-
 
 def p_values_string_value_last(p):
     '''
@@ -248,6 +248,11 @@ def p_number_operation(p):
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
+def p_variable(p):
+    '''
+    variable : VARIABLE
+    '''
+    p[0] = AST.VariableNode(p[1])
 
 # def p_structure(p):
 #     ''' structure : WHILE expression '{' programme '}' '''
