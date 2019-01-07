@@ -6,6 +6,7 @@ import AST
 import re
 
 vars = {}
+extend_statement = {}
 
 def p_programme_statement(p):
     ''' programme : statement '''
