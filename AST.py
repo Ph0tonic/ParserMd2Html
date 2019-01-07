@@ -99,12 +99,25 @@ class ProgramNode(Node):
 class StatementNode(Node):
     type = 'Statement'
 
+class StatementNode(Node):
+    type = 'ExtendStatement'
+
 class NestedStatementNode(Node):
     type = 'NestedStatement'
 
 #done
+class ExtendStatementNode(Node):
+    type = 'ExtendStatement'
+    def __init__(self, identifier, children = None):
+        Node.__init__(self, children)
+        self.identifier = identifier
+
+#done
 class SelectorsNode(Node):
     type = 'selectors'
+    def __init__(self, identifier, children = None):
+        Node.__init__(self, children)
+        self.identifier = identifier
 
 # done
 class SelectorNode(Node):

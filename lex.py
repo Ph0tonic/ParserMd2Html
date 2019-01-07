@@ -20,7 +20,6 @@ tokens = (
 	'SEPARATOR',
 	'STRING_VALUE',
 	'SELECTOR_EXTEND'
-
 ) + tuple(map(lambda s:s.upper(),reserved_words))
 
 literals = '();=:{},'
@@ -49,7 +48,7 @@ def t_VARIABLE(t):
 t_SEPARATOR = r'[>,]'
 
 def t_STRING_VALUE(t):
-	r'[\w-]+'
+	r'[#\w-]+'
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t

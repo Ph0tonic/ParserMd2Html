@@ -5,10 +5,9 @@
 }
 
 .message {
-  @extend %message-shared;
+  test: value;
 }
 
 .success {
-  @extend %message-shared;
-  border-color: green;
+  test:value;
 }

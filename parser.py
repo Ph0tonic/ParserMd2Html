@@ -5,15 +5,18 @@ import AST
 
 import re
 
-vars = {}
 extend_statement = {}
 
 def p_programme_statement(p):
-    ''' programme : statement '''
+    '''
+    programme : statement
+    '''
     p[0] = AST.ProgramNode(p[1])
 
 def p_programme_recursive(p):
-    ''' programme : statement programme '''
+    '''
+    programme : statement programme
+    '''
     p[0] = AST.ProgramNode([p[1]]+p[2].children)
 
 def p_statement(p):
@@ -21,6 +24,7 @@ def p_statement(p):
     statement : selectors '{' rules '}'
             |   selectors '{' statement '}'
             |   selectors '{' nested_statement '}'
+            |   extend_statement
     '''
     if not isinstance(p[3], AST.RulesNode) and not isinstance(p[3], AST.StatementNode):
         p[0] = AST.StatementNode(p[3].children)
@@ -52,6 +56,13 @@ def p_statement_string_values(p):
     else:
         p[0] = AST.StatementNode([p[3]])
     p[0].children.insert(0, AST.SelectorsNode(p[1].children))
+
+def p_extend_statement(p):
+    '''
+    extend_statement : SELECTOR_EXTEND '{' rules '}'
+            | SELECTOR_EXTEND '{' nested_statement '}'
+    '''
+    p[0] = AST.ExtendStatementNode(p[1], p[3].children)
 
 def p_nested_statement_rules(p):
     '''
