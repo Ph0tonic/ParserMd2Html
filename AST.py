@@ -105,7 +105,7 @@ class NestedStatementNode(Node):
     type = 'NestedStatement'
 
 #done
-class ExtendStatementNode(Node):
+class ExtendNode(Node):
     type = 'ExtendStatement'
     def __init__(self, identifier, children = None):
         Node.__init__(self, children)
@@ -169,6 +169,7 @@ class ValuesNode(Node):
 #done
 class RulesNode(Node):
     type = 'rules'
+
 #done
 class RuleNode(Node):
     type = 'rule'

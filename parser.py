@@ -25,7 +25,7 @@ def p_extend_statement(p):
             | SELECTOR_EXTEND '{' nested_statement '}'
             | SELECTOR_EXTEND '{' programme '}'
     '''
-    p[0] = AST.ExtendStatementNode(p[1], p[3].children)
+    p[0] = AST.ExtendNode(p[1], p[3].children)
 
 def p_nested_statement_rules(p):
     '''
@@ -267,11 +267,12 @@ def t_error(t):
     t.lexer.skip(1)
 
 precedence = (
-    ('nonassoc', 'SEPARATOR'),
-    ('nonassoc', 'SELECTOR'),
     ('nonassoc', 'NUMBER'),
-    ('nonassoc', 'STRING_VALUE'),
+    ('nonassoc', 'SELECTOR'),
     ('nonassoc', 'VARIABLE'),
+    ('nonassoc', 'SEPARATOR'),
+    ('nonassoc', 'STRING_VALUE'),
+	('nonassoc', 'SELECTOR_EXTEND'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
     # ('right', 'UMINUS'),
