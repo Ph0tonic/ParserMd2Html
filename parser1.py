@@ -21,7 +21,7 @@ def p_programme_statement(p):
 
 def p_extend_statement(p):
     '''
-    statement : SELECTOR_EXTEND section %prec SELECTOR_EXTEND
+    statement : SELECTOR_EXTEND section
     '''
     p[0] = AST.ExtendNode(p[1], p[2].children)
 
