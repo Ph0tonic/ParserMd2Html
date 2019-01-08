@@ -108,7 +108,6 @@ def p_selectors_without_sep_selectors_right(p):
 
     p[0] = p[2]
 
-
 def p_selector_sep_str(p):
     '''
     selectors : STRING_VALUE SEPARATOR STRING_VALUE

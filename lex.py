@@ -1,14 +1,14 @@
 import ply.lex as lex
 
 reserved_words = (
-	'while',
-	'if',
-	'elif',
-	'else',
-	'mixin',
-	'import',
-	'include',
-	'extend'
+	'@while',
+	'@if',
+	'@elif',
+	'@else',
+	'@mixin',
+	'@import',
+	'@include',
+	'@extend'
 )
 
 tokens = (
