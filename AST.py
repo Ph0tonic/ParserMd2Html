@@ -100,9 +100,31 @@ class ProgramNode(Node):
 class StatementNode(Node):
     type = 'Statement'
 
-#done
-class NestedStatementNode(Node):
-    type = 'NestedStatement'
+class ExtendNodeDefine(Node):
+    type = 'ExtendNodeDefine'
+    def __init__(self, identifier, children):
+        Node.__init__(self, children)
+        self.identifier = identifier
+
+class MixinNode(Node):
+    type = 'MixinNode'
+    def __init__(self, identifier, parameters, children):
+        Node.__init__(self, children)
+        self.identifier = identifier
+
+class IncludeNode(Node):
+    type = 'IncludeNode'
+    def __init__(self, identifier, children = None):
+        Node.__init__(self, children)
+        self.identifier = identifier
+
+class IfNode(Node):
+    type = 'IfNode'
+    def __init__(self, condition, true_block, false_block):
+        Node.__init__(self)
+        self.condition = condition
+        self.true_block = true_block
+        self.false_block = false_block
 
 #done
 class ExtendNode(Node):

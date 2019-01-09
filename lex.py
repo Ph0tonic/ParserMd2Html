@@ -1,17 +1,16 @@
 import ply.lex as lex
 
-reserved_words = (
-	'@while',
-	'@if',
-	'@elif',
-	'@else',
-	'@mixin',
-	'@import',
-	'@include',
-	'@extend'
-)
+reserved_words = {
+	'while' : 'WHILE',
+	'if' : 'IF',
+	'else' : 'ELSE',
+	'mixin' : 'MIXIN',
+#	'import' : 'IMPORT',
+	'include' : 'INCLUDE',
+	'extend' : 'EXTEND'
+}
 
-tokens = (
+tokens = [
 	'ADD_OP',
 	'MUL_OP',
 	'NUMBER',
@@ -20,9 +19,14 @@ tokens = (
 	'SEPARATOR',
 	'STRING_VALUE',
 	'SELECTOR_EXTEND',
-) + tuple(map(lambda s:s.upper(),reserved_words))
+ ] + list(reserved_words.values())
 
-literals = '();=:{},'
+literals = '@();=:{},'
+
+def t_COMMENT(t):
+	r'//.*'
+	pass
+	# No return value. Token discarded
 
 def t_ADD_OP(t):
 	r'[+-]'
@@ -36,7 +40,6 @@ def t_NUMBER(t): # 5px*10px
 	r'\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
 	return t
 
-
 # t_FUNC_CSSV = ''
 
 def t_VARIABLE(t):
@@ -45,7 +48,7 @@ def t_VARIABLE(t):
 		t.type = t.value.upper()
 	return t
 
-t_SEPARATOR = r'[>,]'
+t_SEPARATOR = r'[>]'
 
 def t_STRING_VALUE(t):
 	r'[#\w-]+'
