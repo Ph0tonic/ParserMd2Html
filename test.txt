@@ -1,1 +1,0 @@
-wrote ast to data/test0-ast.pdf

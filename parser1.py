@@ -28,7 +28,7 @@ def p_statement(p):
         p[2].children.insert(0,AST.StatementNode(p[1]))
         p[0] = p[2]
     else:
-        p[0] = AST.ProgramNode([AST.ValuesNode([AST.ValueNode(p[1])])]+p[2].children)
+        p[0] = AST.StatementNode([AST.ValuesNode([AST.ValueNode(p[1])])]+p[2].children)
 
 def p_extend_define(p):
     '''

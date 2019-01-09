@@ -14,37 +14,32 @@ nav {
     padding : 1px;
   }
 
+  // // @if $test {
+  // //   padding : 1px;
+  // // }
+
+
   // @if $test {
+  //   padding : 1px;
+  // } @else if $test {
+  //   padding : 1px;
+  // } @else {
   //   padding : 1px;
   // }
 
-  @if $test {
-    padding : 1px;
-  } @else {
-    padding : 1px;
-  }
-
-  @if $test {
-    padding : 1px;
-  } @else if $test {
-    padding : 1px;
-  } @else {
-    padding : 1px;
-  }
-
-  @if $test {
-    padding : 1px;
-  } @else if $test {
-    padding : 1px;
-  } @else if $test{
-    padding : 1px;
-  } @else if $test {
-    padding : 1px;
-  } @else if $test {
-    padding : 1px;
-  } @else {
-    padding : 1px;
-  }
+  // @if $test {
+  //   padding : 1px;
+  // } @else if $test {
+  //   padding : 1px;
+  // } @else if $test{
+  //   padding : 1px;
+  // } @else if $test {
+  //   padding : 1px;
+  // } @else if $test {
+  //   padding : 1px;
+  // } @else {
+  //   padding : 1px;
+  // }
 
   ul > li {
     margin: $margin;

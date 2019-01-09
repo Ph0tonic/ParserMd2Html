@@ -179,10 +179,6 @@ class ValuesNode(Node):
     type = 'values'
 
 #done
-class RulesNode(Node):
-    type = 'rules'
-
-#done
 class RuleNode(Node):
     type = 'rule'
 
