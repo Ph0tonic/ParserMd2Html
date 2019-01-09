@@ -20,13 +20,18 @@ def p_statement(p):
             |   list_string section
             |   list_selector section
     '''
-    #TODO Add code here
     pass
 
 def p_section(p):
     '''
     section : '{' programme '}'
             | '{' '}'
+    '''
+    pass
+
+def p_extend_define(p):
+    '''
+    statement : SELECTOR_EXTEND attribution
     '''
     pass
 
@@ -51,6 +56,12 @@ def p_attribution(p):
     '''
     pass
 
+def p_extend(p):
+    '''
+    statement : '@' EXTEND SELECTOR_EXTEND ';'
+    '''
+    pass
+
 def p_mixin(p):
     '''
     statement : '@' MIXIN STRING_VALUE '(' list_variable ')' section
@@ -68,19 +79,29 @@ def p_include(p):
     '''
     pass
 
-def p_if(p):
+def p_while(p):
     '''
-    statement : '@' IF '(' expression ')' section
-            |   '@' IF '(' expression ')' section '@' ELSE
-            |   '@' INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
-            |   '@' INCLUDE STRING_VALUE ';'
+    statement : '@' WHILE expression section
     '''
     pass
 
-def p_else(p):
+def p_if(p):
     '''
-    else_section : '@' ELSE section
-                |  '@' ELIF '(' expression ')' section
+    statement : '@' IF expression section else_if_block
+            |   '@' IF variable section else_if_block
+            |   '@' IF expression section
+            |   '@' IF variable section
+    '''
+    pass
+
+def p_else_if_block(p):
+    '''
+    else_if_block : '@' ELSE section
+                |   '@' ELSE IF expression section
+                |   '@' ELSE IF variable section
+                |   '@' ELSE section else_if_block
+                |   '@' ELSE IF expression section else_if_block
+                |   '@' ELSE IF variable section else_if_block
     '''
     pass
 
@@ -190,7 +211,6 @@ def t_error(t):
 
 precedence = (
     ('nonassoc', 'NUMBER'),
-    ('nonassoc', 'MIXIN'),
     ('nonassoc', 'SELECTOR'),
     ('nonassoc', 'VARIABLE'),
     ('nonassoc', 'SEPARATOR'),
@@ -198,6 +218,11 @@ precedence = (
 	('nonassoc', 'SELECTOR_EXTEND'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
+    ('right', 'IF'),
+    ('right', 'ELSE'),
+    ('right', 'MIXIN'),
+    ('right', 'INCLUDE'),
+	('right', '@'),
     # ('right', 'UMINUS'),
 )
 
