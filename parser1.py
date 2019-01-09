@@ -7,12 +7,16 @@ import re
 
 extend_statement = {}
 
-def p_programme_recursive(p):
+def p_program_recursive(p):
     '''
-    programme : programme statement
-            |   statement
+    program : program statement
+            | statement
     '''
-    pass
+    try:
+        p[1].children.append(p[2])
+        p[0] = p[1]
+    except:
+        p[0] = AST.ProgramNode([p[1]])
 
 def p_statement(p):
     '''
@@ -20,32 +24,39 @@ def p_statement(p):
             |   list_string section
             |   list_selector section
     '''
-    pass
-
-def p_section(p):
-    '''
-    section : '{' programme '}'
-            | '{' '}'
-    '''
-    pass
+    if isinstance(p[1], AST.ValuesNode):
+        p[2].children.insert(0,AST.StatementNode(p[1]))
+        p[0] = p[2]
+    else:
+        p[0] = AST.ProgramNode([AST.ValuesNode([AST.ValueNode(p[1])])]+p[2].children)
 
 def p_extend_define(p):
     '''
-    statement : SELECTOR_EXTEND attribution
+    statement : SELECTOR_EXTEND section
     '''
-    pass
+    p[0] = AST.ExtendNodeDefine([AST.ValueNode(p[1]), p[2]])
+
+def p_section(p):
+    '''
+    section : '{' program '}'
+            | '{' '}'
+    '''
+    if len(p) > 3:
+        p[0] = p[2]
+    else:
+        p[0] = AST.ProgramNode([])
 
 def p_rule(p):
     '''
     statement : STRING_VALUE attribution
     '''
-    pass
+    p[0] = AST.RuleNode([AST.ValueNode(p[1]),p[2]])
 
 def p_assign(p):
     '''
     statement : variable attribution
     '''
-    pass
+    p[0] = AST.AssignNode([p[1],p[2]])
 
 def p_attribution(p):
     '''
@@ -54,13 +65,18 @@ def p_attribution(p):
                 | ':' list_value ';'
                 | ':' variable ';'
     '''
-    pass
+    if isinstance(p[2], AST.ValuesNode):
+        p[0] = p[2]
+    elif isinstance(p[2], AST.VariableNode):
+        p[0] = AST.ValuesNode([p[2]])
+    else:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[2])])
 
 def p_extend(p):
     '''
     statement : '@' EXTEND SELECTOR_EXTEND ';'
     '''
-    pass
+    p[0] = AST.ExtendNode(p[3])
 
 def p_mixin(p):
     '''
@@ -68,7 +84,13 @@ def p_mixin(p):
             |   '@' MIXIN STRING_VALUE '(' variable ')' section
             |   '@' MIXIN STRING_VALUE section
     '''
-    pass
+    if len(p) > 5:
+        if isinstance(p[5], AST.ValuesNode):
+            p[0] = AST.MixinNode(p[3],p[5],p[7])
+        else:
+            p[0] = AST.MixinNode(p[3],AST.ValuesNode([p[5]]),p[7])
+    else:
+        p[0] = AST.MixinNode(p[3],None,p[4])
 
 def p_include(p):
     '''
@@ -77,40 +99,56 @@ def p_include(p):
             |   '@' INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
             |   '@' INCLUDE STRING_VALUE ';'
     '''
-    pass
+    if len(p) > 5:
+        if isinstance(p[5], AST.ValuesNode):
+            p[0] = AST.IncludeNode(p[3], p[5])
+        else:
+            p[0] = AST.IncludeNode(p[3], AST.ValuesNode([p[5]]))
+    else:
+        p[0] = AST.IncludeNode(p[3], None)
 
 def p_while(p):
     '''
     statement : '@' WHILE expression section
+            |   '@' WHILE variable section
     '''
-    pass
+    p[0] = AST.WhileNode(p[3], p[4])
 
 def p_if(p):
     '''
-    statement : '@' IF expression section else_if_block
-            |   '@' IF variable section else_if_block
-            |   '@' IF expression section
+    statement : '@' IF expression section
             |   '@' IF variable section
+            |   '@' IF expression section else_if_block
+            |   '@' IF variable section else_if_block
     '''
-    pass
+    try:
+        p[0] = AST.IfNode(p[3], p[4], p[5])
+    except:
+        p[0] = AST.IfNode(p[3], p[4], None)
 
 def p_else_if_block(p):
     '''
     else_if_block : '@' ELSE section
                 |   '@' ELSE IF expression section
                 |   '@' ELSE IF variable section
-                |   '@' ELSE section else_if_block
                 |   '@' ELSE IF expression section else_if_block
                 |   '@' ELSE IF variable section else_if_block
     '''
-    pass
+    if len(p) == 4:
+        p[0] = p[3]
+    else:
+        p[0] = AST.IfNode(p[4], None, None)
 
 def p_list_variables(p):
     '''
     list_variable : list_variable ',' variable
                 |   variable ',' variable
     '''
-    pass
+    if isinstance(p[1], AST.ValuesNode):
+        p[1].children.append(p[3])
+        p[0] = p[1]
+    else:
+        p[0] = AST.ValuesNode([p[1], p[3]])
 
 def p_list_value_recursive(p):
     '''
@@ -119,20 +157,33 @@ def p_list_value_recursive(p):
             |    STRING_VALUE list_value
             |    list_string list_value %prec STRING_VALUE
     '''
-    pass
+    if isinstance(p[1], AST.ValuesNode):
+        p[0] = p[1]
+        if isinstance(p[2], AST.ValuesNode):
+            p[1].children += p[2].children
+        elif isinstance(p[2], AST.ValueNode) or isinstance(p[2], AST.NumberNode):
+            p[0].children.append(p[2])
+        else:
+            p[0].children.append(AST.ValueNode(p[2]))
+    else:
+        p[2].children.insert(0, ASt.ValueNode(p[1]))
 
 def p_list_value(p):
     '''
     list_value : expression
     '''
-    pass
+    p[0] = AST.ValuesNode([p[1]])
 
 def p_list_string(p):
     '''
     list_string : STRING_VALUE STRING_VALUE
                 | list_string STRING_VALUE
     '''
-    pass
+    try:
+        p[1].children.append(AST.ValueNode(p[2]))
+        p[0] = p[1]
+    except:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
 
 def p_expression_operation(p):
     '''
@@ -176,22 +227,26 @@ def p_selector_recursive(p):
     list_selector : list_selector SELECTOR
                 |   list_selector SEPARATOR
                 |   list_selector STRING_VALUE
+                |   list_string SELECTOR
+                |   list_string SEPARATOR
     '''
-    pass
+    p[1].children.append(AST.ValueNode(p[2]))
+    p[0] = p[1]
 
 def p_selector(p):
     '''
     list_selector : STRING_VALUE SELECTOR
                 |   STRING_VALUE SEPARATOR
-                |   list_string SELECTOR
-                |   list_string SEPARATOR
                 |   SEPARATOR
                 |   SELECTOR
     '''
-    pass
+    try:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
+    except:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[1])])
 
 # def p_structure(p):
-#     ''' structure : WHILE expression '{' programme '}' '''
+#     ''' structure : WHILE expression '{' program '}' '''
 #     p[0] = AST.WhileNode([p[2],p[4]])
 
 # def p_minus(p):
@@ -218,11 +273,11 @@ precedence = (
 	('nonassoc', 'SELECTOR_EXTEND'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
-    ('right', 'IF'),
-    ('right', 'ELSE'),
+    ('nonassoc', 'IF'),
+    ('nonassoc', 'ELSE'),
     ('right', 'MIXIN'),
     ('right', 'INCLUDE'),
-	('right', '@'),
+	('nonassoc', '@'),
     # ('right', 'UMINUS'),
 )
 
@@ -235,7 +290,7 @@ if __name__ == "__main__":
     import sys
 
     prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog, debug = False)
+    result = yacc.parse(prog, debug = True)
     if result:
         import os
         graph = result.makegraphicaltree()

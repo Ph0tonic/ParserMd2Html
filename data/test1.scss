@@ -1,8 +1,52 @@
 nav {
-  
+  // Amazing comment
+  @mixin test($test, $bastien){
+    margin : 12px ;
+  }
+
+  @include test ;
+
   $margin : 12px 43px;
 
-  ul {
+  @if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  }
+
+  // @if $test {
+  //   padding : 1px;
+  // }
+
+  @if $test {
+    padding : 1px;
+  } @else {
+    padding : 1px;
+  }
+
+  @if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else {
+    padding : 1px;
+  }
+
+  @if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else if $test{
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else {
+    padding : 1px;
+  }
+
+  ul > li {
     margin: $margin;
     padding: 0;
     list-style: 12;
