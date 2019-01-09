@@ -45,26 +45,42 @@ def p_assign(p):
 def p_attribution(p):
     '''
     attribution : ':' STRING_VALUE ';'
-                |   ':' list_string ';'
-                |   ':' list_value ';'
-                |   ':' variable ';'
+                | ':' list_string ';'
+                | ':' list_value ';'
+                | ':' variable ';'
     '''
     pass
 
 def p_mixin(p):
     '''
-    statement : MIXIN STRING_VALUE '(' list_variable ')' section
-            |   MIXIN STRING_VALUE '(' variable ')' section
-            |   MIXIN STRING_VALUE section
+    statement : '@' MIXIN STRING_VALUE '(' list_variable ')' section
+            |   '@' MIXIN STRING_VALUE '(' variable ')' section
+            |   '@' MIXIN STRING_VALUE section
     '''
     pass
 
 def p_include(p):
     '''
-    statement : INCLUDE STRING_VALUE '(' list_value ')' ';'
-            |   INCLUDE STRING_VALUE '(' list_string ')' ';'
-            |   INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
-            |   INCLUDE STRING_VALUE ';'
+    statement : '@' INCLUDE STRING_VALUE '(' list_value ')' ';'
+            |   '@' INCLUDE STRING_VALUE '(' list_string ')' ';'
+            |   '@' INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
+            |   '@' INCLUDE STRING_VALUE ';'
+    '''
+    pass
+
+def p_if(p):
+    '''
+    statement : '@' IF '(' expression ')' section
+            |   '@' IF '(' expression ')' section '@' ELSE
+            |   '@' INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
+            |   '@' INCLUDE STRING_VALUE ';'
+    '''
+    pass
+
+def p_else(p):
+    '''
+    else_section : '@' ELSE section
+                |  '@' ELIF '(' expression ')' section
     '''
     pass
 
@@ -78,35 +94,41 @@ def p_list_variables(p):
 def p_list_value_recursive(p):
     '''
     list_value : list_value STRING_VALUE
-                |   list_value number
-                |   STRING_VALUE list_value
-                |   list_string list_value %prec STRING_VALUE
+            |    list_value expression
+            |    STRING_VALUE list_value
+            |    list_string list_value %prec STRING_VALUE
     '''
     pass
 
 def p_list_value(p):
     '''
-    list_value : number
+    list_value : expression
     '''
     pass
 
 def p_list_string(p):
     '''
     list_string : STRING_VALUE STRING_VALUE
-                |   list_string STRING_VALUE
+                | list_string STRING_VALUE
     '''
     pass
 
-def p_number_operation(p):
+def p_expression_operation(p):
     '''
-    number : number ADD_OP number
-            | number MUL_OP number
+    expression : expression ADD_OP expression
+            |    expression MUL_OP expression
+            |    expression ADD_OP variable
+            |    expression MUL_OP variable
+            |    variable ADD_OP expression
+            |    variable MUL_OP expression
+            |    variable ADD_OP variable
+            |    variable MUL_OP variable
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
-def p_number(p):
+def p_expression(p):
     '''
-    number : NUMBER
+    expression : NUMBER
     '''
     prog = re.compile(r'(\d*)(\D*)')
     result = prog.match(p[1])
@@ -132,26 +154,24 @@ def p_selector_recursive(p):
     '''
     list_selector : list_selector SELECTOR
                 |   list_selector SEPARATOR
-                |   STRING_VALUE list_selector
-                |   list_string list_selector %prec STRING_VALUE
+                |   list_selector STRING_VALUE
     '''
     pass
 
 def p_selector(p):
     '''
-    list_selector : SELECTOR
+    list_selector : STRING_VALUE SELECTOR
+                |   STRING_VALUE SEPARATOR
+                |   list_string SELECTOR
+                |   list_string SEPARATOR
                 |   SEPARATOR
+                |   SELECTOR
     '''
     pass
 
 # def p_structure(p):
 #     ''' structure : WHILE expression '{' programme '}' '''
 #     p[0] = AST.WhileNode([p[2],p[4]])
-
-# def p_expression_op(p):
-#     '''expression : expression ADD_OP expression
-#             | expression MUL_OP expression'''
-#     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
 # def p_minus(p):
 #     ''' expression : ADD_OP expression %prec UMINUS'''
