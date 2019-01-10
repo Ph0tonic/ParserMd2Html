@@ -128,6 +128,15 @@ class WhileNode(Node):
     def __init__(self, children):
         Node.__init__(self, children)
 
+class BooleanNode(Node):
+    type = 'BooleanNode'
+    def __init__(self, value):
+        Node.__init__(self)
+        self.value = value
+    
+    def __repr__(self):
+        return repr(str(self.value))
+
 #done
 class ExtendNode(Node):
     type = 'ExtendStatement'
@@ -194,6 +203,15 @@ class OpNode(Node):
         except AttributeError:
             self.nbargs = 1
 
+    def __repr__(self):
+        return "%s (%s)" % (self.op, self.children)
+
+class BoolOpNode(Node):
+    type = 'BoolOpNode'
+    def __init__(self, op, children):
+        Node.__init__(self, children)
+        self.op = op
+    
     def __repr__(self):
         return "%s (%s)" % (self.op, self.children)
 

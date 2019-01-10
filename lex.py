@@ -5,19 +5,21 @@ reserved_words = {
 	'mixin' : 'MIXIN',
 #	'import' : 'IMPORT',
 	'include' : 'INCLUDE',
-	'extend' : 'EXTEND'
+	'extend' : 'EXTEND',
+	'true' : 'TRUE',
+	'false' : 'FALSE',
+	'or' : 'OR',
+	'and' : 'AND',
+	'not' : 'NOT',
 }
 
 tokens = [
 	'IF',
 	'ELIF',
 	'ELSE',
-	'LT_OP',
 	'GT_OP',
-	'LE_OP',
-	'GE_OP',
-	'EQU_OP',
-	'NEQU_OP',
+	'LGTE_OP',
+	'COMP_OP',
 	'ADD_OP',
 	'MUL_OP',
 	'NUMBER',
@@ -27,7 +29,7 @@ tokens = [
 	'SELECTOR_EXTEND',
  ] + list(reserved_words.values())
 
-literals = '@();=:{},'
+literals = '@();:{},'
 
 def t_IF(t):
 	r'@if'
@@ -43,31 +45,18 @@ def t_ELSE(t):
 
 def t_COMMENT(t):
 	r'//.*'
-	pass
-	# No return value. Token discarded
-
-def t_LT_OP(t):
-	r'<'
-	return t
+	pass # No return value. Token discarded
 
 def t_GT_OP(t):
 	r'>'
 	return t
 
-def t_LE_OP(t):
-	r'<='
+def t_COMP_OP(t):
+	r'(==|!=)'
 	return t
 
-def t_GE_OP(t):
-	r'>='
-	return t
-
-def t_EQU_OP(t):
-	r'=='
-	return t
-
-def t_NEQU_OP(t):
-	r'!='
+def t_LGTE_OP(t):
+	r'(<=|<|>=)'
 	return t
 
 def t_ADD_OP(t):

@@ -54,8 +54,13 @@ def p_rule(p):
 def p_assign(p):
     '''
     statement : variable attribution
+            |   variable ':' boolean ';'
+            |   variable ':' expression ';'
     '''
-    p[0] = AST.AssignNode([p[1],p[2]])
+    if len(p) > 3:
+        p[0] = AST.AssignNode([p[1],p[3]])
+    else:
+        p[0] = AST.AssignNode([p[1],p[2]])
 
 def p_attribution(p):
     '''
@@ -110,6 +115,7 @@ def p_while(p):
     '''
     statement : '@' WHILE expression section
             |   '@' WHILE variable section
+            |   '@' WHILE boolean section
     '''
     p[0] = AST.WhileNode([p[3], p[4]])
 
@@ -117,10 +123,13 @@ def p_if(p):
     '''
     statement : IF expression section
             |   IF variable section
+            |   IF boolean section
             |   IF expression section else_if_block
             |   IF variable section else_if_block
+            |   IF boolean section else_if_block
             |   IF expression section else_block
             |   IF variable section else_block
+            |   IF boolean section else_block
     '''
     try:
         p[0] = AST.IfNode([p[2], p[3], p[4]])
@@ -131,10 +140,13 @@ def p_else_if_block(p):
     '''
     else_if_block : ELIF expression section
                 |   ELIF variable section
+                |   ELIF boolean section
                 |   ELIF expression section else_if_block
                 |   ELIF variable section else_if_block
+                |   ELIF boolean section else_if_block
                 |   ELIF expression section else_block
                 |   ELIF variable section else_block
+                |   ELIF boolean section else_block
     '''
     if len(p) == 4:
         p[0] = AST.IfNode([p[2], p[3]])
@@ -206,45 +218,51 @@ def p_expression_operation(p):
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
+def p_expression_comparison_LGTE(p):
+    '''
+    boolean : expression GT_OP expression
+            | expression LGTE_OP expression
+            | expression GT_OP variable
+            | expression LGTE_OP variable
+            | variable GT_OP expression
+            | variable LGTE_OP expression
+            | variable GT_OP variable
+            | variable LGTE_OP variable
+    '''
+    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+
 def p_expression_comparison(p):
     '''
-    expression : expression EQU_OP expression
-            |    expression NEQU_OP expression
-            |    expression EQU_OP variable
-            |    expression NEQU_OP variable
-            |    variable EQU_OP expression
-            |    variable NEQU_OP expression
-            |    variable EQU_OP variable
-            |    variable NEQU_OP variable
+    boolean : expression COMP_OP expression
+            | expression COMP_OP variable
+            | expression COMP_OP boolean
+            | variable COMP_OP expression
+            | variable COMP_OP variable
+            | variable COMP_OP boolean
+            | boolean COMP_OP expression
+            | boolean COMP_OP variable
+            | boolean COMP_OP boolean
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
-def p_expression_comparison_greater_or_less_than(p):
+def p_boolean_operation(p):
     '''
-    expression : expression GT_OP expression
-            |    expression LT_OP expression
-            |    expression GT_OP variable
-            |    expression LT_OP variable
-            |    variable GT_OP expression
-            |    variable LT_OP expression
-            |    variable GT_OP variable
-            |    variable LT_OP variable
+    boolean : boolean OR boolean
+            | boolean AND boolean
+            | NOT boolean
     '''
-    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+    try:
+        p[0] = AST.BoolOpNode(p[2],[p[1], p[3]])
+    except:
+        p[0] = AST.BoolOpNode(p[1],[p[2]])
 
-def p_expression_comparison_greater_or_less_equal(p):
+def p_boolean_value(p):
     '''
-    expression : expression GE_OP expression
-            |    expression LE_OP expression
-            |    expression GE_OP variable
-            |    expression LE_OP variable
-            |    variable GE_OP expression
-            |    variable LE_OP expression
-            |    variable GE_OP variable
-            |    variable LE_OP variable
+    boolean : FALSE
+            | TRUE
     '''
-    p[0] = AST.OpNode(p[2], [p[1], p[3]])
-
+    p[0] = AST.BooleanNode(p[1] == "true")
+    
 def p_expression(p):
     '''
     expression : NUMBER
@@ -323,14 +341,14 @@ precedence = (
     ('nonassoc', 'VARIABLE'),
     ('nonassoc', 'STRING_VALUE'),
 	('nonassoc', 'SELECTOR_EXTEND'),
-    ('left', 'LT_OP'),
+    ('left', 'AND'),
+    ('left', 'OR'),
+    ('left', 'LGTE_OP'),
     ('left', 'GT_OP'),
-    ('left', 'LE_OP'),
-    ('left', 'GE_OP'),
-    ('left', 'EQU_OP'),
-    ('left', 'NEQU_OP'),
+    ('left', 'COMP_OP'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
+    ('right', 'NOT'),
     ('left', 'IF'),
     ('left', 'ELIF'),
     ('left', 'ELSE'),
@@ -349,7 +367,7 @@ if __name__ == "__main__":
     import sys
 
     prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog, debug = False)
+    result = yacc.parse(prog, debug = True)
     if result:
         import os
         graph = result.makegraphicaltree()

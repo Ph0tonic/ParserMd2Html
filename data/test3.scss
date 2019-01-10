@@ -1,10 +1,10 @@
 nav {
-    $test : 1;
-    @if $test != 1 {
+    $test : true;
+    @if $test != true {
         padding : 1px;
     }
     
-    @if $test != 1 {
+    @if $test == true or not true != not false {
         padding : 1px;
     }
 }
