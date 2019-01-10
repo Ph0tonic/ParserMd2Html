@@ -78,7 +78,6 @@ def compile(self, selectors = ''):
 	compiledContent = ""
 	compiledString = ""
 
-	# TODO : CHECK IF RESPECT ORDER NEEDED
 	for child in self.children[1:]:
 		if isinstance(child, AST.StatementNode):
 			compiledNested += f"{child.compile(selectorString)}"
