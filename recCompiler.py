@@ -101,8 +101,15 @@ def compile(self):
 
 @addToClass(AST.AssignNode)
 def compile(self):
-	vars[self.children[0]] = self.children[1].compile()
+	vars[self.children[0].value] = self.children[1].compile()
 	return ""
+
+@addToClass(AST.VariableNode)
+def compile(self):
+	try:
+		return vars[self.value]
+	except KeyError:
+		raise Exception(f"Variable {self.value} doesn't exist") from None
 
 @addToClass(AST.MixinNode)
 def compile(self):
@@ -133,5 +140,3 @@ if __name__ == "__main__" :
 
 	with open(pathCompiled, 'w') as f :
 		f.write(compiledString)
-
-	print(vars)
