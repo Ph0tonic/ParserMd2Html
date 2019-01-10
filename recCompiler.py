@@ -101,7 +101,7 @@ def compile(self):
 
 @addToClass(AST.AssignNode)
 def compile(self):
-	vars[self.children[0]] = self.children[1]
+	vars[self.children[0]] = self.children[1].compile()
 	return ""
 
 @addToClass(AST.MixinNode)
@@ -124,11 +124,14 @@ def getFileName(path):
 	return path.split("/")[-1].split('.')[0]
 
 if __name__ == "__main__" :
-	from parser1 import parse
+	from parser import parse
 	import sys
 	prog = open(sys.argv[1]).read()
 	ast = parse(prog)
 	compiledString = ast.compile()
 	pathCompiled = f'compiled/{getFileName(sys.argv[1])}.css'
+
 	with open(pathCompiled, 'w') as f :
 		f.write(compiledString)
+
+	print(vars)
