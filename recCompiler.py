@@ -13,13 +13,13 @@ vars = {}
 lineSeperator = '\n'
 
 def compileListToString(list, separator):
-    compiledString = separator.join([element.compile() for element in list])
+	compiledString = separator.join([element.compile() for element in list])
 
-    return compiledString
+	return compiledString
 
 @addToClass(AST.ValueNode)
 def compile(self):
-    return str(self.value)
+	return str(self.value)
 
 # @addToClass(AST.NumberNode)
 # def execute(self):
@@ -27,100 +27,109 @@ def compile(self):
 
 @addToClass(AST.NumberNode)
 def compile(self):
-    return f'{self.value}{self.unit}'
+	return f'{self.value}{self.unit}'
 
 @addToClass(AST.ValuesNode)
 def compile(self):
-    return compileListToString(self.children, ' ')
+	return compileListToString(self.children, ' ')
 
 @addToClass(AST.RuleNode)
 def compile(self):
-    children = self.children
+	children = self.children
 
-    return f'{children[0].compile()} : {children[1].compile()};'
-
-@addToClass(AST.RulesNode)
-def compile(self):
-    return compileListToString(self.children, lineSeperator)
+	return f'{children[0].compile()} : {children[1].compile()};\n'
 
 @addToClass(AST.SelectorsNode)
 def compile(self):
-    return compileListToString(self.children, ' ')
+	return compileListToString(self.children, ' ')
 
 @addToClass(AST.OpNode)
 def execute(self):
-    args = [c.execute() for c in self.children]
+	args = [c.execute() for c in self.children]
 
-    if args[0][1] != args[1][1] and args[1][1] != '' and args[0][1] != '':
-        raise Exception('unit is different')
+	if args[0][1] != args[1][1] and args[1][1] != '' and args[0][1] != '':
+		raise Exception('unit is different')
 
-    if len(args) == 1:
-        args.insert(0,0)
+	if len(args) == 1:
+		args.insert(0,0)
 
-    unit = ''
+	unit = ''
 
-    if args[0][1] != '':
-        unit = args[0][1]
-    elif args[1][1] != '' :
-        unit = args[1][1]
+	if args[0][1] != '':
+		unit = args[0][1]
+	elif args[1][1] != '' :
+		unit = args[1][1]
 
-    value = reduce(operations[self.op], map(lambda t: t[0], args))
+	value = reduce(operations[self.op], map(lambda t: t[0], args))
 
-    return AST.NumberNode(value, unit).execute()
+	return AST.NumberNode(value, unit).execute()
 
 @addToClass(AST.OpNode)
 def compile(self):
-    result = self.execute()
-    return f'{result[0]}{result[1]}'
+	result = self.execute()
+	return f'{result[0]}{result[1]}'
 
 @addToClass(AST.StatementNode)
-def compile(self):
-    selector = self.children[0]
-    compiledString = f'{selector.compile()} {{ \n'
-    compiledStatements = []
+def compile(self, selectors = ''):
+	selector = self.children[0]
+	selectorString = f"{selectors}{selector.compile()} "
 
-    for child in self.children[1:]:
-        if isinstance(child, AST.StatementNode):
-            childrenStatement = child.children[0].children
-            childrenStatement = selector + childrenStatement
+	compiledNested = ""
+	compiledContent = ""
+	compiledString = ""
 
-            compiledStatements.append(child.compile())
-        else:
-            compiledString += child.compile()
+	# TODO : CHECK IF RESPECT ORDER NEEDED
+	for child in self.children[1:]:
+		if isinstance(child, AST.StatementNode):
+			compiledNested += f"{child.compile(selectorString)}"
+		else:
+			compiledContent += child.compile()
 
-    compiledString += '}'
+	if compiledContent == "":
+		compiledString = f"{compiledNested}\n"
+	else:
+		compiledString = f"{selectorString}  {{ \n{compiledContent}}}\n{compiledNested}\n"
 
-    for compiledStatement in compiledStatements:
-        compiledString += compiledStatement
-
-    return compiledString
+	return compiledString
 
 @addToClass(AST.ProgramNode)
 def compile(self):
-    return compileListToString(self.children, '\n')
-
-@addToClass(AST.NestedStatementNode)
-def compile(self):
-    return compileListToString(self.children, '\n')
+	return compileListToString(self.children, '\n')
 
 @addToClass(AST.VariableNode)
 def compile(self):
-    return vars[self.value]
+	return ""
 
 @addToClass(AST.AssignNode)
 def compile(self):
-    vars[self.children[0]] = self.children[1]
-    return ""
+	vars[self.children[0]] = self.children[1]
+	return ""
+
+@addToClass(AST.MixinNode)
+def compile(self):
+	return ""
+
+@addToClass(AST.IncludeNode)
+def compile(self):
+	return ""
+
+@addToClass(AST.IfNode)
+def compile(self):
+	return ""
+
+@addToClass(AST.WhileNode)
+def compile(self):
+	return ""
 
 def getFileName(path):
-    return path.split('/')[-1].split('.')[0]
+	return path.split("/")[-1].split('.')[0]
 
 if __name__ == "__main__" :
-    from parser import parse
-    import sys
-    prog = open(sys.argv[1]).read()
-    ast = parse(prog)
-    compiledString = ast.compile()
-    pathCompiled = f'compiled/{getFileName(sys.argv[1])}.css'
-    with open(pathCompiled, 'w') as f :
-        f.write(compiledString)
+	from parser1 import parse
+	import sys
+	prog = open(sys.argv[1]).read()
+	ast = parse(prog)
+	compiledString = ast.compile()
+	pathCompiled = f'compiled/{getFileName(sys.argv[1])}.css'
+	with open(pathCompiled, 'w') as f :
+		f.write(compiledString)
