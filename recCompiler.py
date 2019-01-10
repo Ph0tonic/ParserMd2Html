@@ -7,6 +7,10 @@ operations = {
 	'-' : lambda x,y: x-y,
 	'*' : lambda x,y: x*y,
 	'/' : lambda x,y: x/y,
+	'>' : lambda x,y: x>y,
+	'<' : lambda x,y: x<y,
+	'>=' : lambda x,y: x>=y,
+	'<=' : lambda x,y: x<=y,
 }
 
 vars = {}
@@ -121,6 +125,14 @@ def compile(self):
 	return ""
 
 @addToClass(AST.IfNode)
+def compile(self):
+	return ""
+
+@addToClass(AST.BoolNode)
+def compile(self):
+	return ""
+
+@addToClass(AST.BoolOpNode)
 def compile(self):
 	return ""
 
