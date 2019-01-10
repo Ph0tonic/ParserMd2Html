@@ -34,8 +34,6 @@ Here is a simple basic Sass compiler.
 # Introduction
 Dans le cadre du cours "Compilateurs", il nous a été demandé de réaliser un projet par équipe de deux en utilisat la librairire python PLY.
 
-Il
-
 # But fixé
 Comme expliqué plus haut, le but fixé était de réaliser un compilateur permettant de compiler du code SCSS.
 
@@ -49,7 +47,7 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 - Etape 8 Possibilité d'inclure des fichiers externes avec @import
 
 # Fonctionnalités implémentées
-Ce chapitre liste les fonctionnalités présentes dans notre coimpilateur, dans leur ordre d'implémentation.
+Ce chapitre liste les fonctionnalités présentes dans notre compilateur, dans leur ordre d'implémentation.
 
 - Validation de la syntaxe de base d'un scss
 - Gestion du nesting afin de générer du code css valide
@@ -68,8 +66,6 @@ Pour générer un fichier css à l’aide de notre compilateur, il suffit d’ex
 ```sh
 python Compiler.py CHEMIN_DU_FICHIER
 ```
-
-
 
 
 # Grammaire

@@ -65,14 +65,14 @@ nav a {
 ```
 
 # Fonctionnalities to implement
-- [ ] @import
+- [x] Nested
 - [ ] @if / @elseif
 - [ ] @while
 - [ ] @mixin / @include
 - [ ] @extend
 - [ ] Operators
-- [ ] Nested
 - [ ] Variables
+- [ ] @import
 
 ## Eventually
 - [ ] @each

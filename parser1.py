@@ -219,6 +219,32 @@ def p_expression_comparison(p):
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
+def p_expression_comparison_greater_or_less_than(p):
+    '''
+    expression : expression GT_OP expression
+            |    expression LT_OP expression
+            |    expression GT_OP variable
+            |    expression LT_OP variable
+            |    variable GT_OP expression
+            |    variable LT_OP expression
+            |    variable GT_OP variable
+            |    variable LT_OP variable
+    '''
+    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+
+def p_expression_comparison_greater_or_less_equal(p):
+    '''
+    expression : expression GE_OP expression
+            |    expression LE_OP expression
+            |    expression GE_OP variable
+            |    expression LE_OP variable
+            |    variable GE_OP expression
+            |    variable LE_OP expression
+            |    variable GE_OP variable
+            |    variable LE_OP variable
+    '''
+    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+
 def p_expression(p):
     '''
     expression : NUMBER
@@ -246,10 +272,10 @@ def p_variable(p):
 def p_selector_recursive(p):
     '''
     list_selector : list_selector SELECTOR
-                |   list_selector SEPARATOR
+                |   list_selector GT_OP
                 |   list_selector STRING_VALUE
                 |   list_string SELECTOR
-                |   list_string SEPARATOR
+                |   list_string GT_OP
                 |   list_selector ',' SELECTOR
                 |   list_selector ',' STRING_VALUE
                 |   list_string ',' SELECTOR
@@ -262,11 +288,12 @@ def p_selector_recursive(p):
 def p_selector(p):
     '''
     list_selector : STRING_VALUE SELECTOR
-                |   STRING_VALUE SEPARATOR
-                |   SEPARATOR
+                |   STRING_VALUE GT_OP
                 |   SELECTOR
                 |   STRING_VALUE ',' SELECTOR
                 |   STRING_VALUE ',' STRING_VALUE
+                |   GT_OP SELECTOR
+                |   GT_OP STRING_VALUE
     '''
     if len(p) == 4:
         p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2]), AST.ValueNode(p[3])])
@@ -275,20 +302,16 @@ def p_selector(p):
     else:
         p[0] = AST.ValuesNode([AST.ValueNode(p[1])])
 
-# def p_structure(p):
-#     ''' structure : WHILE expression '{' program '}' '''
-#     p[0] = AST.WhileNode([p[2],p[4]])
-
 # def p_minus(p):
 #     ''' expression : ADD_OP expression %prec UMINUS'''
 #     p[0] = AST.OpNode(p[1], [p[2]])
 
-# def p_error(p):
-#     if p:
-#         print ("Syntax error in line %d" % p.lineno)
-#         yacc.errok()
-#     else:
-#         print ("Sytax error: unexpected end of file!")
+def p_error(p):
+    if p:
+        print ("Syntax error in line %d" % p.lineno)
+        yacc.errok()
+    else:
+        print ("Sytax error: unexpected end of file!")
 
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -298,9 +321,12 @@ precedence = (
     ('nonassoc', 'NUMBER'),
     ('nonassoc', 'SELECTOR'),
     ('nonassoc', 'VARIABLE'),
-    ('nonassoc', 'SEPARATOR'),
     ('nonassoc', 'STRING_VALUE'),
 	('nonassoc', 'SELECTOR_EXTEND'),
+    ('left', 'LT_OP'),
+    ('left', 'GT_OP'),
+    ('left', 'LE_OP'),
+    ('left', 'GE_OP'),
     ('left', 'EQU_OP'),
     ('left', 'NEQU_OP'),
     ('left', 'ADD_OP'),

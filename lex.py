@@ -12,6 +12,10 @@ tokens = [
 	'IF',
 	'ELIF',
 	'ELSE',
+	'LT_OP',
+	'GT_OP',
+	'LE_OP',
+	'GE_OP',
 	'EQU_OP',
 	'NEQU_OP',
 	'ADD_OP',
@@ -19,7 +23,6 @@ tokens = [
 	'NUMBER',
 	'VARIABLE',
 	'SELECTOR',
-	'SEPARATOR',
 	'STRING_VALUE',
 	'SELECTOR_EXTEND',
  ] + list(reserved_words.values())
@@ -42,6 +45,22 @@ def t_COMMENT(t):
 	r'//.*'
 	pass
 	# No return value. Token discarded
+
+def t_LT_OP(t):
+	r'<'
+	return t
+
+def t_GT_OP(t):
+	r'>'
+	return t
+
+def t_LE_OP(t):
+	r'<='
+	return t
+
+def t_GE_OP(t):
+	r'>='
+	return t
 
 def t_EQU_OP(t):
 	r'=='
@@ -70,8 +89,6 @@ def t_VARIABLE(t):
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
-
-t_SEPARATOR = r'[>]'
 
 def t_STRING_VALUE(t):
 	r'[#\w-]+'
