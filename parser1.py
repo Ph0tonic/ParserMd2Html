@@ -112,32 +112,41 @@ def p_while(p):
     statement : '@' WHILE expression section
             |   '@' WHILE variable section
     '''
-    p[0] = AST.WhileNode(p[3], p[4])
+    p[0] = AST.WhileNode([p[3], p[4]])
 
 def p_if(p):
     '''
-    statement : '@' IF expression section
-            |   '@' IF variable section
-            |   '@' IF expression section else_if_block
-            |   '@' IF variable section else_if_block
+    statement : IF expression section
+            |   IF variable section
+            |   IF expression section else_if_block
+            |   IF variable section else_if_block
+            |   IF expression section else_block
+            |   IF variable section else_block
     '''
     try:
-        p[0] = AST.IfNode(p[3], p[4], p[5])
+        p[0] = AST.IfNode([p[2], p[3], p[4]])
     except:
-        p[0] = AST.IfNode(p[3], p[4], None)
+        p[0] = AST.IfNode([p[2], p[3]])
 
 def p_else_if_block(p):
     '''
-    else_if_block : '@' ELSE section
-                |   '@' ELSE IF expression section
-                |   '@' ELSE IF variable section
-                |   '@' ELSE IF expression section else_if_block
-                |   '@' ELSE IF variable section else_if_block
+    else_if_block : ELIF expression section
+                |   ELIF variable section
+                |   ELIF expression section else_if_block
+                |   ELIF variable section else_if_block
+                |   ELIF expression section else_block
+                |   ELIF variable section else_block
     '''
     if len(p) == 4:
-        p[0] = p[3]
+        p[0] = AST.IfNode([p[2], p[3]])
     else:
-        p[0] = AST.IfNode(p[4], None, None)
+        p[0] = AST.IfNode([p[2], p[3], p[4]])
+
+def p_else_block(p):
+    '''
+    else_block : ELSE section
+    '''
+    p[0] = p[2]
 
 def p_list_variables(p):
     '''
@@ -229,8 +238,13 @@ def p_selector_recursive(p):
                 |   list_selector STRING_VALUE
                 |   list_string SELECTOR
                 |   list_string SEPARATOR
+                |   list_selector ',' SELECTOR
+                |   list_selector ',' STRING_VALUE
+                |   list_string ',' SELECTOR
     '''
     p[1].children.append(AST.ValueNode(p[2]))
+    if len(p) == 4:
+        p[1].children.append(AST.ValueNode(p[3]))
     p[0] = p[1]
 
 def p_selector(p):
@@ -239,10 +253,14 @@ def p_selector(p):
                 |   STRING_VALUE SEPARATOR
                 |   SEPARATOR
                 |   SELECTOR
+                |   STRING_VALUE ',' SELECTOR
+                |   STRING_VALUE ',' STRING_VALUE
     '''
-    try:
+    if len(p) == 4:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2]), AST.ValueNode(p[3])])
+    elif len(p) == 3:
         p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
-    except:
+    else:
         p[0] = AST.ValuesNode([AST.ValueNode(p[1])])
 
 # def p_structure(p):
@@ -273,11 +291,12 @@ precedence = (
 	('nonassoc', 'SELECTOR_EXTEND'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
-    ('nonassoc', 'IF'),
-    ('nonassoc', 'ELSE'),
+    ('left', 'IF'),
+    ('left', 'ELIF'),
+    ('left', 'ELSE'),
     ('right', 'MIXIN'),
     ('right', 'INCLUDE'),
-	('nonassoc', '@'),
+	('right', '@'),
     # ('right', 'UMINUS'),
 )
 
@@ -290,7 +309,7 @@ if __name__ == "__main__":
     import sys
 
     prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog, debug = True)
+    result = yacc.parse(prog, debug = False)
     if result:
         import os
         graph = result.makegraphicaltree()

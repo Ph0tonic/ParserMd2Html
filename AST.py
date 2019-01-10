@@ -120,11 +120,13 @@ class IncludeNode(Node):
 
 class IfNode(Node):
     type = 'IfNode'
-    def __init__(self, condition, true_block, false_block):
-        Node.__init__(self)
-        self.condition = condition
-        self.true_block = true_block
-        self.false_block = false_block
+    def __init__(self, children):
+        Node.__init__(self, children)
+
+class WhileNode(Node):
+    type = 'WhileNode'
+    def __init__(self, children):
+        Node.__init__(self, children)
 
 #done
 class ExtendNode(Node):

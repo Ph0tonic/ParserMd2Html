@@ -2,8 +2,6 @@ import ply.lex as lex
 
 reserved_words = {
 	'while' : 'WHILE',
-	'if' : 'IF',
-	'else' : 'ELSE',
 	'mixin' : 'MIXIN',
 #	'import' : 'IMPORT',
 	'include' : 'INCLUDE',
@@ -11,6 +9,9 @@ reserved_words = {
 }
 
 tokens = [
+	'IF',
+	'ELIF',
+	'ELSE',
 	'ADD_OP',
 	'MUL_OP',
 	'NUMBER',
@@ -22,6 +23,18 @@ tokens = [
  ] + list(reserved_words.values())
 
 literals = '@();=:{},'
+
+def t_IF(t):
+	r'@if'
+	return t
+
+def t_ELIF(t):
+	r'@else\ if'
+	return t
+
+def t_ELSE(t):
+	r'@else'
+	return t
 
 def t_COMMENT(t):
 	r'//.*'

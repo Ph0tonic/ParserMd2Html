@@ -1,4 +1,16 @@
-nav {
+nav, nav {
+
+}
+#id, body {
+  
+}
+nav, #id {
+  
+}
+#id, body, nav {
+  
+}
+#id, body {
   // Amazing comment
   @mixin test($test, $bastien){
     margin : 12px ;
@@ -14,32 +26,35 @@ nav {
     padding : 1px;
   }
 
-  // // @if $test {
-  // //   padding : 1px;
-  // // }
+  @if $test {
+    padding : 1px;
+  }
 
+  @if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else {
+    padding : 1px;
+  }
 
-  // @if $test {
-  //   padding : 1px;
-  // } @else if $test {
-  //   padding : 1px;
-  // } @else {
-  //   padding : 1px;
-  // }
+  @if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else if $test{
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else if $test {
+    padding : 1px;
+  } @else {
+    padding : 1px;
+  }
 
-  // @if $test {
-  //   padding : 1px;
-  // } @else if $test {
-  //   padding : 1px;
-  // } @else if $test{
-  //   padding : 1px;
-  // } @else if $test {
-  //   padding : 1px;
-  // } @else if $test {
-  //   padding : 1px;
-  // } @else {
-  //   padding : 1px;
-  // }
+  @while $test {
+    padding: $test+1;
+  }
 
   ul > li {
     margin: $margin;
