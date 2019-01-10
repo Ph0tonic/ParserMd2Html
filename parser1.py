@@ -25,8 +25,7 @@ def p_statement(p):
             |   list_selector section
     '''
     if isinstance(p[1], AST.ValuesNode):
-        p[2].children.insert(0,AST.StatementNode(p[1]))
-        p[0] = p[2]
+        p[0] = AST.StatementNode([p[1]]+p[2].children)
     else:
         p[0] = AST.StatementNode([AST.ValuesNode([AST.ValueNode(p[1])])]+p[2].children)
 
@@ -207,6 +206,19 @@ def p_expression_operation(p):
     '''
     p[0] = AST.OpNode(p[2], [p[1], p[3]])
 
+def p_expression_comparison(p):
+    '''
+    expression : expression EQU_OP expression
+            |    expression NEQU_OP expression
+            |    expression EQU_OP variable
+            |    expression NEQU_OP variable
+            |    variable EQU_OP expression
+            |    variable NEQU_OP expression
+            |    variable EQU_OP variable
+            |    variable NEQU_OP variable
+    '''
+    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+
 def p_expression(p):
     '''
     expression : NUMBER
@@ -289,6 +301,8 @@ precedence = (
     ('nonassoc', 'SEPARATOR'),
     ('nonassoc', 'STRING_VALUE'),
 	('nonassoc', 'SELECTOR_EXTEND'),
+    ('left', 'EQU_OP'),
+    ('left', 'NEQU_OP'),
     ('left', 'ADD_OP'),
     ('left', 'MUL_OP'),
     ('left', 'IF'),

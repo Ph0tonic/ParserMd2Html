@@ -12,6 +12,8 @@ tokens = [
 	'IF',
 	'ELIF',
 	'ELSE',
+	'EQU_OP',
+	'NEQU_OP',
 	'ADD_OP',
 	'MUL_OP',
 	'NUMBER',
@@ -40,6 +42,14 @@ def t_COMMENT(t):
 	r'//.*'
 	pass
 	# No return value. Token discarded
+
+def t_EQU_OP(t):
+	r'=='
+	return t
+
+def t_NEQU_OP(t):
+	r'!='
+	return t
 
 def t_ADD_OP(t):
 	r'[+-]'

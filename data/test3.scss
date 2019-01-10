@@ -1,0 +1,10 @@
+nav {
+    $test : 1;
+    @if $test != 1 {
+        padding : 1px;
+    }
+    
+    @if $test != 1 {
+        padding : 1px;
+    }
+}
