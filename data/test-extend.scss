@@ -5,6 +5,7 @@
 }
 
 .message {
+  @extend %message-shared;
   test: value;
 }
 

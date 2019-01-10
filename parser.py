@@ -33,7 +33,7 @@ def p_extend_define(p):
     '''
     statement : SELECTOR_EXTEND section
     '''
-    p[0] = AST.ExtendNodeDefine([AST.ValueNode(p[1]), p[2]])
+    p[0] = AST.ExtendNodeDefine(p[1], [p[2]])
 
 def p_section(p):
     '''

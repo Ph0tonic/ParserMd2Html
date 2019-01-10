@@ -10,6 +10,7 @@ operations = {
 }
 
 vars = {}
+extendsRules = {}
 lineSeperator = '\n'
 
 def compileListToString(list, separator):
@@ -93,7 +94,7 @@ def compile(self, selectors = ''):
 
 @addToClass(AST.ProgramNode)
 def compile(self):
-	return compileListToString(self.children, '\n')
+	return compileListToString(self.children, '')
 
 @addToClass(AST.VariableNode)
 def compile(self):
@@ -126,6 +127,18 @@ def compile(self):
 @addToClass(AST.WhileNode)
 def compile(self):
 	return ""
+
+@addToClass(AST.ExtendNodeDefine)
+def compile(self):
+	extendsRules[self.identifier] = self.children[0].compile()
+	return ""
+
+@addToClass(AST.ExtendNode)
+def compile(self):
+	try:
+		return extendsRules[self.identifier]
+	except KeyError:
+		raise Exception(f"extend {self.identifier} does not exist") from None
 
 def getFileName(path):
 	return path.split("/")[-1].split('.')[0]

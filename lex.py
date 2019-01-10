@@ -96,9 +96,9 @@ def t_STRING_VALUE(t):
 		t.type = t.value.upper()
 	return t
 
-t_SELECTOR = r'\w[\w#.\-\[\]]*'
+t_SELECTOR = r'[#\.]{1}[\w\-\_\[\]=]*[\w\]]{1}'
 
-t_SELECTOR_EXTEND = r'\%\w[\w#.\-\[\]]*'
+t_SELECTOR_EXTEND = r'%{1}[\w\-\_]*'
 
 def t_newline(t):
 	r'\n+'
