@@ -1,0 +1,39 @@
+nav, nav {
+
+}
+#id, body {
+
+}
+nav, #id {
+
+}
+#id, body, nav {
+
+}
+#id, body {
+  ul > li {
+    padding: 0;
+    list-style: 12;
+  }
+
+  padding: 12px;
+  display: flex;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: 12;
+  }
+
+  $test : flex;
+
+  display: $test;
+}
+
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: 12;
+  }
+}

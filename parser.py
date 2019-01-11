@@ -103,13 +103,14 @@ def p_include(p):
             |   '@' INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
             |   '@' INCLUDE STRING_VALUE ';'
     '''
+
     if len(p) > 5:
         if isinstance(p[5], AST.ValuesNode):
             p[0] = AST.IncludeNode(p[3], p[5])
         else:
-            p[0] = AST.IncludeNode(p[3], AST.ValuesNode([p[5]]))
+            p[0] = AST.IncludeNode(p[3], AST.ValuesNode([AST.ValueNode(p[5])]))
     else:
-        p[0] = AST.IncludeNode(p[3], None)
+        p[0] = AST.IncludeNode(p[3])
 
 def p_while(p):
     '''
@@ -186,7 +187,7 @@ def p_list_value_recursive(p):
         else:
             p[0].children.append(AST.ValueNode(p[2]))
     else:
-        p[2].children.insert(0, ASt.ValueNode(p[1]))
+        p[2].children.insert(0, AST.ValueNode(p[1]))
 
 def p_list_value(p):
     '''
@@ -199,10 +200,10 @@ def p_list_string(p):
     list_string : STRING_VALUE STRING_VALUE
                 | list_string STRING_VALUE
     '''
-    try:
+    if isinstance(p[1], AST.ValuesNode):
         p[1].children.append(AST.ValueNode(p[2]))
         p[0] = p[1]
-    except:
+    else:
         p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
 
 def p_expression_operation(p):
@@ -369,7 +370,7 @@ if __name__ == "__main__":
     import sys
 
     prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog, debug = False)
+    result = yacc.parse(prog, debug = True)
     if result:
         import os
         graph = result.makegraphicaltree()

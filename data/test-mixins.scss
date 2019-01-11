@@ -1,0 +1,12 @@
+@mixin transform($property) {
+  transform: $property;
+}
+
+@mixin margin($side, $topbottom) {
+  margin: $topbottom;
+}
+
+.box {
+  @include transform(black);
+  @include transform(5px, 15px);
+}
