@@ -138,6 +138,15 @@ class BoolNode(Node):
     def __repr__(self):
         return repr(str(self.value))
 
+class ImportNode(Node):
+    type = 'ImportNode'
+    def __init__(self, value):
+        Node.__init__(self)
+        self.value = value
+
+    def __repr__(self):
+        return repr(self.value)
+
 #done
 class ExtendNode(Node):
     type = 'ExtendStatement'

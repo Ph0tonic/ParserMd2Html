@@ -3,7 +3,7 @@ import ply.lex as lex
 reserved_words = {
 	'while' : 'WHILE',
 	'mixin' : 'MIXIN',
-#	'import' : 'IMPORT',
+	'import' : 'IMPORT',
 	'include' : 'INCLUDE',
 	'extend' : 'EXTEND',
 	'true' : 'TRUE',
@@ -18,13 +18,13 @@ tokens = [
 	'ELIF',
 	'ELSE',
 	'GT_OP',
+	'FILE_PATH',
 	'LGTE_OP',
 	'COMP_OP',
 	'ADD_OP',
 	'MUL_OP',
 	'NUMBER',
 	'VARIABLE',
-	'SELECTOR',
 	'STRING_VALUE',
 	'SELECTOR_EXTEND',
  ] + list(reserved_words.values())
@@ -79,15 +79,19 @@ def t_VARIABLE(t):
 		t.type = t.value.upper()
 	return t
 
+def t_SELECTOR_EXTEND(t):
+	r'%{1}[\w\-\_]*'
+	return t
+
+def t_FILE_PATH(t):
+	r'[\'\"]{1}[\w\_\-.]*[\'\"]{1}'
+	return t
+
 def t_STRING_VALUE(t):
-	r'[#\w-]+'
+	r'[#\.]*[\w\-\_\[\]=]*[\w\]]{1}'
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
-
-t_SELECTOR = r'[#\.]{1}[\w\-\_\[\]=]*[\w\]]{1}'
-
-t_SELECTOR_EXTEND = r'%{1}[\w\-\_]*'
 
 def t_newline(t):
 	r'\n+'
