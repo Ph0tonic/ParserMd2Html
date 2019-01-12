@@ -96,13 +96,17 @@ def p_mixin(p):
     '''
     statement : '@' MIXIN STRING_VALUE '(' list_variable ')' section
             |   '@' MIXIN STRING_VALUE '(' variable ')' section
+            |   '@' MIXIN STRING_VALUE '(' ')' section
             |   '@' MIXIN STRING_VALUE section
     '''
-    if len(p) > 5:
+    #TODO
+    if len(p) > 7:
         if isinstance(p[5], AST.ValuesNode):
             p[0] = AST.MixinNode(p[3],p[5],p[7])
         else:
             p[0] = AST.MixinNode(p[3],AST.ValuesNode([p[5]]),p[7])
+    elif len(p) > 5:
+        p[0] = AST.MixinNode(p[3],None,p[6])
     else:
         p[0] = AST.MixinNode(p[3],None,p[4])
 
@@ -110,6 +114,7 @@ def p_include(p):
     '''
     statement : '@' INCLUDE STRING_VALUE '(' list ')' ';'
             |   '@' INCLUDE STRING_VALUE '(' STRING_VALUE ')' ';'
+            |   '@' INCLUDE STRING_VALUE '(' ')' ';'
             |   '@' INCLUDE STRING_VALUE ';'
     '''
 
@@ -324,6 +329,11 @@ def p_boolean_operation(p):
     else:
         p[0] = AST.BoolOpNode(p[2],[p[1], p[3]])
 
+def p_boolean_simplify(p):
+    '''
+    boolean : '(' boolean ')'
+    '''
+    p[0] = p[2]
 
 def p_boolean_value(p):
     '''
