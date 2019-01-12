@@ -90,7 +90,7 @@ def p_import(p):
     '''
     statement : '@' IMPORT FILE_PATH ';'
     '''
-    p[0] = AST.ImportNode(p[3].replace("'", ""))
+    p[0] = AST.ImportNode(p[3].replace("'", "").replace("\"", ""))
 
 def p_mixin(p):
     '''
