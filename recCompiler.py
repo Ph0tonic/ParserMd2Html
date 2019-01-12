@@ -192,6 +192,10 @@ def compile(self):
 	if self.children[0].compile():
 		return self.children[1].compile()
 	else:
+		# check if a else statement is there
+		if len(self.children) > 2:
+			return self.children[2].compile()
+
 		return ""
 
 @addToClass(AST.BoolNode)

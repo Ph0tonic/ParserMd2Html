@@ -1,10 +1,10 @@
-$other: single;
+$other: 6;
 
 p {
-  @if $other == single {
+  @if $other == 1 {
     color: blue;
   }
-  @else if $other == double {
+  @else if $other == 5 {
     color: red;
   }
   @else {
