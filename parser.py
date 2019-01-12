@@ -297,7 +297,7 @@ def p_expression_comparison_LGTE(p):
             | variable GT_OP variable
             | variable LGTE_OP variable
     '''
-    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+    p[0] = AST.BoolOpNode(p[2], [p[1], p[3]])
 
 def p_expression_comparison(p):
     '''
@@ -311,7 +311,7 @@ def p_expression_comparison(p):
             | boolean COMP_OP variable
             | boolean COMP_OP boolean
     '''
-    p[0] = AST.OpNode(p[2], [p[1], p[3]])
+    p[0] = AST.BoolOpNode(p[2], [p[1], p[3]])
 
 def p_boolean_operation(p):
     '''
@@ -319,10 +319,11 @@ def p_boolean_operation(p):
             | boolean AND boolean
             | NOT boolean
     '''
-    try:
-        p[0] = AST.BoolOpNode(p[2],[p[1], p[3]])
-    except:
+    if isinstance(p[1], str):
         p[0] = AST.BoolOpNode(p[1],[p[2]])
+    else:
+        p[0] = AST.BoolOpNode(p[2],[p[1], p[3]])
+
 
 def p_boolean_value(p):
     '''

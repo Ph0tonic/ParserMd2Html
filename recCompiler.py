@@ -14,7 +14,11 @@ operations = {
 	'<' : lambda x,y: x<y,
 	'>=' : lambda x,y: x>=y,
 	'<=' : lambda x,y: x<=y,
-}
+	'==' : lambda x,y: x==y,
+	'!=' : lambda x,y: x!=y,
+	'or' : lambda x,y: x|y,
+	 'and' : lambda x,y: x&y
+	}
 
 vars = {}
 extendsRules = {}
@@ -28,15 +32,15 @@ def compileListToString(list, separator = ''):
 
 @addToClass(AST.ValueNode)
 def compile(self):
-	return str(self.value)
-
-# @addToClass(AST.NumberNode)
-# def execute(self):
-#     return (self.value, self.unit)
+	if isinstance(self.value, AST.NumberNode):
+		return self.value.compile()
+	else:
+		return str(self.value)
 
 @addToClass(AST.NumberNode)
 def compile(self):
-	return f'{self.value}{self.unit}'
+	compiledStr = f'{self.value}{self.unit}'
+	return compiledStr
 
 @addToClass(AST.ValuesNode)
 def compile(self):
@@ -104,9 +108,6 @@ def compile(self, selectors = ''):
 def compile(self):
 	return compileListToString(self.children, '')
 
-@addToClass(AST.VariableNode)
-def compile(self):
-	return ""
 
 @addToClass(AST.AssignNode)
 def compile(self):
@@ -119,6 +120,10 @@ def compile(self):
 		return vars[self.value]
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
+
+@addToClass(AST.VariableNode)
+def execute(self):
+	return self.compile()
 
 @addToClass(AST.MixinNode)
 def compile(self):
@@ -156,15 +161,25 @@ def compile(self):
 
 @addToClass(AST.IfNode)
 def compile(self):
-	return ""
+	if self.children[0].compile():
+		return self.children[1].compile()
+	else:
+		return ""
 
 @addToClass(AST.BoolNode)
 def compile(self):
-	return ""
+	return self.value
 
 @addToClass(AST.BoolOpNode)
 def compile(self):
-	return ""
+	args = [c.compile() for c in self.children]
+
+	if len(args) == 1:
+		return not args
+
+	value = reduce(operations[self.op], args)
+
+	return AST.BoolNode(value).compile()
 
 @addToClass(AST.WhileNode)
 def compile(self):
