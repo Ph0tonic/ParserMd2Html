@@ -62,6 +62,7 @@ def compile(self):
 
 @addToClass(AST.OpNode)
 def execute(self):
+
 	def opToNumber(value):
 		if isinstance(value, AST.OpNode):
 			return value.execute()
@@ -76,8 +77,11 @@ def execute(self):
 	if len(args) > 1 and args[0].unit != args[1].unit and args[1].unit != '' and args[0].unit != '':
 		raise Exception('unit is different')
 
+	if not isinstance(args[0], AST.NumberNode) or len(args > 1) and not isinstance(args[1], AST.NumberNode):
+		raise Exception('Operation with a non-number')
+
 	if len(args) == 1:
-		args.insert(0,0)
+		args.insert(0, AST.NumberNode(0))
 
 	unit = ''
 
@@ -164,18 +168,19 @@ def compile(self):
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
 
-	mappedIdentifier = map(lambda val: val.value, mixin.parameters.children)
-	listIdentifier = deleteComaFromList(mappedIdentifier)
+	if mixin.parameters != None:
+		mappedIdentifier = map(lambda val: val.value, mixin.parameters.children)
+		listIdentifier = deleteComaFromList(mappedIdentifier)
 
+		mappedValue = map(lambda val: val.compile(), self.children[0].children)
+		listValue = deleteComaFromList(mappedValue)
 
-	mappedValue = map(lambda val: val.compile(), self.children[0].children)
-	listValue = deleteComaFromList(mappedValue)
+		if len(listIdentifier) != len(listValue):
+			raise Exception(f"parameters for mixin {self.identifier} not valid")
 
-	if len(listIdentifier) != len(listValue):
-		raise Exception(f"parameters for mixin {self.identifier} not valid")
+		mixinVars = dict(zip(listIdentifier, listValue))
+		vars = {**vars, **mixinVars}
 
-	mixinVars = dict(zip(listIdentifier, listValue))
-	vars = {**vars, **mixinVars}
 
 	compiledMixin = mixin.execute()
 	vars = savedVarsState
