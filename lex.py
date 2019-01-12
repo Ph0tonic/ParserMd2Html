@@ -47,16 +47,16 @@ def t_COMMENT(t):
 	r'//.*'
 	pass # No return value. Token discarded
 
-def t_GT_OP(t):
-	r'>'
-	return t
-
 def t_COMP_OP(t):
 	r'(==|!=)'
 	return t
 
 def t_LGTE_OP(t):
 	r'(<=|<|>=)'
+	return t
+
+def t_GT_OP(t):
+	r'>'
 	return t
 
 def t_ADD_OP(t):

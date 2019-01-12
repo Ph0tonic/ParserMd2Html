@@ -9,7 +9,7 @@ nav {
     }
 
     $value : 2px;
-    @if $value > 5 and $value <= 2 {
+    @if $value >= 5 and $value <= 2 {
       display: block;
     }
 
