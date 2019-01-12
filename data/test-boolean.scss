@@ -1,0 +1,19 @@
+nav {
+    $test : true;
+    @if $test == true {
+        padding : 1px;
+    }
+
+    @if $test == true or not true != not false {
+        margin : 5px;
+    }
+
+    $value : 2px;
+    @if $value > 5 and $value <= 2 {
+      display: block;
+    }
+
+    @if $value < 5 and $value > 1 {
+      display: flex;
+    }
+}
