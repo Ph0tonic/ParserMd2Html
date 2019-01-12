@@ -11,7 +11,7 @@ nav, #id {
 
 }
 #id body, test {
-  #id ul > li {
+  #id ul > li > nav > yep {
     padding: 0;
     list-style: 12;
   }
@@ -19,6 +19,21 @@ nav, #id {
   li #id > li li {
     padding: 0;
     list-style: 12;
+  }
+  > {
+    test {
+      margin:0;
+    }
+  }
+  
+  test > {
+    test {
+      margin:0;
+    }
+  }
+
+  > test {
+    margin:0;
   }
 
   padding: 12px;

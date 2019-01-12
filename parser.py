@@ -22,9 +22,15 @@ def p_statement(p):
     '''
     statement : STRING_VALUE section
             |   list section
+            |   list_separator section
+            |   GT_OP section
+            |   STRING_VALUE GT_OP section
+            |   GT_OP STRING_VALUE section
     '''
     if isinstance(p[1], AST.ValuesNode):
         p[0] = AST.StatementNode([p[1]]+p[2].children)
+    elif len(p) > 3:
+        p[0] = AST.StatementNode([AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])]+p[3].children)
     else:
         p[0] = AST.StatementNode([AST.ValuesNode([AST.ValueNode(p[1])])]+p[2].children)
 
@@ -213,12 +219,16 @@ def p_list_sep(p):
         p[3] = AST.ValueNode(p[3])
     p[0] = AST.ValuesNode([p[1], AST.ValueNode(p[2]), p[3]])
 
-
 def p_list_separator(p):
     '''
     list_separator : STRING_VALUE GT_OP STRING_VALUE
+                |    list_separator GT_OP STRING_VALUE
     '''
-    p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2])])
+    if isinstance(p[1], AST.ValuesNode):
+        p[0] = p[1]
+        p[0].children += [AST.ValueNode(p[2]), AST.ValueNode(p[3])]
+    else:
+        p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2]), AST.ValueNode(p[3])])
 
 def p_list_separator_advance(p):
     '''
@@ -230,12 +240,6 @@ def p_list_separator_advance(p):
     if not isinstance(p[1], AST.ValueNode):
         p[1] = AST.ValueNode(p[1])
     p[0].children.insert(0, p[1])
-
-def p_list_list(p):
-    '''
-    list : list_separator
-    '''
-    p[0] = p[1]
 
 def p_list_rec(p):
     '''
