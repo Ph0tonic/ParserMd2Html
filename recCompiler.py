@@ -62,12 +62,14 @@ def compile(self):
 
 @addToClass(AST.OpNode)
 def execute(self):
-
 	def opToNumber(value):
 		if isinstance(value, AST.OpNode):
 			return value.execute()
+		if isinstance(value, AST.VariableNode):
+			return vars[value.value]
 		else:
 			return value
+
 
 	args = list(map(opToNumber, self.children))
 
@@ -81,17 +83,17 @@ def execute(self):
 
 	if args[0].unit != '':
 		unit = args[0].unit
-	elif args[1][1] != '' :
+	elif args[1].unit != '' :
 		unit = args[1].unit
 
-	value = reduce(operations[self.op], map(lambda t: t[0], args))
+	value = reduce(operations[self.op], map(lambda t: t.value, args))
 
 	return AST.NumberNode(value, unit)
 
 @addToClass(AST.OpNode)
 def compile(self):
 	result = self.execute()
-	return f'{result[0]}{result[1]}'
+	return f'{result.value}{result.unit}'
 
 @addToClass(AST.StatementNode)
 def compile(self, selectors = ''):
@@ -122,13 +124,20 @@ def compile(self):
 
 @addToClass(AST.AssignNode)
 def compile(self):
-	vars[self.children[0].value] = self.children[1].compile()
+	data = self.children[1]
+
+	if isinstance(data, AST.ValuesNode) and len(data.children) == 1:
+		data = data.children[0].value
+	if isinstance(data, AST.OpNode):
+		data = data.execute()
+
+	vars[self.children[0].value] = data
 	return ""
 
 @addToClass(AST.VariableNode)
 def compile(self):
 	try:
-		return vars[self.value]
+		return vars[self.value].compile()
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
 
@@ -198,6 +207,7 @@ def compile(self):
 @addToClass(AST.WhileNode)
 def compile(self):
 	compiledStr = ""
+	i = 0
 
 	while self.children[0].compile():
 		compiledStr += self.children[1].compile()
