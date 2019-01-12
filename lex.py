@@ -74,7 +74,7 @@ def t_NUMBER(t): # 5px*10px
 # t_FUNC_CSSV = ''
 
 def t_VARIABLE(t):
-	r'\$\w[A-Za-z-]+'
+	r'\$\w[A-Za-z-]*'
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t

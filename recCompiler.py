@@ -34,6 +34,10 @@ def compileListToString(list, separator = ''):
 def compile(self):
 	if isinstance(self.value, AST.NumberNode):
 		return self.value.compile()
+	elif isinstance(self.value, AST.OpNode):
+		return self.value.compile()
+	elif isinstance(self.value, AST.VariableNode):
+		return self.value.compile()
 	else:
 		return str(self.value)
 
@@ -58,9 +62,16 @@ def compile(self):
 
 @addToClass(AST.OpNode)
 def execute(self):
-	args = [c.execute() for c in self.children]
 
-	if args[0][1] != args[1][1] and args[1][1] != '' and args[0][1] != '':
+	def opToNumber(value):
+		if isinstance(value, AST.OpNode):
+			return value.execute()
+		else:
+			return value
+
+	args = list(map(opToNumber, self.children))
+
+	if len(args) > 1 and args[0].unit != args[1].unit and args[1].unit != '' and args[0].unit != '':
 		raise Exception('unit is different')
 
 	if len(args) == 1:
@@ -68,14 +79,14 @@ def execute(self):
 
 	unit = ''
 
-	if args[0][1] != '':
-		unit = args[0][1]
+	if args[0].unit != '':
+		unit = args[0].unit
 	elif args[1][1] != '' :
-		unit = args[1][1]
+		unit = args[1].unit
 
 	value = reduce(operations[self.op], map(lambda t: t[0], args))
 
-	return AST.NumberNode(value, unit).execute()
+	return AST.NumberNode(value, unit)
 
 @addToClass(AST.OpNode)
 def compile(self):
@@ -144,14 +155,17 @@ def compile(self):
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
 
-	mappedValue = map(lambda val: val.value, mixin.parameters.children)
-	list_identifier = list(filter(lambda val: val != ",", mappedValue))
-	list_value = list(map(lambda val: val.compile(), self.children))
+	mappedIdentifier = map(lambda val: val.value, mixin.parameters.children)
+	listIdentifier = deleteComaFromList(mappedIdentifier)
 
-	if len(list_identifier) != len(list_value):
+
+	mappedValue = map(lambda val: val.compile(), self.children[0].children)
+	listValue = deleteComaFromList(mappedValue)
+
+	if len(listIdentifier) != len(listValue):
 		raise Exception(f"parameters for mixin {self.identifier} not valid")
 
-	mixinVars = dict(zip(list_identifier, list_value))
+	mixinVars = dict(zip(listIdentifier, listValue))
 	vars = {**vars, **mixinVars}
 
 	compiledMixin = mixin.execute()
@@ -183,7 +197,12 @@ def compile(self):
 
 @addToClass(AST.WhileNode)
 def compile(self):
-	return ""
+	compiledStr = ""
+
+	while self.children[0].compile():
+		compiledStr += self.children[1].compile()
+
+	return compiledStr
 
 @addToClass(AST.ImportNode)
 def compile(self):
@@ -202,6 +221,9 @@ def compile(self):
 		return extendsRules[self.identifier]
 	except KeyError:
 		raise Exception(f"extend {self.identifier} does not exist") from None
+
+def deleteComaFromList(listToFilter):
+	return list(filter(lambda val: val != ",", listToFilter))
 
 def getFileName(path):
 	return path.split("/")[-1].split('.')[0]

@@ -1,5 +1,6 @@
+$test : true;
 nav {
-    $test : true;
+
     @if $test == true {
         padding : 1px;
     }

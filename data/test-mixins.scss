@@ -3,7 +3,7 @@
 }
 
 @mixin margin($side, $topbottom) {
-  margin: $topbottom;
+  margin: $topbottom $side;
 }
 
 $hello : hello;
@@ -12,5 +12,5 @@ $hello : hello;
   display: block;
 
   @include transform(rotate);
-  //@include margin(hello, hello);
+  @include margin(hello, hello);
 }
