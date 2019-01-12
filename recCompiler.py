@@ -141,7 +141,10 @@ def compile(self):
 @addToClass(AST.VariableNode)
 def compile(self):
 	try:
-		return vars[self.value].compile()
+		if isinstance(vars[self.value], AST.Node):
+			return vars[self.value].compile()
+		else:
+			return vars[self.value]
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
 
