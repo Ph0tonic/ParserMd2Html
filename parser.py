@@ -417,7 +417,6 @@ precedence = (
     ('right', 'MIXIN'),
     ('right', 'INCLUDE'),
 	('right', '@'),
-    # ('right', 'UMINUS'),
 )
 
 def parse(program):

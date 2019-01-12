@@ -1,13 +1,66 @@
+// Import colors settings
+@import 'colors';
+
+// Some test with string value
 $other: single;
 
 p {
   @if $other == single {
-    color: blue;
+    color: $main-color;
   }
   @else if $other == double {
-    color: red;
+    color: $secondary-color;
   }
   @else {
-    color: green;
+    color: $third-color;
   }
 }
+
+// Generate a list of item with the width from 3px to 7px
+$i: 1;
+
+@while $i < 7 {
+    .item {
+        width: 2px + $i;
+    }
+    $i: $i + 2;
+}
+
+// Some functions
+@mixin transform($property) {
+    transform: $property;
+}
+  
+@mixin margin($side, $topbottom) {
+    margin: $topbottom $side;
+}
+
+.box {
+    display: block;
+
+    @include transform(rotate);
+    @include margin(hello, hello);
+}
+
+// Extend functionnality
+%message-shared {
+    border: 1px solid #ccc;
+    padding: 10px;
+    color: #333;
+}
+  
+// This CSS won't print because %equal-heights is never extended
+%special-btn {
+    display: flex;
+    flex-wrap: wrap;
+}
+  
+.message {
+    @extend %message-shared;
+}
+  
+.success {
+    @extend %message-shared;
+    border-color: green;
+}
+
