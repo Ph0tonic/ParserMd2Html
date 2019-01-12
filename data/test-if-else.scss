@@ -1,0 +1,13 @@
+$other: single;
+
+p {
+  @if $other == single {
+    color: blue;
+  }
+  @else if $other == double {
+    color: red;
+  }
+  @else {
+    color: green;
+  }
+}
