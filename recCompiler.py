@@ -137,16 +137,20 @@ def compile(self):
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
 
-	list_identifier = list(map(lambda value: value.value, mixin.parameters.children))
-	list_value = list(map(lambda value: value.compile(), self.children))
+	mappedValue = map(lambda val: val.value, mixin.parameters.children)
+	list_identifier = list(filter(lambda val: val != ",", mappedValue))
+	list_value = list(map(lambda val: val.compile(), self.children))
 
 	if len(list_identifier) != len(list_value):
 		raise Exception(f"parameters for mixin {self.identifier} not valid")
 
 	mixinVars = dict(zip(list_identifier, list_value))
 	vars = {**vars, **mixinVars}
-	
-	return mixin.execute()
+
+	compiledMixin = mixin.execute()
+	vars = savedVarsState
+
+	return compiledMixin
 
 @addToClass(AST.IfNode)
 def compile(self):
