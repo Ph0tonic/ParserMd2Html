@@ -5,7 +5,8 @@ nav {
         padding : 1px;
     }
 
-    @if $test == true or not true != not false {
+    $bool : true;
+    @if ($bool == true) or not (true != not false) {
         margin : 5px;
     }
 

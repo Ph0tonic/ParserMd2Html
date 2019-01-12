@@ -67,11 +67,9 @@ def t_MUL_OP(t):
 	r'[*/]'
 	return t
 
-def t_NUMBER(t): # 5px*10px
+def t_NUMBER(t):
 	r'\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
 	return t
-
-# t_FUNC_CSSV = ''
 
 def t_VARIABLE(t):
 	r'\$\w[A-Za-z-]*'

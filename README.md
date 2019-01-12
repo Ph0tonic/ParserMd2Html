@@ -16,17 +16,14 @@ Here is a simple basic Sass compiler.
 - ADD_OP -> Opération + ou - arithmétique -> 2 + $salut
 - MUL_OP -> Opération * ou / arithmétique -> 4 \* $salut
 - NUMBER -> nombre avec ou sans une unité -> 5px, 5, 5cm
-- SELECTOR -> un sélecteur HTML -> .salut, #salut, p
-- SEPARATOR -> separateur de plusieurs element css -> '<', '>', ' ', ','
-- VARIABLE -> Identifieur d'une variable -> $salut
 - STRING_VALUE -> valeur css -> none, inherit
-
+- VARIABLE -> Identifieur d'une variable -> $salut
 
 # PARSER
 
 p // SELECTOR
 {
-  border-left: 1px solid left; // STR_VALUE : VALUE VALUE VALUE; -> RULE
+  border-left: 1px solid left; // STRING_VALUE : VALUE VALUE VALUE; -> RULE
 } // STATEMENT
 
 # INPUT / OUPUT
@@ -75,4 +72,4 @@ nav a {
 - [x] @import
 
 # TODO :
-- [ ] Create folder "compiled" in recCompiler.py
+- [ ] Améliorer le graph afin d'afficher plus d'informations sur certains noeuds.

@@ -6,9 +6,9 @@
 
 .message {
   @extend %message-shared;
-  test: value;
+  display: flex;
 }
 
 .success {
-  test: value;
+  display: grid;
 }
