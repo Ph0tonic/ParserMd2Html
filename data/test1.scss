@@ -57,6 +57,7 @@ nav, #id {
   $num : 0;
 
   @while $test {
+    $test : false;
     padding: $num+1;
   }
 
