@@ -32,11 +32,8 @@ def compileListToString(list, separator = ''):
 
 @addToClass(AST.ValueNode)
 def compile(self):
-	if isinstance(self.value, AST.NumberNode):
-		return self.value.compile()
-	elif isinstance(self.value, AST.OpNode):
-		return self.value.compile()
-	elif isinstance(self.value, AST.VariableNode):
+	# if the node can be compiled, compile it
+	if isinstance(self.value, AST.NumberNode) or isinstance(self.value, AST.OpNode) or isinstance(self.value, AST.VariableNode):
 		return self.value.compile()
 	else:
 		return str(self.value)
@@ -63,6 +60,7 @@ def compile(self):
 @addToClass(AST.OpNode)
 def execute(self):
 
+	# function for incoming mapping, transform it if it's a variable node or opnode
 	def opToNumber(value):
 		if isinstance(value, AST.OpNode):
 			return value.execute()
@@ -71,13 +69,14 @@ def execute(self):
 		else:
 			return value
 
-
+	# the two values
 	args = list(map(opToNumber, self.children))
 
+	# EXCEPTIONS HANDLING
 	if len(args) > 1 and args[0].unit != args[1].unit and args[1].unit != '' and args[0].unit != '':
 		raise Exception('unit is different')
 
-	if not isinstance(args[0], AST.NumberNode) or len(args > 1) and not isinstance(args[1], AST.NumberNode):
+	if not isinstance(args[0], AST.NumberNode) or len(args) > 1 and not isinstance(args[1], AST.NumberNode):
 		raise Exception('Operation with a non-number')
 
 	if len(args) == 1:
@@ -85,6 +84,7 @@ def execute(self):
 
 	unit = ''
 
+	# give the right unit
 	if args[0].unit != '':
 		unit = args[0].unit
 	elif args[1].unit != '' :
@@ -104,16 +104,19 @@ def compile(self, selectors = ''):
 	selector = self.children[0]
 	selectorString = f"{selectors}{selector.compile()} "
 
+	# preparation for the nested statement ode
 	compiledNested = ""
 	compiledContent = ""
 	compiledString = ""
 
+	# compile the statement and the nested statement in 2 different strings
 	for child in self.children[1:]:
 		if isinstance(child, AST.StatementNode):
 			compiledNested += f"{child.compile(selectorString)}"
 		else:
 			compiledContent += child.compile()
 
+	# if there is no rule, only add nested statement
 	if compiledContent == "":
 		compiledString = f"{compiledNested}\n"
 	else:
@@ -130,6 +133,7 @@ def compile(self):
 def compile(self):
 	data = self.children[1]
 
+	# check if we can reduce the hierarchy of the nodes
 	if isinstance(data, AST.ValuesNode) and len(data.children) == 1:
 		data = data.children[0].value
 	if isinstance(data, AST.OpNode):
@@ -164,20 +168,24 @@ def execute(self):
 @addToClass(AST.IncludeNode)
 def compile(self):
 	global vars
-	savedVarsState = vars
+	savedVarsState = vars # save the vars to restore it when exiting the mixin
 
+	# get the mixin if it exists
 	try:
 		mixin = mixins[self.identifier]
 	except KeyError:
 		raise Exception(f"Variable {self.value} doesn't exist") from None
 
+	# if there is some parameters handle it
 	if mixin.parameters != None:
+		# merge the vars of the file + the parameter of the mixin
 		mappedIdentifier = map(lambda val: val.value, mixin.parameters.children)
 		listIdentifier = deleteComaFromList(mappedIdentifier)
 
 		mappedValue = map(lambda val: val.compile(), self.children[0].children)
 		listValue = deleteComaFromList(mappedValue)
 
+		# if parameters aren't good, too many, not enough
 		if len(listIdentifier) != len(listValue):
 			raise Exception(f"parameters for mixin {self.identifier} not valid")
 
@@ -251,6 +259,9 @@ def getFileName(path):
 	return path.split("/")[-1].split('.')[0]
 
 def compile(stringToCompile):
+	'''
+	main function for compilation
+	'''
 	ast = parse(stringToCompile)
 	compiledString = ast.compile()
 
