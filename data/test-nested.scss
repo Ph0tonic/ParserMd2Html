@@ -10,8 +10,13 @@ nav, #id {
 #id, body, nav {
 
 }
-#id, body {
-  ul > li {
+#id body, test {
+  #id ul > li {
+    padding: 0;
+    list-style: 12;
+  }
+
+  li #id > li li {
     padding: 0;
     list-style: 12;
   }

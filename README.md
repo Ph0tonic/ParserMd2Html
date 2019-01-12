@@ -76,3 +76,8 @@ nav a {
 
 ## Eventually
 - [ ] @each
+
+
+TODO Bastien:
+- import + "file path"
+- list_values with ','
