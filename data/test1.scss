@@ -2,23 +2,25 @@ nav, nav {
 
 }
 #id, body {
-  
+
 }
 nav, #id {
-  
+
 }
 #id, body, nav {
-  
+
 }
 #id, body {
   // Amazing comment
-  @mixin test($test, $bastien){
+  @mixin test {
     margin : 12px ;
   }
 
-  @include test ;
+  @include test;
 
   $margin : 12px 43px;
+
+  $test : true;
 
   @if $test {
     padding : 1px;
@@ -52,8 +54,10 @@ nav, #id {
     padding : 1px;
   }
 
+  $num : 0;
+
   @while $test {
-    padding: $test+1;
+    padding: $num+1;
   }
 
   ul > li {
