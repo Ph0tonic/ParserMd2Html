@@ -1,26 +1,13 @@
-$i: 1;
+$other: single;
 
-@while $i < 5 {
-    $i: $i + 2;
-    .item {
-        width: 2px + $i;
-    }
+p {
+  @if $other == single {
+    color: blue;
+  }
+  @else if $other == double {
+    color: red;
+  }
+  @else {
+    color: green;
+  }
 }
-
-@mixin transform() {
-    transform: $property;
-}
-  
-@mixin margin($side, $topbottom) {
-    margin: $topbottom $side;
-}
-
-$hello : hello;
-
-.box {
-    display: block;
-
-    @include transform(rotate);
-    @include margin(hello, hello);
-}
-
