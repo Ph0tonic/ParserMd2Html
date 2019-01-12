@@ -111,6 +111,7 @@ class MixinNode(Node):
     type = 'MixinNode'
     def __init__(self, identifier, parameters, children):
         Node.__init__(self, children)
+        self.parameters = parameters
         self.identifier = identifier
 
 class IncludeNode(Node):

@@ -15,9 +15,10 @@ operations = {
 
 vars = {}
 extendsRules = {}
+mixins = {}
 lineSeperator = '\n'
 
-def compileListToString(list, separator):
+def compileListToString(list, separator = ''):
 	compiledString = separator.join([element.compile() for element in list])
 
 	return compiledString
@@ -118,11 +119,34 @@ def compile(self):
 
 @addToClass(AST.MixinNode)
 def compile(self):
+	mixins[self.identifier] = self
 	return ""
+
+@addToClass(AST.MixinNode)
+def execute(self):
+	return compileListToString(self.children)
+
 
 @addToClass(AST.IncludeNode)
 def compile(self):
-	return ""
+	global vars
+	savedVarsState = vars
+
+	try:
+		mixin = mixins[self.identifier]
+	except KeyError:
+		raise Exception(f"Variable {self.value} doesn't exist") from None
+
+	list_identifier = list(map(lambda value: value.value, mixin.parameters.children))
+	list_value = list(map(lambda value: value.compile(), self.children))
+
+	if len(list_identifier) != len(list_value):
+		raise Exception(f"parameters for mixin {self.identifier} not valid")
+
+	mixinVars = dict(zip(list_identifier, list_value))
+	vars = {**vars, **mixinVars}
+	
+	return mixin.execute()
 
 @addToClass(AST.IfNode)
 def compile(self):
