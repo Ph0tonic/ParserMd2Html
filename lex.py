@@ -29,7 +29,7 @@ tokens = [
 	'SELECTOR_EXTEND',
  ] + list(reserved_words.values())
 
-literals = '@();:{},'
+literals = '@();:{},\''
 
 def t_IF(t):
 	r'@if'

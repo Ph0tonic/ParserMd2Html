@@ -90,7 +90,7 @@ def p_import(p):
     '''
     statement : '@' IMPORT FILE_PATH ';'
     '''
-    p[0] = AST.ImportNode(p[3])
+    p[0] = AST.ImportNode(p[3].replace("'", ""))
 
 def p_mixin(p):
     '''
@@ -272,7 +272,7 @@ def p_list(p):
     if not isinstance(p[2], AST.ValueNode):
         p[2] = AST.ValueNode(p[2])
     p[0] = AST.ValuesNode([p[1], p[2]])
-    
+
 def p_expression_operation(p):
     '''
     expression : expression ADD_OP expression
@@ -366,9 +366,12 @@ def p_variable(p):
 #     else:
 #         print ("Sytax error: unexpected end of file!")
 
-def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+def p_error(p):
+    if p:
+        print ("Syntax error in line %d" % p.lineno)
+        yacc.errok()
+    else:
+        print ("Sytax error: unexpected end of file!")
 
 precedence = (
     ('nonassoc', 'NUMBER'),

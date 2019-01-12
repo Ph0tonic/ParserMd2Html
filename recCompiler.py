@@ -1,6 +1,9 @@
 import AST
 from AST import addToClass
+from parser import parse
+
 from functools import reduce
+import os
 
 operations = {
 	'+' : lambda x,y: x+y,
@@ -126,7 +129,6 @@ def compile(self):
 def execute(self):
 	return compileListToString(self.children)
 
-
 @addToClass(AST.IncludeNode)
 def compile(self):
 	global vars
@@ -168,6 +170,12 @@ def compile(self):
 def compile(self):
 	return ""
 
+@addToClass(AST.ImportNode)
+def compile(self):
+	prog = open(f"data/{self.value}.scss").read()
+
+	return compile(prog)
+
 @addToClass(AST.ExtendNodeDefine)
 def compile(self):
 	extendsRules[self.identifier] = self.children[0].compile()
@@ -183,12 +191,18 @@ def compile(self):
 def getFileName(path):
 	return path.split("/")[-1].split('.')[0]
 
+def compile(stringToCompile):
+	ast = parse(stringToCompile)
+	compiledString = ast.compile()
+
+	return compiledString
+
+
 if __name__ == "__main__" :
-	from parser import parse
 	import sys
 	prog = open(sys.argv[1]).read()
-	ast = parse(prog)
-	compiledString = ast.compile()
+
+	compiledString = compile(prog)
 	pathCompiled = f'compiled/{getFileName(sys.argv[1])}.css'
 
 	with open(pathCompiled, 'w') as f :
