@@ -370,7 +370,7 @@ if __name__ == "__main__":
     import sys
 
     prog = open(sys.argv[1]).read()
-    result = yacc.parse(prog, debug = True)
+    result = yacc.parse(prog, debug = False)
     if result:
         import os
         graph = result.makegraphicaltree()
