@@ -15,7 +15,7 @@ def p_program_recursive(p):
     try:
         p[1].children.append(p[2])
         p[0] = p[1]
-    except:
+    except IndexError:
         p[0] = AST.ProgramNode([p[1]])
 
 def p_statement(p):
@@ -148,7 +148,7 @@ def p_if(p):
     '''
     try:
         p[0] = AST.IfNode([p[2], p[3], p[4]])
-    except:
+    except IndexError:
         p[0] = AST.IfNode([p[2], p[3]])
 
 def p_else_if_block(p):
@@ -377,17 +377,6 @@ def p_variable(p):
     '''
     p[0] = AST.VariableNode(p[1])
 
-# def p_minus(p):
-#     ''' expression : ADD_OP expression %prec UMINUS'''
-#     p[0] = AST.OpNode(p[1], [p[2]])
-
-# def p_error(p):
-#     if p:
-#         print ("Syntax error in line %d" % p.lineno)
-#         yacc.errok()
-#     else:
-#         print ("Sytax error: unexpected end of file!")
-
 def p_error(p):
     if p:
         print ("Syntax error in line %d" % p.lineno)
@@ -403,20 +392,20 @@ precedence = (
     ('nonassoc', 'FILE_PATH'),
     ('nonassoc', 'TRUE'),
 	('nonassoc', 'FALSE'),
-    ('left', 'AND'),
-    ('left', 'OR'),
-    ('left', 'LGTE_OP'),
-    ('left', 'GT_OP'),
-    ('left', 'COMP_OP'),
-    ('left', 'ADD_OP'),
-    ('left', 'MUL_OP'),
-    ('right', 'NOT'),
-    ('left', 'IF'),
-    ('left', 'ELIF'),
-    ('left', 'ELSE'),
     ('right', 'MIXIN'),
     ('right', 'INCLUDE'),
 	('right', '@'),
+    ('left', 'IF'),
+    ('left', 'ELIF'),
+    ('left', 'ELSE'),
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'COMP_OP'),
+    ('left', 'LGTE_OP'),
+    ('left', 'GT_OP'),
+    ('left', 'ADD_OP'),
+    ('left', 'MUL_OP'),
+    ('right', 'NOT'),
 )
 
 def parse(program):
@@ -426,9 +415,9 @@ yacc.yacc(outputdir='generated')
 
 if __name__ == "__main__":
     import sys
-
     prog = open(sys.argv[1]).read()
     result = yacc.parse(prog, debug = False)
+    
     if result:
         import os
         graph = result.makegraphicaltree()

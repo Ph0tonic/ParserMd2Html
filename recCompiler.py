@@ -21,14 +21,14 @@ operations = {
 	}
 
 vars = {}
-extendsRules = {}
+extends_rules = {}
 mixins = {}
-lineSeperator = '\n'
+LINE_SEPARATOR = '\n'
 
 def compileListToString(list, separator = ''):
-	compiledString = separator.join([element.compile() for element in list])
+	compiled_string = separator.join([element.compile() for element in list])
 
-	return compiledString
+	return compiled_string
 
 @addToClass(AST.ValueNode)
 def compile(self):
@@ -40,8 +40,8 @@ def compile(self):
 
 @addToClass(AST.NumberNode)
 def compile(self):
-	compiledStr = f'{self.value}{self.unit}'
-	return compiledStr
+	compiled_string = f'{self.value}{self.unit}'
+	return compiled_string
 
 @addToClass(AST.ValuesNode)
 def compile(self):
@@ -105,24 +105,24 @@ def compile(self, selectors = ''):
 	selectorString = f"{selectors}{selector.compile()} "
 
 	# preparation for the nested statement ode
-	compiledNested = ""
-	compiledContent = ""
-	compiledString = ""
+	compiled_nested = ""
+	compiled_content = ""
+	compiled_string = ""
 
 	# compile the statement and the nested statement in 2 different strings
 	for child in self.children[1:]:
 		if isinstance(child, AST.StatementNode):
-			compiledNested += f"{child.compile(selectorString)}"
+			compiled_nested += f"{child.compile(selectorString)}"
 		else:
-			compiledContent += child.compile()
+			compiled_content += child.compile()
 
 	# if there is no rule, only add nested statement
-	if compiledContent == "":
-		compiledString = f"{compiledNested}\n"
+	if compiled_content == "":
+		compiled_string = f"{compiled_nested}\n"
 	else:
-		compiledString = f"{selectorString}  {{ \n{compiledContent}}}\n{compiledNested}\n"
+		compiled_string = f"{selectorString}  {{ \n{compiled_content}}}\n{compiled_nested}\n"
 
-	return compiledString
+	return compiled_string
 
 @addToClass(AST.ProgramNode)
 def compile(self):
@@ -168,7 +168,7 @@ def execute(self):
 @addToClass(AST.IncludeNode)
 def compile(self):
 	global vars
-	savedVarsState = vars # save the vars to restore it when exiting the mixin
+	saved_vars_state = vars # save the vars to restore it when exiting the mixin
 
 	# get the mixin if it exists
 	try:
@@ -179,24 +179,24 @@ def compile(self):
 	# if there is some parameters handle it
 	if mixin.parameters != None:
 		# merge the vars of the file + the parameter of the mixin
-		mappedIdentifier = map(lambda val: val.value, mixin.parameters.children)
-		listIdentifier = deleteComaFromList(mappedIdentifier)
+		mapped_identifier = map(lambda val: val.value, mixin.parameters.children)
+		list_identifier = deleteComaFromList(mapped_identifier)
 
-		mappedValue = map(lambda val: val.compile(), self.children[0].children)
-		listValue = deleteComaFromList(mappedValue)
+		mapped_value = map(lambda val: val.compile(), self.children[0].children)
+		listValue = deleteComaFromList(mapped_value)
 
 		# if parameters aren't good, too many, not enough
-		if len(listIdentifier) != len(listValue):
+		if len(list_identifier) != len(listValue):
 			raise Exception(f"parameters for mixin {self.identifier} not valid")
 
-		mixinVars = dict(zip(listIdentifier, listValue))
-		vars = {**vars, **mixinVars}
+		mixin_vars = dict(zip(list_identifier, listValue))
+		vars = {**vars, **mixin_vars}
 
 
-	compiledMixin = mixin.execute()
-	vars = savedVarsState
+	compiled_mixin = mixin.execute()
+	vars = saved_vars_state
 
-	return compiledMixin
+	return compiled_mixin
 
 @addToClass(AST.IfNode)
 def compile(self):
@@ -226,13 +226,13 @@ def compile(self):
 
 @addToClass(AST.WhileNode)
 def compile(self):
-	compiledStr = ""
+	compiled_string = ""
 	i = 0
 
 	while self.children[0].compile():
-		compiledStr += self.children[1].compile()
+		compiled_string += self.children[1].compile()
 
-	return compiledStr
+	return compiled_string
 
 @addToClass(AST.ImportNode)
 def compile(self):
@@ -242,38 +242,42 @@ def compile(self):
 
 @addToClass(AST.ExtendNodeDefine)
 def compile(self):
-	extendsRules[self.identifier] = self.children[0].compile()
+	extends_rules[self.identifier] = self.children[0].compile()
 	return ""
 
 @addToClass(AST.ExtendNode)
 def compile(self):
 	try:
-		return extendsRules[self.identifier]
+		return extends_rules[self.identifier]
 	except KeyError:
 		raise Exception(f"extend {self.identifier} does not exist") from None
 
-def deleteComaFromList(listToFilter):
-	return list(filter(lambda val: val != ",", listToFilter))
+def deleteComaFromList(list_to_filter):
+	return list(filter(lambda val: val != ",", list_to_filter))
 
 def getFileName(path):
 	return path.split("/")[-1].split('.')[0]
 
-def compile(stringToCompile):
+def compile(string_to_compile):
 	'''
 	main function for compilation
 	'''
-	ast = parse(stringToCompile)
-	compiledString = ast.compile()
+	ast = parse(string_to_compile)
+	compiled_string = ast.compile()
 
-	return compiledString
+	return compiled_string
 
+def compile_file(file_path):
+	'''
+	Function allowing to compile a file
+	'''
+	prog = open(file_path).read()
+	compiled_string = compile(prog)
+	path_compiled = f'compiled/{getFileName(file_path)}.css'
+
+	with open(path_compiled, 'w') as f :
+		f.write(compiled_string)
 
 if __name__ == "__main__" :
 	import sys
-	prog = open(sys.argv[1]).read()
-
-	compiledString = compile(prog)
-	pathCompiled = f'compiled/{getFileName(sys.argv[1])}.css'
-
-	with open(pathCompiled, 'w') as f :
-		f.write(compiledString)
+	compile_file(sys.argv[1])

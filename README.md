@@ -66,18 +66,13 @@ nav a {
 
 # Fonctionnalities to implement
 - [x] Nested
-- [ ] @if / @elseif
-- [ ] @while
-- [ ] @mixin / @include
-- [ ] @extend
-- [ ] Operators
-- [ ] Variables
-- [ ] @import
+- [x] @if / @elseif
+- [x] @while
+- [x] @mixin / @include
+- [x] @extend
+- [x] Operators
+- [x] Variables
+- [x] @import
 
-## Eventually
-- [ ] @each
-
-
-TODO Bastien:
-- import + "file path"
-- list_values with ','
+# TODO :
+- [ ] Create folder "compiled" in recCompiler.py
