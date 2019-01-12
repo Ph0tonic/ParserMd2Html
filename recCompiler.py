@@ -273,6 +273,12 @@ def compile_file(file_path):
 	'''
 	prog = open(file_path).read()
 	compiled_string = compile(prog)
+
+	try:
+		os.mkdir('./compiled/')
+	except FileExistsError:
+		pass
+
 	path_compiled = f'compiled/{getFileName(file_path)}.css'
 
 	with open(path_compiled, 'w') as f :
