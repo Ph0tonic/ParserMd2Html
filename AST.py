@@ -136,7 +136,7 @@ class WhileNode(Node):
 
 # done
 class BoolNode(Node):
-    type = 'BooleanNode'
+    type = 'BoolNode'
     def __init__(self, value):
         Node.__init__(self)
         self.value = value

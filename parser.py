@@ -229,7 +229,7 @@ def p_list_sep_rec(p):
         |  list_variable ',' STRING_VALUE
     '''
     p[0] = p[1]
-    if not isinstance(p[3], AST.ValueNode):
+    if isinstance(p[3], str):
         p[3] = AST.ValueNode(p[3])
     p[0].children += [AST.ValueNode(p[2]), p[3]]
 
@@ -251,9 +251,9 @@ def p_list_sep(p):
         |  STRING_VALUE ',' expression
         |  STRING_VALUE ',' STRING_VALUE
     '''
-    if not isinstance(p[1], AST.ValueNode):
+    if isinstance(p[1], str):
         p[1] = AST.ValueNode(p[1])
-    if not isinstance(p[3], AST.ValueNode):
+    if isinstance(p[3], str):
         p[3] = AST.ValueNode(p[3])
     p[0] = AST.ValuesNode([p[1], AST.ValueNode(p[2]), p[3]])
 
@@ -275,7 +275,7 @@ def p_list_separator_advance(p):
         |  STRING_VALUE list_separator
     '''
     p[0] = p[2]
-    if not isinstance(p[1], AST.ValueNode):
+    if isinstance(p[1], str):
         p[1] = AST.ValueNode(p[1])
     p[0].children.insert(0, p[1])
 
@@ -289,7 +289,7 @@ def p_list_rec(p):
     p[0] = p[1]
     if isinstance(p[2], AST.ValuesNode):
         p[2] = p[2].children[0]
-    elif not isinstance(p[2], AST.ValueNode):
+    elif isinstance(p[2], str):
         p[2] = AST.ValueNode(p[2])
     p[0].children += [p[2]]
 
@@ -305,9 +305,9 @@ def p_list(p):
         |  expression variable
         |  expression expression
     '''
-    if not isinstance(p[1], AST.ValueNode):
+    if isinstance(p[1], str):
         p[1] = AST.ValueNode(p[1])
-    if not isinstance(p[2], AST.ValueNode):
+    if isinstance(p[2], str):
         p[2] = AST.ValueNode(p[2])
     p[0] = AST.ValuesNode([p[1], p[2]])
 
@@ -356,9 +356,9 @@ def p_expression_comparison(p):
             | STRING_VALUE COMP_OP boolean
             | STRING_VALUE COMP_OP STRING_VALUE
     '''
-    if not isinstance(p[1], AST.ValueNode):
+    if isinstance(p[1], str):
         p[1] = AST.ValueNode(p[1])
-    if not isinstance(p[3], AST.ValueNode):
+    if isinstance(p[3], str):
         p[3] = AST.ValueNode(p[3])
     p[0] = AST.BoolOpNode(p[2], [p[1], p[3]])
 

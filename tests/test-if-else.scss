@@ -1,4 +1,4 @@
-$mode: PRINT; // PRINT | SCREEN | BIG
+$mode: SCREEN; // PRINT | SCREEN | BIG
 $size: 12px;
 
 p {
@@ -14,7 +14,7 @@ p {
 
   // La priorité des opérateurs est respectés
   $bool : false;
-  @if true != not false { //true
+  @if not (true != not false) { //true
     margin : 5px;
   }
 }

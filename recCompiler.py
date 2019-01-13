@@ -46,12 +46,12 @@ operations = {
 	'/' : lambda x,y: x/y,
 	'>' : lambda x,y: x>y,
 	'<' : lambda x,y: x<y,
-	'>=' : lambda x,y: x>=y,
-	'<=' : lambda x,y: x<=y,
-	'==' : lambda x,y: x==y,
-	'!=' : lambda x,y: x!=y,
-	'or' : lambda x,y: x|y,
-	'and' : lambda x,y: x&y
+	'>=' : lambda x,y: x >= y,
+	'<=' : lambda x,y: x <= y,
+	'==' : lambda x,y: x == y,
+	'!=' : lambda x,y: x != y,
+	'or' : lambda x,y: x or y,
+	'and': lambda x,y: x and y
 	}
 
 vars = {}
@@ -253,14 +253,15 @@ def compile(self):
 
 @addToClass(AST.BoolOpNode)
 def compile(self):
+
 	args = [c.compile() for c in self.children]
 
 	if len(args) == 1:
 		return not args[0]
 
 	value = reduce(operations[self.op], args)
-
-	return AST.BoolNode(value).compile()
+	
+	return value
 
 @addToClass(AST.WhileNode)
 def compile(self):
