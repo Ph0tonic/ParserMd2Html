@@ -213,7 +213,26 @@ TODO
 TODO
 
 # Difficultés rencontrés
-TODO
+## Parsage
+La parsage nous a posé beaucoup de problème car la structure des fichiers scss est relativement complexe.
+Certains symboles tel que ">" peuvent avoir plusieurs rôle, en l'occurence il peut représenter un sélecteur css mais également un opérateur de comparaison de valeurs numériques.
+
+Notre première version du parser fonctionnait mais de nombreux shift/reduce étaient présent et malgrès plusieurs heures à tenter de les résoudre en analysant les fichiers "parser.out" et "parsetab.py". La seule solution a été de repartir de zéro ce qui nous a permis de mieux comprendre le fonction d'un parseur LALR notemment le système des précédences.
+
+Une autre problématique que nous avons rencontré concerne les string, en effet celles-ci se trouvent à de nombreux endroits comme dans les sélecteurs css mais également dans les propriétés et valeurs css. Celles-ci peuvent également être séparées par des virgules lors d'appels de fonctions ou dans les selectors. Une propriétés css peut contenir une valeur mais également un liste de valeurs tel que des valeurs numériques, des variables et des string ou encore des expressions numériques.
+
+Nous avons également valider que la déclaration d'une mixin soit possible avec le nombre de paramètres voulu et en incluant la symplification syntaxique tel:
+```scss
+@mixin transform() { ... }
+@mixin empty { ... }  //no parenthesis needed
+@mixin margin($side, $topbottom) { ... }
+
+@include transform; //no parenthesis needed
+@include empty();
+@include margin($test, 12px);
+```
+
+## TODO compiler
 
 # Améliorations
 TODO
