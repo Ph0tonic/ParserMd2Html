@@ -219,6 +219,45 @@ def p_list_variable(p):
 		p[0] = AST.ValuesNode([p[1], AST.ValueNode(p[2]), p[3]])
 
 def p_list_sep_rec(p):
+<<<<<<< HEAD
+    '''
+    list : list ',' boolean
+        |  list ',' variable
+        |  list ',' expression
+        |  list ',' STRING_VALUE
+        |  list_variable ',' boolean
+        |  list_variable ',' expression
+        |  list_variable ',' STRING_VALUE
+    '''
+    p[0] = p[1]
+    if isinstance(p[3], str):
+        p[3] = AST.ValueNode(p[3])
+    p[0].children += [AST.ValueNode(p[2]), p[3]]
+
+def p_list_sep(p):
+    '''
+    list : boolean ',' boolean
+        |  boolean ',' variable
+        |  boolean ',' expression
+        |  boolean ',' STRING_VALUE
+        |  variable ',' boolean
+        |  variable ',' expression
+        |  variable ',' STRING_VALUE
+        |  expression ',' boolean
+        |  expression ',' variable
+        |  expression ',' expression
+        |  expression ',' STRING_VALUE
+        |  STRING_VALUE ',' boolean
+        |  STRING_VALUE ',' variable
+        |  STRING_VALUE ',' expression
+        |  STRING_VALUE ',' STRING_VALUE
+    '''
+    if isinstance(p[1], str):
+        p[1] = AST.ValueNode(p[1])
+    if isinstance(p[3], str):
+        p[3] = AST.ValueNode(p[3])
+    p[0] = AST.ValuesNode([p[1], AST.ValueNode(p[2]), p[3]])
+=======
 	'''
 	list : list ',' boolean
 		|  list ',' variable
@@ -256,6 +295,7 @@ def p_list_sep(p):
 	if not isinstance(p[3], AST.ValueNode):
 		p[3] = AST.ValueNode(p[3])
 	p[0] = AST.ValuesNode([p[1], AST.ValueNode(p[2]), p[3]])
+>>>>>>> 624bcd8beac249afd0632e01ab69712633adf178
 
 def p_list_separator(p):
 	'''
@@ -269,6 +309,49 @@ def p_list_separator(p):
 		p[0] = AST.ValuesNode([AST.ValueNode(p[1]), AST.ValueNode(p[2]), AST.ValueNode(p[3])])
 
 def p_list_separator_advance(p):
+<<<<<<< HEAD
+    '''
+    list : variable list_separator
+        |  expression list_separator
+        |  STRING_VALUE list_separator
+    '''
+    p[0] = p[2]
+    if isinstance(p[1], str):
+        p[1] = AST.ValueNode(p[1])
+    p[0].children.insert(0, p[1])
+
+def p_list_rec(p):
+    '''
+    list : list variable
+        |  list expression
+        |  list STRING_VALUE
+        |  list list_separator
+    '''
+    p[0] = p[1]
+    if isinstance(p[2], AST.ValuesNode):
+        p[2] = p[2].children[0]
+    elif isinstance(p[2], str):
+        p[2] = AST.ValueNode(p[2])
+    p[0].children += [p[2]]
+
+def p_list(p):
+    '''
+    list : STRING_VALUE STRING_VALUE
+        |  STRING_VALUE variable
+        |  STRING_VALUE expression
+        |  variable STRING_VALUE
+        |  variable variable
+        |  variable expression
+        |  expression STRING_VALUE
+        |  expression variable
+        |  expression expression
+    '''
+    if isinstance(p[1], str):
+        p[1] = AST.ValueNode(p[1])
+    if isinstance(p[2], str):
+        p[2] = AST.ValueNode(p[2])
+    p[0] = AST.ValuesNode([p[1], p[2]])
+=======
 	'''
 	list : variable list_separator
 		|  expression list_separator
@@ -310,6 +393,7 @@ def p_list(p):
 	if not isinstance(p[2], AST.ValueNode):
 		p[2] = AST.ValueNode(p[2])
 	p[0] = AST.ValuesNode([p[1], p[2]])
+>>>>>>> 624bcd8beac249afd0632e01ab69712633adf178
 
 def p_expression_operation(p):
 	'''
@@ -338,6 +422,31 @@ def p_expression_comparison_LGTE(p):
 	p[0] = AST.BoolOpNode(p[2], [p[1], p[3]])
 
 def p_expression_comparison(p):
+<<<<<<< HEAD
+    '''
+    boolean : expression COMP_OP expression
+            | expression COMP_OP variable
+            | expression COMP_OP boolean
+            | expression COMP_OP STRING_VALUE
+            | variable COMP_OP expression
+            | variable COMP_OP variable
+            | variable COMP_OP boolean
+            | variable COMP_OP STRING_VALUE
+            | boolean COMP_OP expression
+            | boolean COMP_OP variable
+            | boolean COMP_OP boolean
+            | boolean COMP_OP STRING_VALUE
+            | STRING_VALUE COMP_OP expression
+            | STRING_VALUE COMP_OP variable
+            | STRING_VALUE COMP_OP boolean
+            | STRING_VALUE COMP_OP STRING_VALUE
+    '''
+    if isinstance(p[1], str):
+        p[1] = AST.ValueNode(p[1])
+    if isinstance(p[3], str):
+        p[3] = AST.ValueNode(p[3])
+    p[0] = AST.BoolOpNode(p[2], [p[1], p[3]])
+=======
 	'''
 	boolean : expression COMP_OP expression
 			| expression COMP_OP variable
@@ -361,6 +470,7 @@ def p_expression_comparison(p):
 	if not isinstance(p[3], AST.ValueNode):
 		p[3] = AST.ValueNode(p[3])
 	p[0] = AST.BoolOpNode(p[2], [p[1], p[3]])
+>>>>>>> 624bcd8beac249afd0632e01ab69712633adf178
 
 def p_boolean_operation(p):
 	'''
