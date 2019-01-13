@@ -453,6 +453,7 @@ except FileExistsError:
 yacc.yacc(outputdir='generated')
 
 if __name__ == "__main__":
+
 	import sys
 	filename = sys.argv[1]
 

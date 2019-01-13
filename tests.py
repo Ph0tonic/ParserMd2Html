@@ -36,7 +36,7 @@ FOLDER = "./tests/"
 
 if __name__ == "__main__":
     p = re.compile('[\w\-\_]*\.(scss){1}')
-
+    
     files = os.listdir(FOLDER)
     files = list(filter(lambda file: p.match(file) != None, files))
     nb_test = len(files)

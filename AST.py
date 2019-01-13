@@ -224,7 +224,7 @@ class RuleNode(Node):
 class OpNode(Node):
     type = "OpNode"
     def __init__(self, op, children):
-        Node.__init__(self,children)
+        Node.__init__(self, children)
         self.op = op
         try:
             self.nbargs = len(children)
