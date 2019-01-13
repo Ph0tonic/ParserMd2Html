@@ -390,7 +390,7 @@ def p_expression(p):
 	'''
 	expression : NUMBER
 	'''
-	prog = re.compile(r'(\d*)(\D*)')
+	prog = re.compile(r'([-+]?[0-9]*\.?[0-9]+)(\D*)')
 	result = prog.match(p[1])
 	groups = result.groups()
 
