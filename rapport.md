@@ -316,7 +316,54 @@ TODO
 TODO
 
 # Guide utilisateur
-TODO
+
+## Bibliothèques requises
+
+- Python3.6
+- Ply
+- yacc
+- Graphviz
+- Pydot
+
+## Lexème
+
+Afin de vérifier l'analyse lexicale, notre programme se lance comme tel :
+
+```sh
+python3 lex.py filename.scss
+```
+
+Cela va afficher les différents lexèmes reconnus par l'applications
+
+## Parsage
+
+Il est possible de parser le document avec la commande
+
+```bash
+python3 paser.py filename.scss
+```
+
+Cela va générer un fichier PDF avec l'arbre. Ce fichier PDF se trouve dans le même dossier que le fichier parsé.
+
+## Compilation
+
+Il est possible de compiler un fichier avec cette commande :
+
+```bash
+python3 recCompiler.py filename.scss
+```
+
+Cela va générer un fichier CSS dans le dossier `compiled/`. Si ce dossier n'existe pas il sera créé.
+
+## Testé le compilateur
+
+Il est possible de lancer tous les testes que nous avons réalisés en lançant le fichier tests.py
+
+```bash
+python3 tests.py
+```
+
+Ce script va ouvrir tous les fichiers scss dans le dossier `tests/` et les compiler
 
 # Difficultés rencontrés
 
