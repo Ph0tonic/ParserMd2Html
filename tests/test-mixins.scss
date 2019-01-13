@@ -13,5 +13,5 @@ $hello : hello;
 
   @include transform(rotate);
   @include margin(hello, hello);
-  @include margin($hello, 12px 5px);
+  @include margin($hello, 12px);
 }

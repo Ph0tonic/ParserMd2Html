@@ -41,7 +41,7 @@ In the same folder a new text file was created : filename.txt. This file contain
 To run parser, run the following command and specify an scss file.
 
 ```bash
-python paser.py filename.scss
+python3 paser.py filename.scss
 ```
 
 In the same folder a new pdf file was created : filename-ast.pdf. This file contains the AST tree.
@@ -49,10 +49,20 @@ In the same folder a new pdf file was created : filename-ast.pdf. This file cont
 ## Compiler
 
 ```bash
-python recCompiler.py filename.scss
+python3 recCompiler.py filename.scss
 ```
 
 In the folder *"generated"* a new css file has been created : filename.css. This file contains the compiled scss of input code.
+
+## Tests
+
+We've created a bunch of basic scss file for our tests in the folder "tests". We although made a script to compile all of them. To run those tests.
+
+```bash
+python3 tests.py
+```
+
+This script will generate all files located in the folder "tests" into the folder generated.
 
 # INPUT / OUPUT example
 
