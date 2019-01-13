@@ -46,12 +46,12 @@ operations = {
 	'/' : lambda x,y: x/y,
 	'>' : lambda x,y: x>y,
 	'<' : lambda x,y: x<y,
-	'>=' : lambda x,y: x >= y,
-	'<=' : lambda x,y: x <= y,
-	'==' : lambda x,y: x == y,
-	'!=' : lambda x,y: x != y,
-	'or' : lambda x,y: x or y,
-	'and': lambda x,y: x and y
+	'>=' : lambda x,y: x>=y,
+	'<=' : lambda x,y: x<=y,
+	'==' : lambda x,y: x==y,
+	'!=' : lambda x,y: x!=y,
+	'or' : lambda x,y: x|y,
+	'and' : lambda x,y: x&y
 	}
 
 vars = {}
@@ -163,8 +163,8 @@ def compile(self):
 	data = self.children[1]
 
 	# check if we can reduce the hierarchy of the nodes
-	# if isinstance(data, AST.ValuesNode) and len(data.children) == 1:
-	# 	data = data.children[0].value
+	if isinstance(data, AST.ValuesNode) and len(data.children) == 1:
+		data = data.children[0].value
 	if isinstance(data, AST.OpNode):
 		data = data.execute()
 
@@ -245,15 +245,15 @@ def compile(self):
 @addToClass(AST.BoolOpNode)
 def compile(self):
 	# the two values
-	args = list(map(opToResultNode, self.children))
+	args = [c.compile() for c in self.children]
 
 	if len(args) == 1:
 		print(args[0])
 		return not args[0]
 
 	value = reduce(operations[self.op], args)
-	
-	return value
+
+	return AST.BoolNode(value).compile()
 
 @addToClass(AST.WhileNode)
 def compile(self):
@@ -346,9 +346,7 @@ def opToResultNode(value):
 	'''
 	if isinstance(value, AST.OpNode):
 		return value.execute()
-	if isinstance(value, AST.BoolOpNode):
-		return value.compile()
-	if isinstance(value, AST.VariableNode):
+	elif isinstance(value, AST.VariableNode):
 		return vars[value.value]
 	else:
 		return value
