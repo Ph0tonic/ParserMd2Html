@@ -26,6 +26,17 @@ cd SassCompiler
 - Pydot
 - yacc
 
+## Installation de l'environnement de développement Windows
+
+Here is a simple procedure to install python on windows
+
+1. Download version 3.7 of python distrib anaconda https://www.anaconda.com/download/
+2. Install it globaly for all user
+3. Install libgw32c http://gnuwin32.sourceforge.net/packages/libgw32c.htm
+4. And openssl https://www.openssl.org/
+5. Once done restart your windows system
+6. Run the following commands `python -m pip install ply pydot yacc`
+
 # To run our project
 
 ## Lex
@@ -66,7 +77,7 @@ python3 tests.py
 
 This script will generate all files located in the folder "tests" into the folder "generated".
 
-# INPUT / OUPUT example
+# Simple INPUT / OUPUT example
 
 ```scss
 nav {
