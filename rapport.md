@@ -61,9 +61,11 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 Nous avons réussi à réaliser toutes les fonctionnalités listées dans le point précédent. Ce chapitre présente les différentes fonctionnalités présentent dans notre compilateur dans l'ordre de leur implémentation.
 
 ## Parsing de css standard
+
 Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe basique d'un fichier css et de valider qu'il ne manque pas de point virgule ou de fermeture de parenthèses.
 
 ## Gestion du nesting
+
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
 Voici un exemple de code scss:
