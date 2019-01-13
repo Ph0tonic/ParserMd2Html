@@ -1,13 +1,20 @@
-$other: single;
+$mode: PRINT; // PRINT | SCREEN | BIG
+$size: 12px;
 
 p {
-  @if $other == single {
-    color: blue;
+  @if $mode == PRINT {
+    background-color: blue;
   }
-  @else if $other == double {
-    color: red;
+  @else if $mode == SCREEN {
+    display: flex;
   }
   @else {
-    color: green;
+    font-size: 50em;
+  }
+
+  // La priorité des opérateurs est respectés
+  $bool : false;
+  @if true != not false { //true
+    margin : 5px;
   }
 }

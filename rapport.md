@@ -66,7 +66,7 @@ Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe
 ## Gestion du nesting
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
-Voici un example de code scss:
+Voici un exemple de code scss:
 ```scss
 nav {
   ul {
@@ -78,25 +78,68 @@ nav {
     display: block;
     padding: 6px 12px;
   }
+  padding: 12px;
 }
+```
 
+Et voici la sortie qui sera générée:
+
+```css
+nav {
+  padding: 12px;
+}
+nav ul {
+  margin: 0;
+  list-style: none;
+}
+nav li { display: inline-block; }
+nav a {
+  display: block;
+  padding: 6px 12px;
+}
 ```
 
 ## Ajout de variables
-Les variables scss se copmportent de la même manière que dans un language de programmation traditionnel. Elles permettent par exemple de changer une propriété couleur partout dans un projet. Les variables commencent par le symbole $ et voici un exemple de son utilisation.
+
+Les variables scss se copmportent de la même manière que dans un language de programmation traditionnel. Elles permettent par exemple de changer une propriété couleur partout dans un projet. Les variables commencent par le symbole $ et voici un exemple de leurs utilisations.
+
+Dans le cadre d'un framework scss il est très courant d'avoir en début de fichier une liste de variables permettant de configurer de nombreux paramètres pour la générations du fichier css. Un exemple typique est la couleur mais également la police ou encore les dimensions pour n'en citer que quelques uns.
+
 
 ```scss
-$font-stack:    Helvetica, sans-serif;
+$font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 
 body {
   font: 100% $font-stack;
   color: $primary-color;
 }
+
+div {
+  border-color: $primary-color;
+}
+```
+
+Sortie:
+
+```css
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #333;
+}
+
+div {
+  border-color: #333;
+}
 ```
 
 ## Branchements conditionnels
+<<<<<<< HEAD
 Les branchement conditionnels ou en d'autres thermes les "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
+=======
+
+Les branchement conditionnels ou en d'autres thermes les mots clés "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
+>>>>>>> 76e32961e6f92dafd96aacf2ddbb146e86e6d2b9
 
 Les branchements nécessitent l'évaluation d'une condition pour ce faire, les opérateurs de conditions suivants ont étés définis:
 - ==
@@ -105,43 +148,63 @@ nous avons également ajouté les deux mots-clés "true" et "false" quipeuvent �
 - or
 - and
 - not
-Pour finir css défini déjà des type numérique par example "12px". Il est ainsi possible d'utiliser les comparateur numériques suivants:
+Pour finir css défini déjà des type numérique par exemple "12px". Il est ainsi possible d'utiliser les comparateur numériques suivants:
 - \>
 - \>=
 - <
 - <=
 
-Voici un example simple :
+### If, else if, else
+
+Voici un exemple simple :
 
 ```scss
-$other: single;
+$mode: PRINT; // PRINT | SCREEN | BIG
+$size: 12px;
 
 p {
-  @if $other == single {
-    color: blue;
+  @if $mode == PRINT {
+    background-color: blue;
   }
-  @else if $other == double {
-    color: red;
+  @else if $mode == SCREEN {
+    display: flex;
   }
   @else {
-    color: green;
+    font-size; 50em;
   }
-}
 
-$bool : true;
-@if ($bool == true) or not (true != not false) {
-  margin : 5px;
+  // La priorité des opérateurs est respectés
+  $bool : false;
+  @if ($bool == true) or not (true != not false) { //true
+    margin : 5px;
+  }
 }
 ```
 
+Voici ce que produira le code précédent:
+
+```css
+p {
+  display: flex;
+  margin: 5px;
+}
+
+
+```
+
 ## Compilation des valeurs numériques
+<<<<<<< HEAD
 Le css standard ne permet pas de calcul numérique, nous avons ainsi remédier à ce manque ce qui permet de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants oint étés implémentés:
+=======
+
+Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier à ce manque ce qui permet maintenant de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants ont été implémentés:
+>>>>>>> 76e32961e6f92dafd96aacf2ddbb146e86e6d2b9
 - +
 - -
 - /
 - \*
 
-Voici un example:
+Voici un exemple:
 
 ```scss
 $width : 500px;
@@ -155,48 +218,54 @@ nav {
 ## Système d'extend
 Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
 
-TODO
+Dans un code html concret on a souvent ce genre de code:
+```html
+<button class="btn btn-warning"/>
+```
 
+Grace à l'héritage on peut simplifier ce code de la manière suivante:
+```html
+<button class="btn-warning">
+```
 
 ```scss
-%message-shared {
+%btn {
   border: 1px solid #ccc;
   padding: 10px;
   color: #333;
 }
 
-.message {
-  @extend %message-shared;
+.btn-warning {
+  @extend %btn;
+  color: yellow;
 }
 
-.success {
-  @extend %message-shared;
-  border-color: green;
+.btn-success {
+  @extend %btn;
+  color: green;
 }
 
-.error {
-  @extend %message-shared;
-  border-color: red;
-}
 ```
 
 Voici le code généré :
 ```scss
 /* This CSS will print because %message-shared is extended. */
-.message, .success, .error {
+.btn-warning, .btn-success {
   border: 1px solid #ccc;
   padding: 10px;
   color: #333;
 }
 
-.success {
-  border-color: green;
+.btn-warning {
+  color: yellow;
 }
 
-.error {
-  border-color: red;
+.btn-success {
+  color: green;
 }
 ```
+
+Le code devient ainsi plus simple à généraliser.
 
 ## Les mixin et include
 TODO
@@ -248,6 +317,7 @@ python recCompiler.py CHEMIN_DU_FICHIER
 
 # Grammaire
 TODO
+
 
 # Explications et exemples
 TODO
