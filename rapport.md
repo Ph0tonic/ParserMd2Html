@@ -149,7 +149,7 @@ $width : 500px;
 nav {
   margin : 0 - 5px;
   padding : 2px / 4px + 5px;
-  width: $width / 2;
+  width: $width * 0.5;
 }
 ```
 

@@ -114,10 +114,10 @@ def p_attribution(p):
 	'''
 	if isinstance(p[2], AST.ValuesNode):
 		p[0] = p[2]
-	elif isinstance(p[2], AST.VariableNode):
-		p[0] = AST.ValuesNode([p[2]])
-	else:
+	elif isinstance(p[2], str):
 		p[0] = AST.ValuesNode([AST.ValueNode(p[2])])
+	else:
+		p[0] = AST.ValuesNode([p[2]])
 
 def p_import(p):
 	'''
@@ -453,6 +453,7 @@ except FileExistsError:
 yacc.yacc(outputdir='generated')
 
 if __name__ == "__main__":
+
 	import sys
 	filename = sys.argv[1]
 

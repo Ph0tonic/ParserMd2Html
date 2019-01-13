@@ -146,16 +146,6 @@ class BoolNode(Node):
         return repr(self.value)
 
 #done
-class BoolOpNode(Node):
-    type = 'BoolOpNode'
-    def __init__(self, op, children):
-        Node.__init__(self, children)
-        self.op = op
-
-    def __repr__(self):
-        return repr(self.op)
-
-#done
 class ImportNode(Node):
     type = 'ImportNode'
     def __init__(self, value):
@@ -220,6 +210,16 @@ class ValuesNode(Node):
 #done
 class RuleNode(Node):
     type = 'rule'
+
+#done
+class BoolOpNode(Node):
+    type = 'BoolOpNode'
+    def __init__(self, op, children):
+        Node.__init__(self, children)
+        self.op = op
+
+    def __repr__(self):
+        return repr(self.op)
 
 #done
 class OpNode(Node):
