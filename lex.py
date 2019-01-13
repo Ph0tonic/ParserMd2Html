@@ -245,8 +245,6 @@ if __name__ == "__main__":
 		if not tok: break
 		result += "line %d: %s(%s)\n" % (tok.lineno, tok.type, tok.value)
 	
-	print(result)
-	
 	#Store lexem in file
 	if result:
 		import os
