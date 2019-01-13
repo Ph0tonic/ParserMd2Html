@@ -236,7 +236,9 @@ Nous avons également valider que la déclaration d'une mixin soit possible avec
 
 Pour la partie compilation nous avons décidé de compiler de manière récursive afin de pas avoir à se soucier de l'arbre cousu. Bien que notre projet soit un compilateur. Certaines fonctionnalités comme les opérations et les conditions n'étant pas supporter en CSS standard. Le compilateur va exécuter certaines parties de code comme un interpreteur.
 
-Pour cela, certaines opérations seront exécuter et seront vérifiés à la compilation.
+Nous avons suivi la structure des TP du cours. Nous avons donc ajouter une fonctions `compile(self)` à tous nous noeuds via le décorateur `addToClass(object)`. Les noeuds nécessitant une opération exécutée ont également un fonction `execute(self)`.
+
+Pendant la compilation nous vérifions également que les mixins et variables soient bien déclarées avant utilisation et que les fichiers inclus existent.
 
 # Améliorations
 
