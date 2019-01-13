@@ -1,0 +1,18 @@
+$other: single;
+
+p {
+  @if $other == single {
+    color: green;
+    //color: blue;
+  }
+  @else if $other == double {
+    color: red;
+  }
+  @else {
+    color: green;
+  }
+
+  /*@if true{
+      display:flex;
+  }*/
+}
