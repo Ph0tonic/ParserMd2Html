@@ -62,7 +62,7 @@ We've created a bunch of basic scss file for our tests in the folder "tests". We
 python3 tests.py
 ```
 
-This script will generate all files located in the folder "tests" into the folder generated.
+This script will generate all files located in the folder "tests" into the folder "generated".
 
 # INPUT / OUPUT example
 

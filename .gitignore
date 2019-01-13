@@ -1,7 +1,8 @@
 generated/
 compiled/
 
-*.pdf
+*-ast.pdf
+*-lex.txt
 .vscode/
 
 # Byte-compiled / optimized / DLL files
