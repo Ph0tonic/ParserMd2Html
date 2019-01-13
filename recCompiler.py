@@ -95,17 +95,8 @@ def compile(self):
 @addToClass(AST.OpNode)
 def execute(self):
 
-	# function for incoming mapping, transform it if it's a variable node or opnode
-	def opToNumber(value):
-		if isinstance(value, AST.OpNode):
-			return value.execute()
-		if isinstance(value, AST.VariableNode):
-			return vars[value.value]
-		else:
-			return value
-
 	# the two values
-	args = list(map(opToNumber, self.children))
+	args = list(map(opToResultNode, self.children))
 
 	# EXCEPTIONS HANDLING
 	if len(args) > 1 and args[0].unit != args[1].unit and args[1].unit != '' and args[0].unit != '':
@@ -253,10 +244,11 @@ def compile(self):
 
 @addToClass(AST.BoolOpNode)
 def compile(self):
-
-	args = [c.compile() for c in self.children]
+	# the two values
+	args = list(map(opToResultNode, self.children))
 
 	if len(args) == 1:
+		print(args[0])
 		return not args[0]
 
 	value = reduce(operations[self.op], args)
@@ -347,6 +339,19 @@ def compile_write(filename):
 	global current_path
 	current_path = os.sep.join(filename.split(os.sep)[:-1])
 	write_into_compiled_file(filename, compile_file(filename))
+
+def opToResultNode(value):
+	'''
+	execute an operation to transform it into his result node
+	'''
+	if isinstance(value, AST.OpNode):
+		return value.execute()
+	if isinstance(value, AST.BoolOpNode):
+		return value.compile()
+	if isinstance(value, AST.VariableNode):
+		return vars[value.value]
+	else:
+		return value
 
 if __name__ == "__main__" :
 	import sys

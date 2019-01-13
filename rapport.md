@@ -34,7 +34,13 @@ Here is a simple basic Sass compiler.
 
 # Introduction
 
-Dans le cadre du cours "Compilateurs", il nous a été demandé de réaliser un projet par équipe de deux en utilisat la librairire python PLY.
+Dans le cadre du cours "Compilateurs", il nous a été demandé de réaliser un projet par équipe de deux en utilisat la librairire python PLY. Le but de notre projet est de faire un compilateur SCSS. qui consiste à compiler SCSS en CSS.
+
+Le langage source sera donc le SCSS et le langage cible CSS.
+
+## Qu'est ce que le SCSS
+
+SCSS, pour Sassy CSS. Et Sassy, pour SASS qui était l'ancien nom de SCSS. SASS est l'acronyme de Syntactically Awesome Style Sheets. C'est un langage de qui permet de faire du CSS amélioré afin de faciliter le développement. Ce langage n'étant pas supporté par les navigateurs il faut le compiler en CSS.
 
 # But fixé
 
@@ -45,20 +51,19 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 - Etape 3 Mise en place des variables pour les propriétés
 - Etape 4 Ajout de la gestion des branchements conditionnels tel que @if, @else if, @else et @while
 - Etape 5 Ajout de la compilation des valeurs comportant des calculs
-- Etape 6 Mise en place de l'héritage avec le mot clé @exted
+- Etape 6 Mise en place de l'héritage avec le mot clé @extend
 - Etape 7 Ajout des mixins et des include avec @mixin et @include
 - Etape 8 Possibilité d'inclure des fichiers externes avec @import
+- Etape 9 Commentaire avec `//`
 
 # Fonctionnalités implémentées
 
 Nous avons réussi à réaliser toutes les fonctionnalités listées dans le point précédent. Ce chapitre présente les différentes fonctionnalités présentent dans notre compilateur dans l'ordre de leur implémentation.
 
 ## Parsing de css standard
-
 Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe basique d'un fichier css et de valider qu'il ne manque pas de point virgule ou de fermeture de parenthèses.
 
 ## Gestion du nesting
-
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
 Voici un exemple de code scss:
@@ -99,6 +104,7 @@ nav a {
 Les variables scss se copmportent de la même manière que dans un language de programmation traditionnel. Elles permettent par exemple de changer une propriété couleur partout dans un projet. Les variables commencent par le symbole $ et voici un exemple de leurs utilisations.
 
 Dans le cadre d'un framework scss il est très courant d'avoir en début de fichier une liste de variables permettant de configurer de nombreux paramètres pour la générations du fichier css. Un exemple typique est la couleur mais également la police ou encore les dimensions pour n'en citer que quelques uns.
+
 
 ```scss
 $font-stack: Helvetica, sans-serif;
@@ -185,6 +191,7 @@ p {
 ## Compilation des valeurs numériques
 
 Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier à ce manque ce qui permet maintenant de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants ont été implémentés:
+
 - +
 - -
 - /
@@ -202,7 +209,6 @@ nav {
 ```
 
 ## Système d'extend
-
 Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
 
 Dans un code html concret on a souvent ce genre de code:
@@ -255,30 +261,61 @@ Voici le code généré :
 Le code devient ainsi plus simple à généraliser.
 
 ## Les mixin et include
-
 TODO
 
 ## Composition de fichier scss
-
 TODO import
 
-# Prise en main
+## Cas non gerés
 
+Certains cas d'utilisation ne seront pas gerés par notre compilateur par manque des temps. Ces cas sont présentés ci-dessous
+
+### Media query
+
+```css
+@media screen and (max-width: 992px) {
+  body {
+    background-color: blue;
+  }
+}
+```
+
+Les media queries ressembles beaucoup à de la syntaxe SCSS mais sont du code CSS standart. Nous ne gérerons pas ce cas spécial.
+
+### Valeurs sous-formes de fonctions
+
+```scss
+.box { @include transform(rotate(30deg)); }
+```
+
+En CSS, il est possible qu'une propriété soit sous-forme de fonction. Ci-dessus `rotate(30deg)`.
+
+# Paramètres de mixins avec plusieurs "mots"
+
+```scss
+@include margin($hello, 12px 5px);
+```
+
+Il est possible en SCSS standard de passer à une mixins (explications plus tard dans le document) plusieurs mots comme paramètre.
+
+# Prise en main
 Ce document démontre une utilisation basique des différentes fonctionnalités du programme. Pour
 une meilleure prise en main, n’oubliez pas de lire les exemples !
 
 Pour générer un fichier css à l’aide de notre compilateur, il suffit d’exécuter la commande suivante :
 
 ```sh
-python Compiler.py CHEMIN_DU_FICHIER
+python recCompiler.py CHEMIN_DU_FICHIER
 ```
 
-# Explications et exemples
+# Grammaire
+TODO
 
+
+# Explications et exemples
 TODO
 
 # Guide utilisateur
-
 TODO
 
 # Difficultés rencontrés
@@ -303,7 +340,7 @@ Nous avons également valider que la déclaration d'une mixin soit possible avec
 @include margin($test, 12px);
 ```
 
-## Compilation
+# Compilation
 
 Pour la partie compilation nous avons décidé de compiler de manière récursive afin de pas avoir à se soucier de l'arbre cousu. Bien que notre projet soit un compilateur. Certaines fonctionnalités comme les opérations et les conditions n'étant pas supporter en CSS standard. Le compilateur va exécuter certaines parties de code comme un interpreteur.
 
@@ -330,7 +367,11 @@ Le language scss étant très vaste, nous avons uniquement implémentés les fon
 
 # Conclusion
 
-TODO
+Ce projet nous a permis de mieux comprendre les concepts du cours de compilateur et de les mettre en pratique. Le déroulement du projet c'est plutôt bien passé et toutes les fonctionnalités que nous avions planifiées ont pu être implémentées.
+
+Cependant, notre compilateur n'est pas parfait, ne gérant pas toutes les fonctionnalités SCSS. De plus nous ne sommes pas des experts CSS et nous ne pouvons garantir que tous les cas, sauf ceux spécifiés fonctionnent.
+
+Malgré cela nous sommes satisfait du résultat final de notre travail.
 
 
 # Sass Documentation
