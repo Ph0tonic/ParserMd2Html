@@ -37,6 +37,8 @@ Here is a simple procedure to install python on windows
 5. Once done restart your windows system
 6. Run the following commands `python -m pip install ply pydot yacc`
 
+It might be necessary to add the path of graphviz to your path if you want python to be able to use it.
+
 # To run our project
 
 ## Lex
