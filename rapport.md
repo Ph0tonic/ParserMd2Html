@@ -61,9 +61,11 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 Nous avons réussi à réaliser toutes les fonctionnalités listées dans le point précédent. Ce chapitre présente les différentes fonctionnalités présentent dans notre compilateur dans l'ordre de leur implémentation.
 
 ## Parsing de css standard
+
 Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe basique d'un fichier css et de valider qu'il ne manque pas de point virgule ou de fermeture de parenthèses.
 
 ## Gestion du nesting
+
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
 Voici un exemple de code scss:
@@ -275,10 +277,78 @@ Voici le code généré :
 Le code devient ainsi plus simple à généraliser.
 
 ## Les mixin et include
-TODO
+
+Une mixin est l'équivalent d'une fonction mais en scss. Elle va permettre de ne pas recopier du code redondant.
+
+Pour déclarer une mixin il faut utilisation l'annotation `@mixin` comme ceci :
+
+```scss
+@mixin transform($property) {
+  transform: $property;
+}
+```
+
+On peut ensuite inclure ce code avec l'annotation `@include` comme ceci:
+
+```scss
+@include margin(hello, hello);
+```
+
+Et la compilation va se charcher de copier le code compilé de la mixins aux divers include. Voir exemple ci-dessous :
+
+```scss
+@mixin margin($side, $topbottom) {
+  margin: $topbottom $side;
+}
+
+.box {
+  display: block;
+  @include margin(3px, 12px);
+}
+```
+
+**Code compilé** :
+
+```scss
+.box   {
+display : block;
+margin : 12px 3px;
+}
+```
 
 ## Composition de fichier scss
-TODO import
+
+En SCSS il est possible d'inclure un fichier dans un autre via `@import`. Pour cela il faut deux fichiers.
+
+`file1.scss`
+
+```SCSS
+@import "file2";
+
+body {
+  color: black;
+}
+```
+
+`file2.scss`
+
+```scss
+p {
+  color: blue;
+}
+```
+
+L'import va simplement copier le contenu du fichier file2 à la place de la déclaration `@import`. Et le résultat sera le suivant :
+
+```css
+p   {
+color : blue;
+}
+
+body   {
+color : black;
+}
+```
 
 ## Cas non gerés
 
@@ -379,6 +449,16 @@ python3 tests.py
 
 Ce script va ouvrir tous les fichiers scss dans le dossier `tests/` et les compiler
 
+## Instalation des Bibliothèques
+
+Notre compilateur ne requiert pas d'installation particulière autres que les Bibliothèques python spécifiés ci-dessous.
+
+Cette commande permet d'installer ces Bibliothèques sur un système Linux.
+
+```bash
+python3 -m pip install ply bison graphviz pydot
+```
+
 # Difficultés rencontrés
 
 ## Parsage
@@ -434,9 +514,13 @@ Cependant, notre compilateur n'est pas parfait, ne gérant pas toutes les foncti
 
 Malgré cela nous sommes satisfait du résultat final de notre travail.
 
+# Annexes
 
-# Sass Documentation
+## Code source
+
+- Un fichier codesource.zip contenant l'application et ses tests
+- Un fichier README.md résumant comment utiliser notre application
+
+## Sass Documentation
 
 - https://sass-lang.com/guide
-
-# Exemples
