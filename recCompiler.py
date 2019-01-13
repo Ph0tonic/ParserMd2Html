@@ -344,7 +344,7 @@ def compile_write(filename):
 	compile a file and write it into his corresponding file
 	'''
 	global current_path
-	current_path = os.sep.join(path.split(os.sep)[:-1])
+	current_path = os.sep.join(filename.split(os.sep)[:-1])
 	write_into_compiled_file(filename, compile_file(filename))
 
 if __name__ == "__main__" :
