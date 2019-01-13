@@ -61,7 +61,7 @@ Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe
 
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
-Voici un example de code scss:
+Voici un exemple de code scss:
 ```scss
 nav {
   ul {
@@ -73,9 +73,13 @@ nav {
     display: block;
     padding: 6px 12px;
   }
+  padding: 12px;
 }
 
 ```
+
+Ainsi que la sortie qui sera généré:
+
 
 ## Ajout de variables
 
@@ -102,13 +106,13 @@ nous avons également ajouté les deux mots-clés "true" et "false" quipeuvent �
 - or
 - and
 - not
-Pour finir css défini déjà des type numérique par example "12px". Il est ainsi possible d'utiliser les comparateur numériques suivants:
+Pour finir css défini déjà des type numérique par exemple "12px". Il est ainsi possible d'utiliser les comparateur numériques suivants:
 - \>
 - \>=
 - <
 - <=
 
-Voici un example simple :
+Voici un exemple simple :
 
 ```scss
 $other: single;
@@ -133,13 +137,13 @@ $bool : true;
 
 ## Compilation des valeurs numériques
 
-Le css standard ne permet pas de calcul numérique, nous avons ainsi remédier à ce manque ce qui permet de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants oint étés implémentés:
+Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier à ce manque ce qui permet maintenant de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants ont été implémentés:
 - +
 - -
 - /
 - \*
 
-Voici un example:
+Voici un exemple:
 
 ```scss
 $width : 500px;
@@ -154,7 +158,7 @@ nav {
 
 Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
 
-Dans un code html concret on a souvant le code suivant:
+Dans un code html concret on a souvent ce genre de code:
 ```html
 <button class="btn btn-warning"/>
 ```
@@ -221,11 +225,6 @@ Pour générer un fichier css à l’aide de notre compilateur, il suffit d’ex
 ```sh
 python Compiler.py CHEMIN_DU_FICHIER
 ```
-
-# Grammaire
-
-
-TODO
 
 # Explications et exemples
 

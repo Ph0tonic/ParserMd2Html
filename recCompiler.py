@@ -86,7 +86,7 @@ def compile(self):
 def compile(self):
 	children = self.children
 
-	return f'{children[0].compile()} : {children[1].compile()};\n'
+	return f'\t{children[0].compile()} : {children[1].compile()};\n'
 
 @addToClass(AST.SelectorsNode)
 def compile(self):
