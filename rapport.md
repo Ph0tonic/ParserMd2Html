@@ -22,15 +22,12 @@ header-includes: |
 \newpage
 
 
-# Project Sass compiler
+# Projet Sass compiler
 
-Here is a simple basic Sass compiler.
-
-## Author
+## Autheurs
 
 - [Lucas Bulloni](https://github.com/bull0n)
 - [Wermeille Bastien](https://github.com/Ph0tonic/)
-
 
 # Introduction
 
@@ -49,11 +46,11 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 - Etape 1 Validation de CSS Standard
 - Etape 2 Ajout du nesting
 - Etape 3 Mise en place des variables pour les propriétés
-- Etape 4 Ajout de la gestion des branchements conditionnels tel que @if, @else if, @else et @while
+- Etape 4 Ajout de la gestion des branchements conditionnels tel que \@if, \@else if, \@else et \@while
 - Etape 5 Ajout de la compilation des valeurs comportant des calculs
-- Etape 6 Mise en place de l'héritage avec le mot clé @extend
-- Etape 7 Ajout des mixins et des include avec @mixin et @include
-- Etape 8 Possibilité d'inclure des fichiers externes avec @import
+- Etape 6 Mise en place de l'héritage avec le mot clé \@extend
+- Etape 7 Ajout des mixins et des include avec \@mixin et \@include
+- Etape 8 Possibilité d'inclure des fichiers externes avec \@import
 - Etape 9 Commentaire avec `//`
 
 # Fonctionnalités implémentées
@@ -69,7 +66,8 @@ Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
 Voici un exemple de code scss:
-```scss
+
+```SCSS
 nav {
   ul {
     margin: 0;
@@ -146,7 +144,7 @@ Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier �
 
 Voici un exemple:
 
-```scss
+```SASS
 $width : 500px;
 nav {
   margin : 0 - 5px;
@@ -501,8 +499,8 @@ Notre compilateur possède quelques restrictions que nous n'avons pas corrigé p
 ```
 
 Le language scss étant très vaste, nous avons uniquement implémentés les fonctionnalités principales. Voici quelques unes des améliorations qu'il serait intéressant d'implémenter en plus de la suppression des limitations précédemments citées.
-- Ajout du mot clé @each
-- Ajout du mot clé @for
+- Ajout du mot clé \@each
+- Ajout du mot clé \@for
 - Valeurs par défault pour les paramètres d'une mixin
 - Possibilité de concatener des variables pour générer des noms de classes
 
