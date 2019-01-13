@@ -11,3 +11,8 @@ nav a {
   padding : 6px 12px;
   text-decoration : none;
 }
+
+$width : 500px;
+nav {
+  width: $width / 0.5;
+}

@@ -222,6 +222,7 @@ class RuleNode(Node):
 
 #done
 class OpNode(Node):
+    type = "OpNode"
     def __init__(self, op, children):
         Node.__init__(self,children)
         self.op = op
@@ -231,7 +232,7 @@ class OpNode(Node):
             self.nbargs = 1
 
     def __repr__(self):
-        return "%s (%s)" % (self.op, self.children)
+        return "%s" % (self.op)
 
 #done
 class AssignNode(Node):

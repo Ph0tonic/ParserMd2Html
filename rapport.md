@@ -133,6 +133,38 @@ div {
 }
 ```
 
+## Compilation des valeurs numériques
+
+Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier à ce manque ce qui permet maintenant de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants ont été implémentés:
+
+- +
+- -
+- /
+- \*
+
+Voici un exemple:
+
+```scss
+$width : 500px;
+nav {
+  margin : 0 - 5px;
+  padding : 2px / 4px + 5px;
+  width: $width / 2;
+}
+```
+
+avec comme sortie:
+
+```css
+$width : 500px;
+nav {
+  margin : -5px;
+  padding : 5.5px;
+  width: 250px;
+}
+```
+
+
 ## Branchements conditionnels
 
 Les branchement conditionnels ou en d'autres thermes les mots clés "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
@@ -152,10 +184,10 @@ Pour finir css défini déjà des type numérique par exemple "12px". Il est ain
 
 ### If, else if, else
 
-Voici un exemple simple :
+Voici un exemple simple du if, else if et else :
 
 ```scss
-$mode: PRINT; // PRINT | SCREEN | BIG
+$mode: SCREEN; // PRINT | SCREEN | BIG
 $size: 12px;
 
 p {
@@ -169,7 +201,7 @@ p {
     font-size; 50em;
   }
 
-  // La priorité des opérateurs est respectés
+  // La priorité des opérateurs est respectée
   $bool : false;
   @if ($bool == true) or not (true != not false) { //true
     margin : 5px;
@@ -184,29 +216,11 @@ p {
   display: flex;
   margin: 5px;
 }
-
-
 ```
 
-## Compilation des valeurs numériques
+### While
 
-Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier à ce manque ce qui permet maintenant de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants ont été implémentés:
-
-- +
-- -
-- /
-- \*
-
-Voici un exemple:
-
-```scss
-$width : 500px;
-nav {
-  margin : 0 - 5px;
-  padding : 2px / 4px + 5px;
-  width: $width * 0.5;
-}
-```
+Le while n'a pas beaucoup d'intérêt sans la possibilité d'effectuer des opérations numériques
 
 ## Système d'extend
 Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
