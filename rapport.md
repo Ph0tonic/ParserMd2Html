@@ -134,12 +134,8 @@ div {
 ```
 
 ## Branchements conditionnels
-<<<<<<< HEAD
-Les branchement conditionnels ou en d'autres thermes les "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
-=======
 
 Les branchement conditionnels ou en d'autres thermes les mots clés "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
->>>>>>> 76e32961e6f92dafd96aacf2ddbb146e86e6d2b9
 
 Les branchements nécessitent l'évaluation d'une condition pour ce faire, les opérateurs de conditions suivants ont étés définis:
 - ==
@@ -193,12 +189,9 @@ p {
 ```
 
 ## Compilation des valeurs numériques
-<<<<<<< HEAD
-Le css standard ne permet pas de calcul numérique, nous avons ainsi remédier à ce manque ce qui permet de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants oint étés implémentés:
-=======
 
 Le css standard ne permet pas de calcul numérique. Nous avons ainsi remédier à ce manque ce qui permet maintenant de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants ont été implémentés:
->>>>>>> 76e32961e6f92dafd96aacf2ddbb146e86e6d2b9
+
 - +
 - -
 - /
