@@ -235,11 +235,21 @@ Nous avons également valider que la déclaration d'une mixin soit possible avec
 ## TODO compiler
 
 # Améliorations
-TODO
-- Media queries
-- Valeurs par défault pour les paramètres
+
+Notre compilateur possède quelques restrictions que nous n'avons pas corrigé par manque de temps.
+- Media queries -> nous avons décidé de nous concentré sur les fonctionnalités de SCSS et avopns mis de côté les media queries
+- Fonctions CSS -> Il existe des fonctions css tels que "rgb, url, element" nous avons décidé de ne pas gérer ces cas car il est nécessaire d'avoir un index de toutes ces fonctions existantes pour les implémenter.
+- L'appel de mixin nécessite de spécifier le nombre exact de paramètres demandés. Il n'est actuellement pas possible de passer une liste de valeurs pour un paramètre. Celà est dû à notre implémentation de recCompiler voici un exemple de code problematique :
+
+```scss
+@include onparamfunction(25px 12px);
+```
+
+Le language scss étant très vaste, nous avons uniquement implémentés les fonctionnalités principales. Voici quelques unes des améliorations qu'il serait intéressant d'implémenter en plus de la suppression des limitations précédemments citées.
 - Ajout du mot clé @each
 - Ajout du mot clé @for
+- Valeurs par défault pour les paramètres d'une mixin
+- Possibilité de concatener des variables pour générer des noms de classes
 
 # Conclusion
 TODO
