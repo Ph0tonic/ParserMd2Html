@@ -152,7 +152,7 @@ class BoolOpNode(Node):
         self.op = op
 
     def __repr__(self):
-        return "%s (%s)" % (self.op, self.children)
+        return "%s" % (self.op)
 
 #done
 class ImportNode(Node):
