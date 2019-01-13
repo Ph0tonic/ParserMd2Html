@@ -14,7 +14,7 @@ p {
 
   // La priorité des opérateurs est respectés
   $bool : false;
-  @if ($bool == true) or not (true != not false) { //true
+  @if true != not false { //true
     margin : 5px;
   }
 }
