@@ -379,6 +379,16 @@ python3 tests.py
 
 Ce script va ouvrir tous les fichiers scss dans le dossier `tests/` et les compiler
 
+## Instalation des Bibliothèques
+
+Notre compilateur ne requiert pas d'installation particulière autres que les Bibliothèques python spécifiés ci-dessous.
+
+Cette commande permet d'installer ces Bibliothèques sur un système Linux.
+
+```bash
+python3 -m pip install ply bison graphviz pydot
+```
+
 # Difficultés rencontrés
 
 ## Parsage
@@ -434,9 +444,15 @@ Cependant, notre compilateur n'est pas parfait, ne gérant pas toutes les foncti
 
 Malgré cela nous sommes satisfait du résultat final de notre travail.
 
+# Annexes
 
-# Sass Documentation
+## Code source
+
+- Un fichier codesource.zip contenant l'application et ses tests
+- Un fichier README.md résumant comment utiliser notre application
+
+## Sass Documentation
 
 - https://sass-lang.com/guide
 
-# Exemples
+## Exemples

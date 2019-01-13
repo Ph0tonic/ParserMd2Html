@@ -49,6 +49,7 @@ class Node:
             if not dot: dot = pydot.Dot()
             dot.add_node(pydot.Node(self.ID,label=repr(self), shape=self.shape))
             label = edgeLabels and len(self.children)-1
+            
             for i, c in enumerate(self.children):
                 c.makegraphicaltree(dot, edgeLabels)
                 edge = pydot.Edge(self.ID,c.ID)
@@ -142,7 +143,7 @@ class BoolNode(Node):
         self.value = value
 
     def __repr__(self):
-        return repr(str(self.value))
+        return repr(self.value)
 
 #done
 class BoolOpNode(Node):
@@ -152,7 +153,7 @@ class BoolOpNode(Node):
         self.op = op
 
     def __repr__(self):
-        return "%s" % (self.op)
+        return repr(self.op)
 
 #done
 class ImportNode(Node):
@@ -224,15 +225,16 @@ class RuleNode(Node):
 class OpNode(Node):
     type = "OpNode"
     def __init__(self, op, children):
-        Node.__init__(self,children)
+        Node.__init__(self, children)
         self.op = op
+
         try:
             self.nbargs = len(children)
         except AttributeError:
             self.nbargs = 1
 
     def __repr__(self):
-        return "%s" % (self.op)
+        return repr(self.op)
 
 #done
 class AssignNode(Node):
