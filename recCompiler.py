@@ -19,6 +19,7 @@ Requirements:
 - yacc
 - AST.py
 - lex.py
+- parser.py
 
 Authors:
 - Lucas Bulloni - https://github.com/bull0n
@@ -109,6 +110,9 @@ def execute(self):
 	if not isinstance(args[0], AST.NumberNode) or len(args) > 1 and not isinstance(args[1], AST.NumberNode):
 		raise Exception('Operation with a non-number')
 
+	if len(args) > 1 and self.op == '/' and args.value == 0:
+		raise Exception('Dividing by zero')
+
 	if len(args) == 1:
 		args.insert(0, AST.NumberNode(0))
 
@@ -132,25 +136,25 @@ def compile(self):
 @addToClass(AST.StatementNode)
 def compile(self, selectors = ''):
 	selector = self.children[0]
-	selectorString = f"{selectors}{selector.compile()} "
+	selectorString = f'{selectors}{selector.compile()} '
 
 	# preparation for the nested statement ode
-	compiled_nested = ""
-	compiled_content = ""
-	compiled_string = ""
+	compiled_nested = ''
+	compiled_content = ''
+	compiled_string = ''
 
 	# compile the statement and the nested statement in 2 different strings
 	for child in self.children[1:]:
 		if isinstance(child, AST.StatementNode):
-			compiled_nested += f"{child.compile(selectorString)}"
+			compiled_nested += f'{child.compile(selectorString)}'
 		else:
 			compiled_content += child.compile()
 
 	# if there is no rule, only add nested statement
-	if compiled_content == "":
-		compiled_string = f"{compiled_nested}\n"
+	if compiled_content == '':
+		compiled_string = f'{compiled_nested}\n'
 	else:
-		compiled_string = f"{selectorString}  {{ \n{compiled_content}}}\n{compiled_nested}\n"
+		compiled_string = f'{selectorString}  {{ \n{compiled_content}}}\n{compiled_nested}\n'
 
 	return compiled_string
 
@@ -180,7 +184,7 @@ def compile(self):
 		else:
 			return vars[self.value]
 	except KeyError:
-		raise Exception(f"Variable {self.value} doesn't exist") from None
+		raise Exception(f'Variable {self.value} doesn\'t exist') from None
 
 @addToClass(AST.VariableNode)
 def execute(self):
@@ -204,7 +208,7 @@ def compile(self):
 	try:
 		mixin = mixins[self.identifier]
 	except KeyError:
-		raise Exception(f"Variable {self.value} doesn't exist") from None
+		raise Exception(f'Variable {self.value} doesn\'t exist') from None
 
 	# if there is some parameters handle it
 	if mixin.parameters != None:
@@ -217,7 +221,7 @@ def compile(self):
 
 		# if parameters aren't good, too many, not enough
 		if len(list_identifier) != len(listValue):
-			raise Exception(f"parameters for mixin {self.identifier} not valid")
+			raise Exception(f'parameters for mixin {self.identifier} not valid')
 
 		mixin_vars = dict(zip(list_identifier, listValue))
 		vars = {**vars, **mixin_vars}
@@ -237,7 +241,7 @@ def compile(self):
 		if len(self.children) > 2:
 			return self.children[2].compile()
 
-		return ""
+		return ''
 
 @addToClass(AST.BoolNode)
 def compile(self):
@@ -256,7 +260,7 @@ def compile(self):
 
 @addToClass(AST.WhileNode)
 def compile(self):
-	compiled_string = ""
+	compiled_string = ''
 	i = 0
 
 	while self.children[0].compile():
@@ -266,31 +270,31 @@ def compile(self):
 
 @addToClass(AST.ImportNode)
 def compile(self):
-	return compile_file(f"data/{self.value}.scss")
+	return compile_file(f'data/{self.value}.scss')
 
 @addToClass(AST.ExtendNodeDefine)
 def compile(self):
 	extends_rules[self.identifier] = self.children[0].compile()
-	return ""
+	return ''
 
 @addToClass(AST.ExtendNode)
 def compile(self):
 	try:
 		return extends_rules[self.identifier]
 	except KeyError:
-		raise Exception(f"extend {self.identifier} does not exist") from None
+		raise Exception(f'extend {self.identifier} does not exist') from None
 
 def deleteComaFromList(list_to_filter):
 	'''
 	delete all string coma from a list
 	'''
-	return list(filter(lambda val: val != ",", list_to_filter))
+	return list(filter(lambda val: val != ',', list_to_filter))
 
 def getFileName(path):
 	'''
 	get the name of the file
 	'''
-	return path.split("/")[-1].split('.')[0]
+	return path.split('/')[-1].split('.')[0]
 
 def compile(string_to_compile):
 	'''
@@ -314,7 +318,7 @@ def write_into_compiled_file(filename, str_to_write):
 	'''
 
 	# check the string isn't empty
-	if str == "":
+	if str == '':
 		return
 
 	# if folder doesn't exist, create it
@@ -329,7 +333,7 @@ def write_into_compiled_file(filename, str_to_write):
 		with open(path_compiled, 'w') as f :
 			f.write(str_to_write)
 	except FileNotFoundError:
-		raise Exception(f"File {path_compiled} doesn't exist")
+		raise Exception(f'File {path_compiled} doesn\'t exist')
 
 def compile_write(filename):
 	'''
