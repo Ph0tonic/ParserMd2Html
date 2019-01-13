@@ -10,9 +10,9 @@ pagesize: A4
 numbersections: true
 geometry: margin=2.5cm
 header-includes: |
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhead[R]{Lucas Bulloni \& Bastien Wermeille}
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[R]{Lucas Bulloni \& Bastien Wermeille}
 ---
 
 \newpage
@@ -363,7 +363,7 @@ puis dans le fichier `mains.scss` on importe ce fichier et on utilise les variab
 ```scss
 @include 'colours';
 
-p { 
+p {
   color: $color-primary;
 }
 ```
@@ -536,4 +536,3 @@ Un compilateur SCSS étant un travail conséquent et ayant peu de temps pour ré
 ## Sass Documentation
 
 - https://sass-lang.com/guide
-
