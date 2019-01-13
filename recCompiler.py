@@ -248,7 +248,6 @@ def compile(self):
 	args = [c.compile() for c in self.children]
 
 	if len(args) == 1:
-		print(args[0])
 		return not args[0]
 
 	value = reduce(operations[self.op], args)
