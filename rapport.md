@@ -31,13 +31,13 @@ header-includes: |
 
 # Introduction
 
-Dans le cadre du cours "Compilateurs", il nous a été demandé de réaliser un projet par équipe de deux en utilisant la bibliothèque python PLY. Le but de notre projet est de faire un compilateur SCSS. qui consiste à compiler SCSS en CSS.
+Dans le cadre du cours "Compilateurs", il nous a été demandé de réaliser un projet par équipe de deux en utilisant la bibliothèque python PLY. Le but de notre projet est de faire un compilateur SCSS. Celui-ci consiste à compiler du code SCSS en CSS.
 
 Le langage source sera donc le SCSS et le langage cible CSS.
 
 ## Qu'est-ce que le SCSS
 
-SCSS, pour Sassy CSS. Et Sassy, pour SASS qui était l'ancien nom de SCSS. SASS est l'acronyme de Syntactically Awesome Style Sheets. C'est un langage de qui permet de faire du CSS amélioré afin de faciliter le développement. Ce langage n'étant pas supporté par les navigateurs il faut le compiler en CSS.
+SCSS, pour Sassy CSS. Et Sassy, pour SASS qui était l'ancien nom de SCSS. SASS est l'acronyme de Syntactically Awesome Style Sheets. C'est un langage de qui permet de faire du CSS amélioré afin de faciliter le développement. Ce langage n'étant pas supporté par les navigateurs il est nécessaire de le compiler en CSS.
 
 # But fixé
 
@@ -69,16 +69,16 @@ Voici un exemple de code SCSS:
 
 ```SCSS
 nav {
-ul {
-margin: 0;
-list-style: none;
-}
-li { display: inline-block; }
-a {
-display: block;
-padding: 6px 12px;
-}
-padding: 12px;
+  ul {
+    margin: 0;
+    list-style: none;
+  }
+  li { display: inline-block; }
+  a {
+    display: block;
+    padding: 6px 12px;
+  }
+  padding: 12px;
 }
 ```
 
@@ -86,16 +86,16 @@ Et voici la sortie qui sera générée:
 
 ```css
 nav {
-padding: 12px;
+  padding: 12px;
 }
 nav ul {
-margin: 0;
-list-style: none;
+  margin: 0;
+  list-style: none;
 }
 nav li { display: inline-block; }
 nav a {
-display: block;
-padding: 6px 12px;
+  display: block;
+  padding: 6px 12px;
 }
 ```
 
@@ -111,12 +111,12 @@ $font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 
 body {
-font: 100% $font-stack;
-color: $primary-color;
+  font: 100% $font-stack;
+  color: $primary-color;
 }
 
 div {
-border-color: $primary-color;
+  border-color: $primary-color;
 }
 ```
 
@@ -124,12 +124,12 @@ Sortie:
 
 ```css
 body {
-font: 100% Helvetica, sans-serif;
-color: #333;
+  font: 100% Helvetica, sans-serif;
+  color: #333;
 }
 
 div {
-border-color: #333;
+  border-color: #333;
 }
 ```
 
@@ -144,23 +144,22 @@ Le CSS standard ne permet pas de calcul numérique. Nous avons ainsi remédié �
 
 Voici un exemple:
 
-```SASS
+```scss
 $width : 500px;
 nav {
-margin : 0 - 5px;
-padding : 2px / 4px + 5px;
-width: $width * 0.5;
+  margin : 0 - 5px;
+  padding : 2px / 4px + 5px;
+  width: $width * 0.5;
 }
 ```
 
 avec comme sortie:
 
 ```css
-$width : 500px;
 nav {
-margin : -5px;
-padding : 5.5px;
-width: 250px;
+  margin : -5px;
+  padding : 5.5px;
+  width: 250px;
 }
 ```
 
@@ -169,14 +168,14 @@ width: 250px;
 
 Les branchement conditionnels ou en d'autres thermes les mots clés "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
 
-Les branchements nécessitent l'évaluation d'une condition pour ce faire, les opérateurs de conditions suivants ont étés définis:
+Les branchements nécessitent l'évaluation d'une condition pour ce faire, les opérateurs de conditions suivants ont été définis:
 - ==
 - !=
-nous avons également ajouté les deux mots-clés "true" et "false" quipeuvent être combiné grâce aux opérateurs:
+nous avons également ajouté les deux mots-clés "true" et "false" qui peuvent être combiné grâce aux opérateurs:
 - or
 - and
 - not
-Pour finir css défini déjà des type numérique par exemple "12px". Il est ainsi possible d'utiliser les comparateur numériques suivants:
+Pour finir css défini déjà des types numériques par exemple "12px". Il est ainsi possible d'utiliser les comparateurs numériques suivants:
 - \>
 - \>=
 - <
@@ -191,21 +190,21 @@ $mode: SCREEN; // PRINT | SCREEN | BIG
 $size: 12px;
 
 p {
-@if $mode == PRINT {
-background-color: blue;
-}
-@else if $mode == SCREEN {
-display: flex;
-}
-@else {
-font-size; 50em;
-}
+  @if $mode == PRINT {
+    background-color: blue;
+  }
+  @else if $mode == SCREEN {
+    display: flex;
+  }
+  @else {
+    font-size; 50em;
+  }
 
-// La priorité des opérateurs est respectée
-$bool : false;
-@if ($bool == true) or not (true != not false) { //true
-margin : 5px;
-}
+  // La priorité des opérateurs est respectée
+  $bool : false;
+  @if ($bool == true) or not (true != not false) { //true
+    margin : 5px;
+  }
 }
 ```
 
@@ -213,8 +212,8 @@ Voici ce que produira le code précédent:
 
 ```css
 p {
-display: flex;
-margin: 5px;
+  display: flex;
+  margin: 5px;
 }
 ```
 
@@ -223,7 +222,7 @@ margin: 5px;
 Le while n'a pas beaucoup d'intérêt sans la possibilité d'effectuer des opérations numériques
 
 ## Système d'extend
-Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
+Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter la répétition de code et respecter le concept DRY.
 
 Dans un code html concret on a souvent ce genre de code:
 ```html
@@ -237,38 +236,39 @@ Grace à l'héritage on peut simplifier ce code de la manière suivante:
 
 ```scss
 %btn {
-border: 1px solid #ccc;
-padding: 10px;
-color: #333;
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
 }
 
 .btn-warning {
-@extend %btn;
-color: yellow;
+  @extend %btn;
+  color: yellow;
 }
 
 .btn-success {
-@extend %btn;
-color: green;
+  @extend %btn;
+  color: green;
 }
 
 ```
 
 Voici le code généré :
+
 ```scss
 /* This CSS will print because %message-shared is extended. */
 .btn-warning, .btn-success {
-border: 1px solid #ccc;
-padding: 10px;
-color: #333;
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
 }
 
 .btn-warning {
-color: yellow;
+  color: yellow;
 }
 
 .btn-success {
-color: green;
+  color: green;
 }
 ```
 
@@ -276,13 +276,13 @@ Le code devient ainsi plus simple à généraliser.
 
 ## Les mixin et include
 
-Une mixin est l'équivalent d'une fonction mais en scss. Elle va permettre de ne pas recopier du code redondant.
+Une mixin est l'équivalent d'une fonction, mais en SCSS. Elle va permettre de ne pas recopier du code redondant.
 
 Pour déclarer une mixin il faut utilisation l'annotation `@mixin` comme ceci :
 
 ```scss
 @mixin transform($property) {
-transform: $property;
+  transform: $property;
 }
 ```
 
@@ -292,25 +292,25 @@ On peut ensuite inclure ce code avec l'annotation `@include` comme ceci:
 @include margin(hello, hello);
 ```
 
-Et la compilation va se charcher de copier le code compilé de la mixins aux divers include. Voir exemple ci-dessous :
+Et la compilation va se charger de copier le code compilé de la mixins aux divers include. Voir exemple ci-dessous :
 
 ```scss
 @mixin margin($side, $topbottom) {
-margin: $topbottom $side;
+  margin: $topbottom $side;
 }
 
 .box {
 display: block;
-@include margin(3px, 12px);
+  @include margin(3px, 12px);
 }
 ```
 
-**Code compilé** :
+Avec le code compilé suivant :
 
 ```scss
 .box {
-display : block;
-margin : 12px 3px;
+  display : block;
+  margin : 12px 3px;
 }
 ```
 
@@ -324,7 +324,7 @@ En SCSS il est possible d'inclure un fichier dans un autre via `@import`. Pour c
 @import "file2";
 
 body {
-color: black;
+  color: black;
 }
 ```
 
@@ -332,7 +332,7 @@ color: black;
 
 ```scss
 p {
-color: blue;
+  color: blue;
 }
 ```
 
@@ -340,37 +340,57 @@ L'import va simplement copier le contenu du fichier file2 à la place de la déc
 
 ```css
 p {
-color : blue;
+  color : blue;
 }
 
 body {
-color : black;
+  color : black;
 }
 ```
 
-## Cas non gerés
+Combiné avec les autres fonctionnalités la pluspars des framework css utilise cette fonctionnalité de la manière suivante. Ils créent un fichier color.scss contenant la liste des couleurs dans des variables .
 
-Certains cas d'utilisation ne seront pas gerés par notre compilateur par manque des temps. Ces cas sont présentés ci-dessous
+`colours.scss`
+
+```scss
+$color-primary : #3301;
+$color-secondary : #0F01;
+$color-danger : #FF01;
+```
+
+puis dans le fichier `mains.scss` on importe ce fichier et on utilise les variables:
+
+```scss
+@include 'colours';
+
+p { 
+  color: $color-primary;
+}
+```
+
+## Cas non gérés
+
+Certains cas d'utilisation ne seront pas gérés par notre compilateur par manque de temps. Ces cas sont présentés ci-dessous.
 
 ### Media query
 
 ```css
 @media screen and (max-width: 992px) {
-body {
-background-color: blue;
-}
+  body {
+    background-color: blue;
+  }
 }
 ```
 
-Les media queries ressembles beaucoup à de la syntaxe SCSS mais sont du code CSS standart. Nous ne gérerons pas ce cas spécial.
+Les media queries ressembles beaucoup à de la syntaxe SCSS mais sont du code CSS standard. Nous ne gérerons pas ce cas spécial.
 
-### Valeurs sous-formes de fonctions
+### Valeurs sous formes de fonctions
 
 ```scss
 .box { @include transform(rotate(30deg)); }
 ```
 
-En CSS, il est possible qu'une propriété soit sous-forme de fonction. Ci-dessus `rotate(30deg)`.
+En CSS, il est possible qu'une propriété soit sous forme de fonction. Ci-dessus `rotate(30deg)`.
 
 # Paramètres de mixins avec plusieurs "mots"
 
@@ -381,8 +401,7 @@ En CSS, il est possible qu'une propriété soit sous-forme de fonction. Ci-dessu
 Il est possible en SCSS standard de passer à une mixins (explications plus tard dans le document) plusieurs mots comme paramètre.
 
 # Prise en main
-Ce document démontre une utilisation basique des différentes fonctionnalités du programme. Pour
-une meilleure prise en main, n’oubliez pas de lire les exemples !
+Ce document démontre une utilisation basique des différentes fonctionnalités du programme. Pour une meilleure prise en main, n’oubliez pas de lire les exemples qui se trouvent dans le dossier test !
 
 Pour générer un fichier css à l’aide de notre compilateur, il suffit d’exécuter la commande suivante :
 
@@ -432,17 +451,17 @@ Cela va générer un fichier CSS dans le dossier `compiled/`. Si ce dossier n'ex
 
 ## Tester le compilateur
 
-Il est possible de lancer tous les tests que nous avons réalisés en lançant le fichier tests.py
+Afin de tester notre code nous avons créer un petit outil de test permettant de valider les différentes fichiers scss de tests que nous avons réalisé. Pour ce faire, il est possible de l'utiliser de la manière suivante:
 
 ```bash
 python3 tests.py
 ```
 
-Ce script va ouvrir tous les fichiers SCSS dans le dossier `tests/` et les compiler
+Ce script va ouvrir tous les fichiers SCSS dans le dossier `tests/` et les compiler.
 
 ## Instalation des Bibliothèques
 
-Notre compilateur ne requiert pas d'installation particulière autre que les Bibliothèques python spécifié ci-dessous.
+Notre compilateur ne requiert pas d'installation particulière autre que les bibliothèques python spécifiées ci-dessous.
 
 Cette commande permet d'installer ces Bibliothèques sur un système Linux.
 
@@ -455,13 +474,15 @@ python3 -m pip install ply bison graphviz pydot
 ## Parsage
 
 Le parsage nous a posé beaucoup de problèmes, car la structure des fichiers SCSS est relativement complexe.
-Certains symboles tels que ">" peuvent avoir plusieurs rôles, en l'occurrence il peut représenter un sélecteur CSS , mais également un opérateur de comparaison de valeurs numériques.
 
-Notre première version du parsec fonctionnait, mais de nombreux shift/reduce étaient présents et malgré plusieurs heures à tenter de les résoudre en analysant les fichiers "parser.out" et "parsetab.py". La seule solution a été de repartir de zéro ce qui nous a permis de mieux comprendre la fonction d'un parseur LALR notamment le système des précédences.
+Certains symboles tels que ">" peuvent avoir plusieurs rôles, en l'occurrence il peut représenter un sélecteur CSS, mais également un opérateur de comparaison de valeurs numériques.
 
-Une autre problématique que nous avons rencontrée concerne les strings, en effet celles-ci se trouvent à de nombreux endroits comme dans les sélecteurs CSS, mais également dans les propriétés et valeurs CSS. Celles-ci peuvent également être séparées par des virgules lors d'appels de fonctions ou dans les selectors. Une propriété CSS peut contenir une valeur, mais également une liste de valeurs telle que des valeurs numériques, des variables et des strings ou encore des expressions numériques.
+Notre première version du parseur fonctionnait, mais de nombreux warning shift/reduce étaient présents et malgré plusieurs heures à tenter de les résoudre en analysant les fichiers "parser.out" et "parsetab.py". La seule solution a été de repartir de zéro ce qui nous a permis de mieux comprendre la fonction d'un parseur LALR notamment le système des précédences.
 
-Nous avons également valider que la déclaration d'une mixin soit possible avec le nombre de paramètres voulu et en incluant la simplification syntaxique telle:
+Une autre problématique que nous avons rencontrée concerne les strings, en effet celles-ci se trouvent à de nombreux endroits comme dans les sélecteurs CSS, mais également dans les propriétés et valeurs CSS. Celles-ci peuvent également être séparées par des virgules lors d'appels de fonctions ou dans les selectors. Une propriété CSS peut contenir une valeur, mais également une liste de valeurs telles que des valeurs numériques, des variables et des strings ou encore des expressions numériques.
+
+Nous avons également validé que la déclaration d'une mixin soit possible avec le nombre de paramètres voulu et ce en incluant la simplification syntaxique suivantes avec les parenthèses :
+
 ```scss
 @mixin transform() { ... }
 @mixin empty { ... } //no parenthesis needed
@@ -478,13 +499,13 @@ Pour la partie compilation, nous avons décidé de compiler de manière récursi
 
 Nous avons suivi la structure des TP du cours. Nous avons donc ajouter une fonction `compile(self)` à tous nous noeuds via le décorateur `addToClass(object)`. Les noeuds nécessitant une opération exécutée ont également une fonction `execute(self)`.
 
-Pendant la compilation nous vérifions également que les mixins et variables soient bien déclarées avant utilisation et que les fichiers inclus existent.
+Pendant la compilation nous vérifions également que les mixins et variables soient bien déclarées avant leur utilisation et que les fichiers inclus existent.
 
 # Améliorations
 
 Notre compilateur possède quelques restrictions que nous n'avons pas corrigées par manque de temps.
 - Media queries -> nous avons décidé de nous concentré sur les fonctionnalités de SCSS et avons mis de côté les media queries
-- Fonctions CSS -> Il existe des fonctions CSS telles que "rgb, url, element" nous avons décidé de ne pas gérer ces cas, car il est nécessaire d'avoir un index de toutes ces fonctions existantes pour les implémenter.
+- Fonctions CSS -> Il existe des fonctions CSS telles que "rgb, url, element" nous avons décidé de ne pas gérer ces cas, car il est nécessaire d'avoir un index de toutes ces fonctions existantes pour les parser.
 - L'appel de mixin nécessite de spécifier le nombre exact de paramètres demandés. Il n'est actuellement pas possible de passer une liste de valeurs pour un paramètre. Cela est dû à notre implémentation de recCompiler voici un exemple de code problématique :
 
 ```scss
@@ -501,9 +522,7 @@ Le langage SCSS étant très vaste, nous avons uniquement implémenté les fonct
 
 Ce projet nous a permis de mieux comprendre les concepts du cours de compilateur et de les mettre en pratique. Le déroulement du projet s'est plutôt bien passé et toutes les fonctionnalités que nous avions planifiées ont pu être implémentées.
 
-Cependant, notre compilateur n'est pas parfait, ne gérant pas toutes les fonctionnalités SCSS. De plus nous ne sommes pas des experts CSS et nous ne pouvons garantir que tous les cas sauf ceux spécifiés fonctionnent.
-
-Malgré cela nous sommes satisfaits du résultat final de notre travail.
+Un compilateur SCSS étant un travail conséquent et ayant peu de temps pour réaliser ce projet nous nous sommes concentrés sur les fonctionnalités principales afin que celles-ci fonctionnent. Le résultat obtenu dépasse notre espérance et nous sommes satisfaits du résultat final de notre travail.
 
 # Annexes
 

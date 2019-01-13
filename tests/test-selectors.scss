@@ -1,5 +1,5 @@
 nav, nav {
-
+  //Tests for comma during parsing
 }
 #id, body {
 
@@ -10,6 +10,7 @@ nav, #id {
 #id, body, nav {
 
 }
+
 #id, body {
   // Amazing comment
   @mixin test {
