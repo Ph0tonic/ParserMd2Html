@@ -25,6 +25,9 @@ Authors:
 - Lucas Bulloni - https://github.com/bull0n
 - Bastien Wermeille - https://github.com/Ph0tonic
 
+Date:
+	13.01.2019
+
 Code source of the project:
 - https://github.com/Ph0tonic/SassCompiler
 """
@@ -305,11 +308,11 @@ def compile(string_to_compile):
 
 	return compiled_string
 
-def compile_file(file_path):
+def compile_file(filename):
 	'''
 	Function allowing to compile a file
 	'''
-	prog = open(file_path).read()
+	prog = open(filename).read()
 	return compile(prog)
 
 def write_into_compiled_file(filename, str_to_write):
@@ -343,4 +346,7 @@ def compile_write(filename):
 
 if __name__ == "__main__" :
 	import sys
-	compile_write(sys.argv[1])
+	try:
+		compile_write(sys.argv[1])
+	except FileNotFoundError:
+		print(f"Error File not found {sys.argv[1]}")

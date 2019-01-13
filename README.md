@@ -11,22 +11,50 @@ Here is a simple basic Sass compiler.
 
 - https://sass-lang.com/guide
 
-# LEXEMES
+# Download
 
-- ADD_OP -> Opération + ou - arithmétique -> 2 + $salut
-- MUL_OP -> Opération * ou / arithmétique -> 4 \* $salut
-- NUMBER -> nombre avec ou sans une unité -> 5px, 5, 5cm
-- STRING_VALUE -> valeur css -> none, inherit
-- VARIABLE -> Identifieur d'une variable -> $salut
+git clone https://github.com/Ph0tonic/SassCompiler.git
+cd SassCompiler
 
-# PARSER
+# Requirements
 
-p // SELECTOR
-{
-  border-left: 1px solid left; // STRING_VALUE : VALUE VALUE VALUE; -> RULE
-} // STATEMENT
+- Python3.6
+- Ply
+- Graphviz
+- Pydot
+- yacc
 
-# INPUT / OUPUT
+# To run our project
+
+## Lex
+
+To run lex, run the following command and specify an scss file.
+
+```bash
+python3 lex.py filename.scss
+```
+
+In the same folder a new text file was created : filename.txt. This file contains the corresponding lexems.
+
+## Parser
+
+To run parser, run the following command and specify an scss file.
+
+```bash
+python paser.py filename.scss
+```
+
+In the same folder a new pdf file was created : filename-ast.pdf. This file contains the AST tree.
+
+## Compiler
+
+```bash
+python recCompiler.py filename.scss
+```
+
+In the folder *"generated"* a new css file has been created : filename.css. This file contains the compiled scss of input code.
+
+# INPUT / OUPUT example
 
 ```scss
 nav {
@@ -61,7 +89,8 @@ nav a {
 }
 ```
 
-# Fonctionnalities to implement
+# Fonctionnalities implemented
+
 - [x] Nested
 - [x] @if / @elseif
 - [x] @while

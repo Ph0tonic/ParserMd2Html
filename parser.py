@@ -24,6 +24,9 @@ Authors:
 - Lucas Bulloni - https://github.com/bull0n
 - Bastien Wermeille - https://github.com/Ph0tonic
 
+Date:
+	13.01.2019
+
 Code source of the project:
 - https://github.com/Ph0tonic/SassCompiler
 """
@@ -441,18 +444,30 @@ precedence = (
 def parse(program):
     return yacc.parse(program)
 
+import os
+try:
+    os.mkdir('./generated/')
+except FileExistsError:
+    pass
+
 yacc.yacc(outputdir='generated')
 
 if __name__ == "__main__":
     import sys
-    prog = open(sys.argv[1]).read()
+    filename = sys.argv[1]
+
+    try:
+        prog = open(sys.argv[1]).read()
+    except FileNotFoundError:
+        print(f"Error File not found {filename}")
+        exit()
+    
     result = yacc.parse(prog, debug = False)
     
     if result:
-        import os
         graph = result.makegraphicaltree()
         name = os.path.splitext(sys.argv[1])[0]+'-ast.pdf'
         graph.write_pdf(name)
-        print ("wrote ast to", name)
+        print ("Wrote ast to", name)
     else:
         print ("Parsing returned no result!")

@@ -3,7 +3,7 @@
 """Programe which allow a user to make a lexical analyse on a scss file
 
 :param argv[1]: Scss file
-:returns: Nothing
+:returns: Nothing but a file containing the lexems is generated in th same folder as the sources
 
 Correct syntax:
 python3 lex.py filename
@@ -18,6 +18,9 @@ Requirements:
 Authors:
 	Lucas Bulloni - https://github.com/bull0n
 	Bastien Wermeille - https://github.com/Ph0tonic
+
+Date:
+	13.01.2019
 
 Code source of the project:
 	https://github.com/Ph0tonic/SassCompiler
@@ -130,11 +133,32 @@ lex.lex()
 
 if __name__ == "__main__":
 	import sys
-	prog = open(sys.argv[1]).read()
+	
+	filename = sys.argv[1]
+	try:
+		prog = open(filename).read()
+	except FileNotFoundError:
+		print(f"Error File not found {filename}")
+		exit()
 
 	lex.input(prog)
 
+	result = ""
 	while 1:
 		tok = lex.token()
 		if not tok: break
-		print ("line %d: %s(%s)" % (tok.lineno, tok.type, tok.value))
+		result += "line %d: %s(%s)\n" % (tok.lineno, tok.type, tok.value)
+	
+	print(result)
+	
+	#Store lexem in file
+	if result:
+		import os
+
+		name = os.path.splitext(sys.argv[1])[0] + '-lex.txt'
+		with open(name, 'w') as f:
+			f.writelines(result)
+		print("wrote ast to", name)
+	else:
+		print("Lex returned no result!")
+	
