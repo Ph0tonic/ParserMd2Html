@@ -1,5 +1,5 @@
-# coding: latin-1
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 ''' Petit module utilitaire pour la construction, la manipulation et la
 representation d'arbres syntaxiques abstraits.
 
@@ -8,6 +8,14 @@ Surement plein de bugs et autres surprises a prendre comme un
 Notamment, l'utilisation de pydot pour representer un arbre syntaxique cousu
 est une utilisation un peu "limite" de graphviz. ca marche, mais le layout n'est
 pas toujours optimal...
+
+Modifié et adapté par:
+- Lucas Bulloni
+- Bastien wermeille
+
+Date:
+- 13.01.2019
+
 '''
 
 import pydot
@@ -93,22 +101,32 @@ class Node:
                 graph.add_edge(edge)
             return graph
 
-#done
+#-----------------------------------------
+# Root node
+#-----------------------------------------
+
 class ProgramNode(Node):
     type = 'Program'
 
-#done
+#-----------------------------------------
+# Available instructions
+#-----------------------------------------
+
 class StatementNode(Node):
     type = 'Statement'
 
-#done
+class RuleNode(Node):
+    type = 'Rule'
+
+class AssignNode(Node):
+    type = '='
+
 class ExtendNodeDefine(Node):
     type = 'ExtendNodeDefine'
     def __init__(self, identifier, children):
         Node.__init__(self, children)
         self.identifier = identifier
 
-#done
 class MixinNode(Node):
     type = 'MixinNode'
     def __init__(self, identifier, parameters, children):
@@ -116,36 +134,22 @@ class MixinNode(Node):
         self.parameters = parameters
         self.identifier = identifier
 
-# done
 class IncludeNode(Node):
     type = 'IncludeNode'
     def __init__(self, identifier, children = None):
         Node.__init__(self, children)
         self.identifier = identifier
 
-#done
 class IfNode(Node):
     type = 'IfNode'
     def __init__(self, children):
         Node.__init__(self, children)
 
-#done
 class WhileNode(Node):
     type = 'WhileNode'
     def __init__(self, children):
         Node.__init__(self, children)
 
-# done
-class BoolNode(Node):
-    type = 'BoolNode'
-    def __init__(self, value):
-        Node.__init__(self)
-        self.value = value
-
-    def __repr__(self):
-        return repr(self.value)
-
-#done
 class ImportNode(Node):
     type = 'ImportNode'
     def __init__(self, value):
@@ -155,63 +159,16 @@ class ImportNode(Node):
     def __repr__(self):
         return repr(self.value)
 
-#done
 class ExtendNode(Node):
     type = 'ExtendStatement'
     def __init__(self, identifier, children = None):
         Node.__init__(self, children)
         self.identifier = identifier
 
-#done
-class SelectorsNode(Node):
-    type = 'selectors'
-    def __init__(self, identifier, children = None):
-        Node.__init__(self, children)
-        self.identifier = identifier
+#-----------------------------------------
+# Arithmetic and comparison operators
+#-----------------------------------------
 
-#done
-class NumberNode(Node):
-    type = 'number'
-
-    def __init__(self, value, unit = ''):
-        Node.__init__(self)
-        self.value = value
-        self.unit = unit
-
-    def __repr__(self):
-        return f'N : {self.value}{self.unit}'
-
-#done
-class VariableNode(Node):
-    type = 'variable'
-
-    def __init__(self, value):
-        Node.__init__(self)
-        self.value = value
-
-    def __repr__(self):
-        return "V : " + repr(self.value)
-
-#done
-class ValueNode(Node):
-    type = 'number'
-
-    def __init__(self, value):
-        Node.__init__(self)
-        self.value = value
-
-    def __repr__(self):
-        return repr(self.value)
-
-#done
-class ValuesNode(Node):
-    type = 'values'
-
-#done
-class RuleNode(Node):
-    type = 'rule'
-
-#done
 class BoolOpNode(Node):
     type = 'BoolOpNode'
     def __init__(self, op, children):
@@ -221,7 +178,6 @@ class BoolOpNode(Node):
     def __repr__(self):
         return repr(self.op)
 
-#done
 class OpNode(Node):
     type = "OpNode"
     def __init__(self, op, children):
@@ -236,10 +192,56 @@ class OpNode(Node):
     def __repr__(self):
         return repr(self.op)
 
-#done
-class AssignNode(Node):
-    type = '='
+#-----------------------------------------
+# Node specific to store some value
+#-----------------------------------------
 
+class ValuesNode(Node):
+    type = 'values'
+
+class BoolNode(Node):
+    type = 'BoolNode'
+    def __init__(self, value):
+        Node.__init__(self)
+        self.value = value
+
+    def __repr__(self):
+        return repr(self.value)
+
+class NumberNode(Node):
+    type = 'number'
+
+    def __init__(self, value, unit = ''):
+        Node.__init__(self)
+        self.value = value
+        self.unit = unit
+
+    def __repr__(self):
+        return f'N : {self.value}{self.unit}'
+
+class ValueNode(Node):
+    type = 'number'
+
+    def __init__(self, value):
+        Node.__init__(self)
+        self.value = value
+
+    def __repr__(self):
+        return repr(self.value)
+
+class VariableNode(Node):
+    type = 'variable'
+
+    def __init__(self, value):
+        Node.__init__(self)
+        self.value = value
+
+    def __repr__(self):
+        return "V : " + repr(self.value)
+
+#-----------------------------------------
+# Décorateur
+#-----------------------------------------
 
 def addToClass(cls):
     ''' Decorateur permettant d'ajouter la fonction decoree en tant que methode
