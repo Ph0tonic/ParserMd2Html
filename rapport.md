@@ -275,10 +275,78 @@ Voici le code généré :
 Le code devient ainsi plus simple à généraliser.
 
 ## Les mixin et include
-TODO
+
+Une mixin est l'équivalent d'une fonction mais en scss. Elle va permettre de ne pas recopier du code redondant.
+
+Pour déclarer une mixin il faut utilisation l'annotation `@mixin` comme ceci :
+
+```scss
+@mixin transform($property) {
+  transform: $property;
+}
+```
+
+On peut ensuite inclure ce code avec l'annotation `@include` comme ceci:
+
+```scss
+@include margin(hello, hello);
+```
+
+Et la compilation va se charcher de copier le code compilé de la mixins aux divers include. Voir exemple ci-dessous :
+
+```scss
+@mixin margin($side, $topbottom) {
+  margin: $topbottom $side;
+}
+
+.box {
+  display: block;
+  @include margin(3px, 12px);
+}
+```
+
+**Code compilé** :
+
+```scss
+.box   {
+display : block;
+margin : 12px 3px;
+}
+```
 
 ## Composition de fichier scss
-TODO import
+
+En SCSS il est possible d'inclure un fichier dans un autre via `@import`. Pour cela il faut deux fichiers.
+
+`file1.scss`
+
+```SCSS
+@import "file2";
+
+body {
+  color: black;
+}
+```
+
+`file2.scss`
+
+```scss
+p {
+  color: blue;
+}
+```
+
+L'import va simplement copier le contenu du fichier file2 à la place de la déclaration `@import`. Et le résultat sera le suivant :
+
+```css
+p   {
+color : blue;
+}
+
+body   {
+color : black;
+}
+```
 
 ## Cas non gerés
 
@@ -454,5 +522,3 @@ Malgré cela nous sommes satisfait du résultat final de notre travail.
 ## Sass Documentation
 
 - https://sass-lang.com/guide
-
-## Exemples
