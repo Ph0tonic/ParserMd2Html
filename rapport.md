@@ -357,7 +357,7 @@ $color-secondary : #0F01;
 $color-danger : #FF01;
 ```
 
-puis dans le fichier `mains.scss` on importe ce fichier et on utilise les variables:
+puis dans le fichier `main.scss` on importe ce fichier et on utilise les variables:
 
 ```scss
 @include 'colours';
@@ -381,9 +381,9 @@ Certains cas d'utilisation ne seront pas gérés par notre compilateur par manqu
 }
 ```
 
-Les media queries ressembles beaucoup à de la syntaxe SCSS mais sont du code CSS standard. Nous ne gérerons pas ce cas spécial.
+Les media queries ressemblent beaucoup à de la syntaxe SCSS mais sont du code CSS standard. Nous ne gérerons pas ce cas spécial.
 
-### Valeurs sous formes de fonctions
+### Valeurs sous forme de fonctions
 
 ```scss
 .box { @include transform(rotate(30deg)); }
@@ -450,7 +450,7 @@ Cela va générer un fichier CSS dans le dossier `compiled/`. Si ce dossier n'ex
 
 ## Tester le compilateur
 
-Afin de tester notre code nous avons créer un petit outil de test permettant de valider les différentes fichiers scss de tests que nous avons réalisé. Pour ce faire, il est possible de l'utiliser de la manière suivante:
+Afin de tester notre code, nous avons créé un petit outil de test permettant de valider les différents fichiers scss de tests que nous avons réalisé. Pour ce faire, il est possible de l'utiliser de la manière suivante:
 
 ```bash
 python3 tests.py
@@ -480,7 +480,7 @@ Notre première version du parseur fonctionnait, mais de nombreux warning shift/
 
 Une autre problématique que nous avons rencontrée concerne les strings, en effet celles-ci se trouvent à de nombreux endroits comme dans les sélecteurs CSS, mais également dans les propriétés et valeurs CSS. Celles-ci peuvent également être séparées par des virgules lors d'appels de fonctions ou dans les selectors. Une propriété CSS peut contenir une valeur, mais également une liste de valeurs telles que des valeurs numériques, des variables et des strings ou encore des expressions numériques.
 
-Nous avons également validé que la déclaration d'une mixin soit possible avec le nombre de paramètres voulu et ce en incluant la simplification syntaxique suivantes avec les parenthèses :
+Nous avons également validé que la déclaration d'une mixin soit possible avec le nombre de paramètres voulu et ce en incluant la simplification syntaxique suivante avec les parenthèses :
 
 ```scss
 @mixin transform() { ... }
