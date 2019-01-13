@@ -114,7 +114,7 @@ def execute(self):
 	if not isinstance(args[0], AST.NumberNode) or len(args) > 1 and not isinstance(args[1], AST.NumberNode):
 		raise Exception('Operation with a non-number')
 
-	if len(args) > 1 and self.op == '/' and args.value == 0:
+	if len(args) > 1 and self.op == '/' and args[1].value == 0:
 		raise Exception('Dividing by zero')
 
 	if len(args) == 1:
