@@ -75,29 +75,61 @@ nav {
   }
   padding: 12px;
 }
-
 ```
 
-Ainsi que la sortie qui sera généré:
+Et voici la sortie qui sera générée:
 
+```css
+nav {
+  padding: 12px;
+}
+nav ul {
+  margin: 0;
+  list-style: none;
+}
+nav li { display: inline-block; }
+nav a {
+  display: block;
+  padding: 6px 12px;
+}
+```
 
 ## Ajout de variables
 
-Les variables scss se copmportent de la même manière que dans un language de programmation traditionnel. Elles permettent par exemple de changer une propriété couleur partout dans un projet. Les variables commencent par le symbole $ et voici un exemple de son utilisation.
+Les variables scss se copmportent de la même manière que dans un language de programmation traditionnel. Elles permettent par exemple de changer une propriété couleur partout dans un projet. Les variables commencent par le symbole $ et voici un exemple de leurs utilisations.
+
+Dans le cadre d'un framework scss il est très courant d'avoir en début de fichier une liste de variables permettant de configurer de nombreux paramètres pour la générations du fichier css. Un exemple typique est la couleur mais également la police ou encore les dimensions pour n'en citer que quelques uns.
 
 ```scss
-$font-stack:    Helvetica, sans-serif;
+$font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 
 body {
   font: 100% $font-stack;
   color: $primary-color;
 }
+
+div {
+  border-color: $primary-color;
+}
+```
+
+Sortie:
+
+```css
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #333;
+}
+
+div {
+  border-color: #333;
+}
 ```
 
 ## Branchements conditionnels
 
-Les branchement conditionnels ou en d'autres thermes les "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
+Les branchement conditionnels ou en d'autres thermes les mots clés "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
 
 Les branchements nécessitent l'évaluation d'une condition pour ce faire, les opérateurs de conditions suivants ont étés définis:
 - ==
@@ -112,27 +144,42 @@ Pour finir css défini déjà des type numérique par exemple "12px". Il est ain
 - <
 - <=
 
+### If, else if, else
+
 Voici un exemple simple :
 
 ```scss
-$other: single;
+$mode: PRINT; // PRINT | SCREEN | BIG
+$size: 12px;
 
 p {
-  @if $other == single {
-    color: blue;
+  @if $mode == PRINT {
+    background-color: blue;
   }
-  @else if $other == double {
-    color: red;
+  @else if $mode == SCREEN {
+    display: flex;
   }
   @else {
-    color: green;
+    font-size; 50em;
+  }
+
+  // La priorité des opérateurs est respectés
+  $bool : false;
+  @if ($bool == true) or not (true != not false) { //true
+    margin : 5px;
   }
 }
+```
 
-$bool : true;
-@if ($bool == true) or not (true != not false) {
-  margin : 5px;
+Voici ce que produira le code précédent:
+
+```css
+p {
+  display: flex;
+  margin: 5px;
 }
+
+
 ```
 
 ## Compilation des valeurs numériques

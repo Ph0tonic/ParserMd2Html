@@ -1,5 +1,7 @@
-$test: flex;
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
 
-p {
-  display: $test;
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
 }
