@@ -154,48 +154,54 @@ nav {
 
 Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
 
-TODO
+Dans un code html concret on a souvant le code suivant:
+```html
+<button class="btn btn-warning"/>
+```
 
+Grace à l'héritage on peut simplifier ce code de la manière suivante:
+```html
+<button class="btn-warning">
+```
 
 ```scss
-%message-shared {
+%btn {
   border: 1px solid #ccc;
   padding: 10px;
   color: #333;
 }
 
-.message {
-  @extend %message-shared;
+.btn-warning {
+  @extend %btn;
+  color: yellow;
 }
 
-.success {
-  @extend %message-shared;
-  border-color: green;
+.btn-success {
+  @extend %btn;
+  color: green;
 }
 
-.error {
-  @extend %message-shared;
-  border-color: red;
-}
 ```
 
 Voici le code généré :
 ```scss
 /* This CSS will print because %message-shared is extended. */
-.message, .success, .error {
+.btn-warning, .btn-success {
   border: 1px solid #ccc;
   padding: 10px;
   color: #333;
 }
 
-.success {
-  border-color: green;
+.btn-warning {
+  color: yellow;
 }
 
-.error {
-  border-color: red;
+.btn-success {
+  color: green;
 }
 ```
+
+Le code devient ainsi plus simple à généraliser.
 
 ## Les mixin et include
 
@@ -217,6 +223,7 @@ python Compiler.py CHEMIN_DU_FICHIER
 ```
 
 # Grammaire
+
 
 TODO
 
