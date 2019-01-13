@@ -13,8 +13,10 @@ Here is a simple basic Sass compiler.
 
 # Download
 
+```bash
 git clone https://github.com/Ph0tonic/SassCompiler.git
 cd SassCompiler
+```
 
 # Requirements
 
