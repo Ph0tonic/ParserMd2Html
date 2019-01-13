@@ -88,10 +88,6 @@ def compile(self):
 
 	return f'\t{children[0].compile()} : {children[1].compile()};{LINE_SEPARATOR}'
 
-@addToClass(AST.SelectorsNode)
-def compile(self):
-	return compileListToString(self.children, ' ')
-
 @addToClass(AST.OpNode)
 def execute(self):
 

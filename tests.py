@@ -30,7 +30,7 @@ Code source of the project:
 
 import os
 import re
-from recCompiler import compile_write
+from recCompiler import compileWrite
 
 FOLDER = "./tests/"
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     for file_name in files:
         print(f"Start compiling {file_name}")
         try:
-            compile_write(FOLDER+file_name)
+            compileWrite(FOLDER+file_name)
         except:
             print(f"\t ! ERROR while compiling {file_name} !")
             nb_error += 1
