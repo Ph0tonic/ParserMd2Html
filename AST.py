@@ -128,6 +128,7 @@ class IfNode(Node):
     def __init__(self, children):
         Node.__init__(self, children)
 
+#done
 class WhileNode(Node):
     type = 'WhileNode'
     def __init__(self, children):
@@ -236,10 +237,6 @@ class OpNode(Node):
 class AssignNode(Node):
     type = '='
 
-class EntryNode(Node):
-    type = 'ENTRY'
-    def __init__(self):
-        Node.__init__(self, None)
 
 def addToClass(cls):
     ''' Decorateur permettant d'ajouter la fonction decoree en tant que methode
