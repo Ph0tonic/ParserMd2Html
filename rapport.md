@@ -390,13 +390,6 @@ Pour générer un fichier css à l’aide de notre compilateur, il suffit d’ex
 python recCompiler.py CHEMIN_DU_FICHIER
 ```
 
-# Grammaire
-TODO
-
-
-# Explications et exemples
-TODO
-
 # Guide utilisateur
 
 ## Bibliothèques requises
@@ -517,7 +510,9 @@ Malgré cela nous sommes satisfait du résultat final de notre travail.
 ## Code source
 
 - Un fichier codesource.zip contenant l'application et ses tests
-- Un fichier README.md résumant comment utiliser notre application
+- dans ce fichier :
+  - un fichier README.md résumant comment utiliser notre application
+  - le code source
 
 ## Sass Documentation
 
