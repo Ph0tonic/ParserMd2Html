@@ -164,7 +164,7 @@ def compile(self):
 
 	# check if we can reduce the hierarchy of the nodes
 	if isinstance(data, AST.ValuesNode) and len(data.children) == 1:
-		data = data.children[0].value
+	 	data = data.children[0]
 	if isinstance(data, AST.OpNode):
 		data = data.execute()
 
