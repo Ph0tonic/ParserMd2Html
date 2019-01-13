@@ -57,7 +57,7 @@ operations = {
 vars = {}
 extends_rules = {}
 mixins = {}
-LINE_SEPARATOR = '\n'
+LINE_SEPARATOR = os.linesep
 current_path = ''
 
 def compileListToString(list, separator = ''):
@@ -86,7 +86,7 @@ def compile(self):
 def compile(self):
 	children = self.children
 
-	return f'\t{children[0].compile()} : {children[1].compile()};\n'
+	return f'\t{children[0].compile()} : {children[1].compile()};{LINE_SEPARATOR}'
 
 @addToClass(AST.SelectorsNode)
 def compile(self):
@@ -147,9 +147,9 @@ def compile(self, selectors = ''):
 
 	# if there is no rule, only add nested statement
 	if compiled_content == '':
-		compiled_string = f'{compiled_nested}\n'
+		compiled_string = f'{compiled_nested}{LINE_SEPARATOR}'
 	else:
-		compiled_string = f'{selectorString}  {{ \n{compiled_content}}}\n{compiled_nested}\n'
+		compiled_string = f'{selectorString}  {{ {LINE_SEPARATOR}{compiled_content}}}{LINE_SEPARATOR}{compiled_nested}{LINE_SEPARATOR}'
 
 	return compiled_string
 

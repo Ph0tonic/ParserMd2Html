@@ -143,6 +143,16 @@ def t_GT_OP(t):
 	"""
 	return t
 
+def t_NUMBER(t):
+	r'[+-]?\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
+	"""
+	Detect Integer value with their unit
+
+	:param t: token detected
+	:return: token
+	"""
+	return t
+
 def t_ADD_OP(t):
 	r'[+-]'
 	"""
@@ -157,16 +167,6 @@ def t_MUL_OP(t):
 	r'[*/]'
 	"""
 	Detect Integer operator * and /
-
-	:param t: token detected
-	:return: token
-	"""
-	return t
-
-def t_NUMBER(t):
-	r'\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
-	"""
-	Detect Integer value with their unit
 
 	:param t: token detected
 	:return: token
@@ -243,6 +243,7 @@ lex.lex()
 
 if __name__ == "__main__":
 	import sys
+	import os
 	
 	filename = sys.argv[1]
 	try:
@@ -257,12 +258,10 @@ if __name__ == "__main__":
 	while 1:
 		tok = lex.token()
 		if not tok: break
-		result += "line %d: %s(%s)\n" % (tok.lineno, tok.type, tok.value)
+		result += "line %d: %s(%s) %s" % (tok.lineno, tok.type, tok.value, os.linesep)
 	
 	#Store lexem in file
 	if result:
-		import os
-
 		name = os.path.splitext(sys.argv[1])[0] + '-lex.txt'
 		with open(name, 'w') as f:
 			f.writelines(result)

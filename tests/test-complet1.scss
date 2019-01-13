@@ -1,0 +1,136 @@
+
+nav {
+  ul {
+    margin: 0;
+    list-style: none;
+  }
+  li { display: inline-block; }
+  a {
+    display: block;
+    padding: 6px 12px;
+  }
+  padding: 12px;
+}
+
+nav {
+  padding: 12px;
+}
+nav ul {
+  margin: 0;
+  list-style: none;
+}
+nav li { display: inline-block; }
+nav a {
+  display: block;
+  padding: 6px 12px;
+}
+
+
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+div {
+  border-color: $primary-color;
+}
+
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #333;
+}
+
+div {
+  border-color: #333;
+}
+
+$width : 500px;
+nav {
+  margin : 0 - 5px;
+  padding : 2px / 4px + 5px;
+  width: $width * 0.5px;
+}
+
+nav {
+  margin : -5px;
+  padding : 5.5px;
+  width: 250px;
+}
+
+$mode: SCREEN; // PRINT | SCREEN | BIG
+$size: 12px;
+
+p {
+  @if $mode == PRINT {
+    background-color: blue;
+  }
+  @else if $mode == SCREEN {
+    display: flex;
+  }
+  @else {
+    font-size: 50em;
+  }
+
+  // La priorité des opérateurs est respectée
+  $bool : false;
+  @if ($bool == true) or not (true != not false) { //true
+    margin : 5px;
+  }
+}
+
+p {
+  display: flex;
+  margin: 5px;
+}
+
+%btn {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
+}
+
+.btn-warning {
+  @extend %btn;
+  color: yellow;
+}
+
+.btn-success {
+  @extend %btn;
+  color: green;
+}
+
+/* This CSS will print because %message-shared is extended. */
+.btn-warning, .btn-success {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
+}
+
+.btn-warning {
+  color: yellow;
+}
+
+.btn-success {
+  color: green;
+}
+
+@mixin transform($property) {
+  transform: $property;
+}
+
+@mixin margin($side, $topbottom) {
+  margin: $topbottom $side;
+}
+
+.box {
+  display: block;
+  @include margin(3px, 12px);
+}
+
+.box {
+  display : block;
+  margin : 12px 3px;
+}

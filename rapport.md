@@ -197,7 +197,7 @@ p {
     display: flex;
   }
   @else {
-    font-size; 50em;
+    font-size: 50em;
   }
 
   // La priorité des opérateurs est respectée
@@ -226,12 +226,12 @@ Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter la 
 
 Dans un code html concret on a souvent ce genre de code:
 ```html
-<button class="btn btn-warning"/>
+<button class="btn btn-warning"></button>
 ```
 
 Grace à l'héritage on peut simplifier ce code de la manière suivante:
 ```html
-<button class="btn-warning">
+<button class="btn-warning"></button>
 ```
 
 ```scss
@@ -256,19 +256,18 @@ Grace à l'héritage on peut simplifier ce code de la manière suivante:
 Voici le code généré :
 
 ```scss
-/* This CSS will print because %message-shared is extended. */
-.btn-warning, .btn-success {
+.btn-warning {
+  color: yellow;
   border: 1px solid #ccc;
   padding: 10px;
   color: #333;
 }
 
-.btn-warning {
-  color: yellow;
-}
-
 .btn-success {
   color: green;
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
 }
 ```
 
