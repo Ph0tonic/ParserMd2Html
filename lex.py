@@ -59,7 +59,8 @@ tokens = [
 
 literals = '@();:{},\''
 
-def t_COMMENT(t):
+
+def t_COMMENTSINGLE(t):
 	r'//.*'
 	"""
 	Detect single line comments
@@ -67,6 +68,19 @@ def t_COMMENT(t):
 	:param t: token detected
 	:return: nothing because this comment token is discarded
 	"""
+	pass
+
+def t_COMMENTMULTI(t):
+	r'/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
+	"""
+	Detect multi line comments
+
+	:param t: token detected
+	:return: nothing because this comment token is discarded
+	"""
+	pass
+def t_COMMENT(t):
+	r'//.*'
 	pass # No return value. Token discarded
 
 def t_IF(t):

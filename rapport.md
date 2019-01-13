@@ -27,14 +27,17 @@ header-includes: |
 Here is a simple basic Sass compiler.
 
 ## Author
+
 - [Lucas Bulloni](https://github.com/bull0n)
 - [Wermeille Bastien](https://github.com/Ph0tonic/)
 
 
 # Introduction
+
 Dans le cadre du cours "Compilateurs", il nous a été demandé de réaliser un projet par équipe de deux en utilisat la librairire python PLY.
 
 # But fixé
+
 Comme expliqué plus haut, le but fixé était de réaliser un compilateur permettant de compiler du code SCSS. Les étapes de réalisation ont étés les suivantes :
 
 - Etape 1 Validation de CSS Standard
@@ -47,12 +50,15 @@ Comme expliqué plus haut, le but fixé était de réaliser un compilateur perme
 - Etape 8 Possibilité d'inclure des fichiers externes avec @import
 
 # Fonctionnalités implémentées
+
 Nous avons réussi à réaliser toutes les fonctionnalités listées dans le point précédent. Ce chapitre présente les différentes fonctionnalités présentent dans notre compilateur dans l'ordre de leur implémentation.
 
 ## Parsing de css standard
+
 Validation de la syntaxe de base d'un fichier scss, permet de valider la syntaxe basique d'un fichier css et de valider qu'il ne manque pas de point virgule ou de fermeture de parenthèses.
 
 ## Gestion du nesting
+
 Le nesting permet d'imbriquer des sélecteurs css afin de représenter une hiérarchie de manière très simple ce que ne permet pas le css.
 
 Voici un example de code scss:
@@ -72,6 +78,7 @@ nav {
 ```
 
 ## Ajout de variables
+
 Les variables scss se copmportent de la même manière que dans un language de programmation traditionnel. Elles permettent par exemple de changer une propriété couleur partout dans un projet. Les variables commencent par le symbole $ et voici un exemple de son utilisation.
 
 ```scss
@@ -85,6 +92,7 @@ body {
 ```
 
 ## Branchements conditionnels
+
 Les branchement conditionnels ou en d'autres thermes les "if", "else if", "else" et "while" permettent d'ajouter une dimension supplémentaire et de facilement adapter du code selon une ou plusieurs conditions.
 
 Les branchements nécessitent l'évaluation d'une condition pour ce faire, les opérateurs de conditions suivants ont étés définis:
@@ -124,6 +132,7 @@ $bool : true;
 ```
 
 ## Compilation des valeurs numériques
+
 Le css standard ne permet pas de calcul numérique, nous avons ainsi remédier à ce manque ce qui permet de changer très facilement les proportions de certains éléments graphiques. Les opérateur numériques suivants oint étés implémentés:
 - +
 - -
@@ -142,6 +151,7 @@ nav {
 ```
 
 ## Système d'extend
+
 Cette fonctionnalité est une des plus prisé de scss. Elle permet d'éviter le répétition de code et respecter le concept DRY.
 
 TODO
@@ -188,12 +198,15 @@ Voici le code généré :
 ```
 
 ## Les mixin et include
+
 TODO
 
 ## Composition de fichier scss
+
 TODO import
 
 # Prise en main
+
 Ce document démontre une utilisation basique des différentes fonctionnalités du programme. Pour
 une meilleure prise en main, n’oubliez pas de lire les exemples !
 
@@ -204,16 +217,21 @@ python Compiler.py CHEMIN_DU_FICHIER
 ```
 
 # Grammaire
+
 TODO
 
 # Explications et exemples
+
 TODO
 
 # Guide utilisateur
+
 TODO
 
 # Difficultés rencontrés
+
 ## Parsage
+
 La parsage nous a posé beaucoup de problème car la structure des fichiers scss est relativement complexe.
 Certains symboles tel que ">" peuvent avoir plusieurs rôle, en l'occurence il peut représenter un sélecteur css mais également un opérateur de comparaison de valeurs numériques.
 
@@ -256,6 +274,7 @@ Le language scss étant très vaste, nous avons uniquement implémentés les fon
 - Possibilité de concatener des variables pour générer des noms de classes
 
 # Conclusion
+
 TODO
 
 
