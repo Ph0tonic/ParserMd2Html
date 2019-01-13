@@ -266,9 +266,7 @@ def compile(self):
 
 @addToClass(AST.ImportNode)
 def compile(self):
-	prog = open(f"data/{self.value}.scss").read()
-
-	return compile(prog)
+	return compile_file(f"data/{self.value}.scss")
 
 @addToClass(AST.ExtendNodeDefine)
 def compile(self):
@@ -283,9 +281,15 @@ def compile(self):
 		raise Exception(f"extend {self.identifier} does not exist") from None
 
 def deleteComaFromList(list_to_filter):
+	'''
+	delete all string coma from a list
+	'''
 	return list(filter(lambda val: val != ",", list_to_filter))
 
 def getFileName(path):
+	'''
+	get the name of the file
+	'''
 	return path.split("/")[-1].split('.')[0]
 
 def compile(string_to_compile):
@@ -302,18 +306,37 @@ def compile_file(file_path):
 	Function allowing to compile a file
 	'''
 	prog = open(file_path).read()
-	compiled_string = compile(prog)
+	return compile(prog)
 
+def write_into_compiled_file(filename, str_to_write):
+	'''
+	write a string into a File
+	'''
+
+	# check the string isn't empty
+	if str == "":
+		return
+
+	# if folder doesn't exist, create it
 	try:
 		os.mkdir('./compiled/')
 	except FileExistsError:
 		pass
 
-	path_compiled = f'compiled/{getFileName(file_path)}.css'
+	path_compiled = f'compiled/{getFileName(filename)}.css'
 
-	with open(path_compiled, 'w') as f :
-		f.write(compiled_string)
+	try:
+		with open(path_compiled, 'w') as f :
+			f.write(str_to_write)
+	except FileNotFoundError:
+		raise Exception(f"File {path_compiled} doesn't exist")
+
+def compile_write(filename):
+	'''
+	compile a file and write it into his corresponding file
+	'''
+	write_into_compiled_file(filename, compile_file(filename))
 
 if __name__ == "__main__" :
 	import sys
-	compile_file(sys.argv[1])
+	compile_write(sys.argv[1])

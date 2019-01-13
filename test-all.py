@@ -30,7 +30,7 @@ Code source of the project:
 
 import os
 import re
-from recCompiler import compile_file
+from recCompiler import compile_write
 
 FOLDER = "./data/"
 
@@ -42,4 +42,4 @@ if __name__ == "__main__":
 
     for file_name in files:
         print("Compile "+file_name)
-        compile_file(FOLDER+file_name)
+        compile_write(FOLDER+file_name)
