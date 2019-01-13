@@ -1,3 +1,33 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Programe which allow a user to make a semantic analyse on a scss file
+
+:param argv[1]: Scss file
+:returns: Nothing, but an AST graph is generated in the same folder as the scss file
+
+Correct syntax:
+python3 parser.py filename
+
+Concrete example :
+python3 parser.py "./data/_test-main.scss"
+
+Requirements:
+- Python3
+- Ply
+- Graphviz
+- pydot
+- yacc
+- AST.py
+- lex.py
+
+Authors:
+- Lucas Bulloni - https://github.com/bull0n
+- Bastien Wermeille - https://github.com/Ph0tonic
+
+Code source of the project:
+- https://github.com/Ph0tonic/SassCompiler
+"""
+
 import ply.yacc as yacc
 
 from lex import tokens

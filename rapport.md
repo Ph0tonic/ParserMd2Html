@@ -217,6 +217,10 @@ TODO
 
 # Améliorations
 TODO
+- Media queries
+- Valeurs par défault pour les paramètres
+- Ajout du mot clé @each
+- Ajout du mot clé @for
 
 # Conclusion
 TODO

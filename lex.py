@@ -1,3 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Programe which allow a user to make a lexical analyse on a scss file
+
+:param argv[1]: Scss file
+:returns: Nothing
+
+Correct syntax:
+python3 lex.py filename
+
+Concrete example :
+python3 lex.py "./data/_test-main.scss"
+
+Requirements:
+	Python3
+	Ply
+
+Authors:
+	Lucas Bulloni - https://github.com/bull0n
+	Bastien Wermeille - https://github.com/Ph0tonic
+
+Code source of the project:
+	https://github.com/Ph0tonic/SassCompiler
+"""
+
 import ply.lex as lex
 
 reserved_words = {

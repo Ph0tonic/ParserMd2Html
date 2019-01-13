@@ -1,3 +1,33 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""Programe which allow a user to compile a scss file into a css file
+
+:param argv[1]: Scss file
+:returns: Nothing, but a css file is generated in the folder "generated" with the same name but the .css extension
+
+Correct syntax:
+python3 recCompiler.py filename
+
+Concrete example :
+python3 recCompiler.py "./data/_test-main.scss"
+
+Requirements:
+- Python3
+- Ply
+- Graphviz
+- pydot
+- yacc
+- AST.py
+- lex.py
+
+Authors:
+- Lucas Bulloni - https://github.com/bull0n
+- Bastien Wermeille - https://github.com/Ph0tonic
+
+Code source of the project:
+- https://github.com/Ph0tonic/SassCompiler
+"""
+
 import AST
 from AST import addToClass
 from parser import parse
