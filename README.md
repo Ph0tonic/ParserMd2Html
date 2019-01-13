@@ -105,13 +105,10 @@ nav a {
 # Fonctionnalities implemented
 
 - [x] Nested
-- [x] @if / @elseif
+- [x] Variables
+- [x] Operators
+- [x] @if / @else if /@else
 - [x] @while
 - [x] @mixin / @include
 - [x] @extend
-- [x] Operators
-- [x] Variables
 - [x] @import
-
-# TODO :
-- [ ] Améliorer le graph afin d'afficher plus d'informations sur certains noeuds.

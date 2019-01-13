@@ -266,7 +266,7 @@ def compile(self):
 
 @addToClass(AST.ImportNode)
 def compile(self):
-	return compile_file(f'{current_path}{os.sep}{self.value}.scss')
+	return compileFile(f'{current_path}{os.sep}{self.value}.scss')
 
 @addToClass(AST.ExtendNodeDefine)
 def compile(self):
@@ -301,14 +301,14 @@ def compile(string_to_compile):
 
 	return compiled_string
 
-def compile_file(filename):
+def compileFile(filename):
 	'''
 	Function allowing to compile a file
 	'''
 	prog = open(filename).read()
 	return compile(prog)
 
-def write_into_compiled_file(filename, str_to_write):
+def writeIntoCompiledFile(filename, str_to_write):
 	'''
 	write a string into a File
 	'''
@@ -331,13 +331,13 @@ def write_into_compiled_file(filename, str_to_write):
 	except FileNotFoundError:
 		raise Exception(f'File {path_compiled} doesn\'t exist')
 
-def compile_write(filename):
+def compileWrite(filename):
 	'''
 	compile a file and write it into his corresponding file
 	'''
 	global current_path
 	current_path = os.sep.join(filename.split(os.sep)[:-1])
-	write_into_compiled_file(filename, compile_file(filename))
+	writeIntoCompiledFile(filename, compileFile(filename))
 
 def opToResultNode(value):
 	'''
@@ -353,6 +353,6 @@ def opToResultNode(value):
 if __name__ == "__main__" :
 	import sys
 	try:
-		compile_write(sys.argv[1])
+		compileWrite(sys.argv[1])
 	except FileNotFoundError:
 		print(f"Error File not found {sys.argv[1]}")
