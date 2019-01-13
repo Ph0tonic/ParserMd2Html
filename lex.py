@@ -59,73 +59,169 @@ tokens = [
 
 literals = '@();:{},\''
 
+def t_COMMENT(t):
+	r'//.*'
+	"""
+	Detect single line comments
+
+	:param t: token detected
+	:return: nothing because this comment token is discarded
+	"""
+	pass # No return value. Token discarded
+
 def t_IF(t):
 	r'@if'
+	"""
+	Detect an if reserved keywords
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_ELIF(t):
 	r'@else\ if'
+	"""
+	Detect an else if reserved keywords
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_ELSE(t):
 	r'@else'
-	return t
+	"""
+	Detect an else reserved keywords
 
-def t_COMMENT(t):
-	r'//.*'
-	pass # No return value. Token discarded
+	:param t: token detected
+	:return: token
+	"""
+	return t
 
 def t_COMP_OP(t):
 	r'(==|!=)'
+	"""
+	Detect a comparator
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_LGTE_OP(t):
 	r'(<=|<|>=)'
+	"""
+	Detect all integer comparators, except GreaterThan(>) 
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_GT_OP(t):
 	r'>'
+	"""
+	Detect GreaterThan symbole
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_ADD_OP(t):
 	r'[+-]'
+	"""
+	Detect Integer operator + and -
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_MUL_OP(t):
 	r'[*/]'
+	"""
+	Detect Integer operator * and /
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_NUMBER(t):
 	r'\d+(\.\d+)?(px|%|em|rem|pt|cm|mm|in|pt|pc|ex|ch|vw|vh|vmin|vmax)?'
+	"""
+	Detect Integer value with their unit
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_VARIABLE(t):
 	r'\$\w[A-Za-z-]*'
+	"""
+	Detect variables (start with $)
+
+	:param t: token detected
+	:return: token
+	"""
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
 
 def t_SELECTOR_EXTEND(t):
 	r'%{1}[\w\-\_]*'
+	"""
+	Detect special extend keywords (start with %)
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_FILE_PATH(t):
 	r'[\'\"]{1}[\w\_\-.]*[\'\"]{1}'
+	"""
+	Detect Filename
+
+	:param t: token detected
+	:return: token
+	"""
 	return t
 
 def t_STRING_VALUE(t):
 	r'[#\.]*[\w\-\_\[\]=]*[\w\]]{1}'
+	"""
+	Detect String value which are not poart of the reserved words
+
+	:param t: token detected
+	:return: token
+	"""
 	if t.value in reserved_words:
 		t.type = t.value.upper()
 	return t
 
 def t_newline(t):
 	r'\n+'
+	"""
+	Detect a new line
+
+	:param t: token detected
+	:return: token
+	"""
 	t.lexer.lineno += len(t.value)
 
 t_ignore  = ' \t'
 
 def t_error(t):
+	"""
+	Manage case when a token isn't detected
+
+	:param t: token detected
+	:return: token
+	"""
 	print ("Illegal character '%s'" % repr(t.value[0]))
 	t.lexer.skip(1)
 
