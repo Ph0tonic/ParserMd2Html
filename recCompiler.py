@@ -58,6 +58,7 @@ vars = {}
 extends_rules = {}
 mixins = {}
 LINE_SEPARATOR = '\n'
+current_path = ''
 
 def compileListToString(list, separator = ''):
 	compiled_string = separator.join([element.compile() for element in list])
@@ -273,7 +274,7 @@ def compile(self):
 
 @addToClass(AST.ImportNode)
 def compile(self):
-	return compile_file(f'data/{self.value}.scss')
+	return compile_file(f'{current_path}{os.sep}{self.value}.scss')
 
 @addToClass(AST.ExtendNodeDefine)
 def compile(self):
@@ -297,7 +298,7 @@ def getFileName(path):
 	'''
 	get the name of the file
 	'''
-	return path.split('/')[-1].split('.')[0]
+	return path.split(os.sep)[-1].split('.')[0]
 
 def compile(string_to_compile):
 	'''
@@ -342,6 +343,8 @@ def compile_write(filename):
 	'''
 	compile a file and write it into his corresponding file
 	'''
+	global current_path
+	current_path = os.sep.join(path.split(os.sep)[:-1])
 	write_into_compiled_file(filename, compile_file(filename))
 
 if __name__ == "__main__" :

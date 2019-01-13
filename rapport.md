@@ -232,7 +232,11 @@ Nous avons également valider que la déclaration d'une mixin soit possible avec
 @include margin($test, 12px);
 ```
 
-## TODO compiler
+## Compilation
+
+Pour la partie compilation nous avons décidé de compiler de manière récursive afin de pas avoir à se soucier de l'arbre cousu. Bien que notre projet soit un compilateur. Certaines fonctionnalités comme les opérations et les conditions n'étant pas supporter en CSS standard. Le compilateur va exécuter certaines parties de code comme un interpreteur.
+
+Pour cela, certaines opérations seront exécuter et seront vérifiés à la compilation.
 
 # Améliorations
 
